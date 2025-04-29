@@ -1,0 +1,195 @@
+[project]
+name = "pytest-codeblock"
+version = "0.1"
+description = "Pytest plugin to collect and test code blocks in reStructuredText and Markdown files."
+readme = "README.rst"
+requires-python = ">=3.10"
+dependencies = [
+    "pytest",
+]
+authors = [
+    { name = "Artur Barseghyan", email = "artur.barseghyan@gmail.com" },
+]
+maintainers = [
+    { name = "Artur Barseghyan", email = "artur.barseghyan@gmail.com" },
+]
+license = "MIT"
+classifiers = [
+    "Framework :: Pytest",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python",
+    "Topic :: Software Development :: Testing",
+    "Topic :: Software Development",
+]
+keywords = [
+    "pytest",
+    "plugin",
+    "documentation",
+    "code blocks",
+    "markdown",
+    "rst",
+]
+
+[project.urls]
+Homepage      = "https://github.com/barseghyanartur/pytest-codeblock/"
+Repository    = "https://github.com/barseghyanartur/pytest-codeblock/"
+Issues        = "https://github.com/barseghyanartur/pytest-codeblock/issues"
+Documentation = "https://pytest-codeblock.readthedocs.io/"
+Changelog     = "https://pytest-codeblock.readthedocs.io/en/latest/changelog.html"
+
+[project.optional-dependencies]
+all  = ["pytest-codeblock[dev,test,docs,build]"]
+dev  = [
+    "detect-secrets",
+    "doc8",
+    "ipython",
+    "mypy",
+    "pydoclint",
+    "ruff",
+    "twine",
+    "uv",
+]
+test = [
+    "django",
+    "pytest",
+    "pytest-cov",
+    "pytest-django",
+]
+docs = [
+    "sphinx<6.0",
+    "sphinx-autobuild",
+    "sphinx-rtd-theme>=1.3.0",
+    "sphinx-no-pragma",
+]
+build = [
+    "build",
+    "twine",
+    "wheel",
+]
+
+[project.scripts]
+# No CLI entry points for this plugin
+
+[project.entry-points."pytest11"]
+pytest_codeblock = "pytest_codeblock"
+
+[tool.setuptools]
+# No single-file modules; we use packages.find below
+
+[tool.setuptools.packages.find]
+where   = ["."]
+include = ["pytest_codeblock", "pytest_codeblock.*"]
+
+[build-system]
+requires       = ["setuptools>=41.0", "wheel"]
+build-backend  = "setuptools.build_meta"
+
+[tool.ruff]
+line-length = 80
+lint.select = [
+    "B",    # Bugbear
+    "C4",   # Complexity
+    "E",    # Pycodestyle errors
+    "F",    # Pyflakes errors
+    "G",    # Logging format
+    "I",    # Import sorting
+    "ISC",  # Naming
+    "INP",  # Implicit namespace
+    "N",    # Naming
+    "PERF", # Performance
+    "Q",    # Q for Q
+    "SIM",  # Simplify
+    "TD",   # TODO formatting
+]
+lint.ignore = [
+    "G004",  # Allow f-strings in logging
+    "ISC003",
+    "TD002",
+    "TD003",
+]
+# Enable auto-fix for formatting and import sorting
+fix = true
+src = ["pytest_codeblock"]
+exclude = [
+    ".bzr", ".direnv", ".eggs", ".git", ".hg", ".mypy_cache", ".nox",
+    ".pants.d", ".ruff_cache", ".svn", ".tox", ".venv", "__pypackages__",
+    "_build", "buck-out", "build", "dist", "node_modules", "venv", "docs",
+]
+lint.dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+target-version = "py310"
+
+[tool.ruff.lint.per-file-ignores]
+"conftest.py" = ["PERF203"]
+
+[tool.ruff.lint.isort]
+known-first-party  = ["pytest_codeblock"]
+known-third-party  = []
+
+[tool.doc8]
+ignore-path = [
+    "docs/requirements.txt",
+    "pytest-codeblock.egg-info/SOURCES.txt",
+]
+
+[tool.pytest.ini_options]
+addopts = [
+    "-ra",
+    "-vvv",
+    "-q",
+    "--cov=pytest_codeblock",
+    "--ignore=.tox",
+    "--ignore=requirements",
+    "--ignore=release",
+    "--ignore=examples",
+    "--ignore=tmp",
+    "--cov-report=html",
+    "--cov-report=term",
+    "--cov-report=annotate",
+    "--cov-append",
+    "--capture=no",
+]
+testpaths = [
+    "pytest_codeblock",
+    "__copy_pytest_codeblock.py",
+    "*.rst",
+    "**/*.rst",
+    "*.md",
+    "**/*.md",
+]
+pythonpath = [
+    "examples/md_example",
+    "examples/rst_example",
+]
+norecursedirs = [".git", "examples"]
+DJANGO_SETTINGS_MODULE = "django_settings"
+
+[tool.coverage.run]
+relative_files = true
+omit = [".tox/*"]
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "@overload",
+]
+
+[tool.mypy]
+check_untyped_defs       = true
+warn_unused_ignores      = true
+warn_redundant_casts     = true
+warn_unused_configs      = true
+ignore_missing_imports   = true
+
+[tool.pydoclint]
+style = "sphinx"
+exclude = "\\.git|\\.tox|tests/data|__copy_pytest_codeblock\\.py"
+require-return-section-when-returning-nothing = false
+allow-init-docstring = true
+arg-type-hints-in-docstring = false
