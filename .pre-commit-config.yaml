@@ -1,7 +1,7 @@
 exclude: "^docs/|/migrations/"
 default_stages: [ pre-commit, pre-push ]
 default_language_version:
-  python: python3
+  python: python3.9
 
 repos:
 
@@ -45,8 +45,8 @@ repos:
     hooks:
       - id: pydoclint
 
-#  - repo: https://github.com/asottile/pyupgrade
-#    rev: v3.2.0
-#    hooks:
-#      - id: pyupgrade
-#        args: [ --py310-plus ]
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.2.0
+    hooks:
+      - id: pyupgrade
+        args: [ --py39-plus ]
