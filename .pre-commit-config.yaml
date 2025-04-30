@@ -1,7 +1,7 @@
 exclude: "^docs/|/migrations/"
 default_stages: [ pre-commit, pre-push ]
 default_language_version:
-  python: python3.9
+  python: python3
 
 repos:
 
