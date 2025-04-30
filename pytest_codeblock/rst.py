@@ -1,4 +1,5 @@
 import re
+from typing import Optional
 
 import pytest
 
@@ -26,9 +27,9 @@ def parse_rst(text: str) -> list[CodeSnippet]:
     lines = text.splitlines()
     n = len(lines)
 
-    pending_name: str | None = None
+    pending_name: Optional[str] = None
     pending_marks: list[str] = []
-    pending_continue: str | None = None
+    pending_continue: Optional[str] = None
     i = 0
 
     while i < n:
@@ -62,7 +63,7 @@ def parse_rst(text: str) -> list[CodeSnippet]:
             lang = m.group(2).lower()
             if lang in ("python", "py", "python3"):
                 # Parse :name: option
-                name_val: str | None = None
+                name_val: Optional[str] = None
                 j = i + 1
                 while j < n:
                     ln = lines[j]
