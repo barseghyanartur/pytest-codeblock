@@ -1,4 +1,5 @@
 import re
+from typing import Optional
 
 import pytest
 
@@ -29,13 +30,13 @@ def parse_markdown(text: str) -> list[CodeSnippet]:
     """
     snippets: list[CodeSnippet] = []
     lines = text.splitlines()
-    pending_name: str | None = None
+    pending_name: Optional[str] = None
     pending_marks: list[str] = []
     in_block = False
     fence = ""
     block_indent = 0
     code_buffer: list[str] = []
-    snippet_name: str | None = None
+    snippet_name: Optional[str] = None
     start_line = 0
 
     for idx, line in enumerate(lines, start=1):

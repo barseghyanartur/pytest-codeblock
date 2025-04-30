@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from typing import Optional
 
 import pytest
 
@@ -17,7 +18,7 @@ class CodeSnippet:
     """Data container for an extracted code snippet."""
     code: str  # The code content
     line: int  # Starting line number in the source
-    name: str | None = None  # Identifier for grouping (None if anonymous)
+    name: Optional[str] = None  # Identifier for grouping (None if anonymous)
     marks: list[str] = field(default_factory=list)
     # Collected pytest marks (e.g. ['django_db']), parsed from doc comments
 

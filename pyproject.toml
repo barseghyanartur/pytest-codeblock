@@ -3,7 +3,7 @@ name = "pytest-codeblock"
 version = "0.1"
 description = "Pytest plugin to collect and test code blocks in reStructuredText and Markdown files."
 readme = "README.rst"
-requires-python = ">=3.10"
+requires-python = ">=3.9"
 dependencies = [
     "pytest",
 ]
@@ -19,6 +19,7 @@ classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -122,7 +123,7 @@ exclude = [
     "_build", "buck-out", "build", "dist", "node_modules", "venv", "docs",
 ]
 lint.dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
-target-version = "py310"
+target-version = "py39"
 
 [tool.ruff.lint.per-file-ignores]
 "conftest.py" = ["PERF203"]

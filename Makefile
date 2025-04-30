@@ -30,6 +30,9 @@ pre-commit-install:
 pre-commit: pre-commit-install
 	pre-commit run --all-files
 
+pyupgrade:
+	pre-commit run --all-files pyupgrade
+
 doc8:
 	source $(VENV) && doc8
 
