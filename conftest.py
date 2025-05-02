@@ -6,6 +6,15 @@ from moto import mock_aws
 
 from pytest_codeblock.constants import CODEBLOCK_MARK
 
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2025 Artur Barseghyan"
+__license__ = "MIT"
+__all__ = (
+    "pytest_collection_modifyitems",
+    "pytest_runtest_setup",
+    "pytest_runtest_teardown",
+)
+
 
 # Modify test item during collection
 def pytest_collection_modifyitems(config, items):
