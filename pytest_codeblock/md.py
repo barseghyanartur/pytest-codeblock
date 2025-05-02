@@ -4,7 +4,7 @@ from typing import Optional
 import pytest
 
 from .collector import CodeSnippet, group_snippets
-from .constants import DJANGO_DB_MARKS, TEST_PREFIX
+from .constants import CODEBLOCK_MARK, DJANGO_DB_MARKS, TEST_PREFIX
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2025 Artur Barseghyan"
@@ -31,7 +31,7 @@ def parse_markdown(text: str) -> list[CodeSnippet]:
     snippets: list[CodeSnippet] = []
     lines = text.splitlines()
     pending_name: Optional[str] = None
-    pending_marks: list[str] = []
+    pending_marks: list[str] = [CODEBLOCK_MARK]
     in_block = False
     fence = ""
     block_indent = 0

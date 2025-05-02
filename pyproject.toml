@@ -38,15 +38,15 @@ keywords = [
 ]
 
 [project.urls]
-Homepage      = "https://github.com/barseghyanartur/pytest-codeblock/"
-Repository    = "https://github.com/barseghyanartur/pytest-codeblock/"
-Issues        = "https://github.com/barseghyanartur/pytest-codeblock/issues"
+Homepage = "https://github.com/barseghyanartur/pytest-codeblock/"
+Repository = "https://github.com/barseghyanartur/pytest-codeblock/"
+Issues = "https://github.com/barseghyanartur/pytest-codeblock/issues"
 Documentation = "https://pytest-codeblock.readthedocs.io/"
-Changelog     = "https://pytest-codeblock.readthedocs.io/en/latest/changelog.html"
+Changelog = "https://pytest-codeblock.readthedocs.io/en/latest/changelog.html"
 
 [project.optional-dependencies]
-all  = ["pytest-codeblock[dev,test,docs,build]"]
-dev  = [
+all = ["pytest-codeblock[dev,test,docs,build]"]
+dev = [
     "detect-secrets",
     "doc8",
     "ipython",
@@ -58,6 +58,9 @@ dev  = [
 ]
 test = [
     "django",
+    "fake.py",
+    "moto[s3]",
+    "openai",
     "pytest",
     "pytest-cov",
     "pytest-django",
@@ -84,29 +87,29 @@ pytest_codeblock = "pytest_codeblock"
 # No single-file modules; we use packages.find below
 
 [tool.setuptools.packages.find]
-where   = ["."]
+where = ["."]
 include = ["pytest_codeblock", "pytest_codeblock.*"]
 
 [build-system]
-requires       = ["setuptools>=41.0", "wheel"]
-build-backend  = "setuptools.build_meta"
+requires = ["setuptools>=41.0", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [tool.ruff]
 line-length = 80
 lint.select = [
-    "B",    # Bugbear
-    "C4",   # Complexity
-    "E",    # Pycodestyle errors
-    "F",    # Pyflakes errors
-    "G",    # Logging format
-    "I",    # Import sorting
+    "B",  # Bugbear
+    "C4",  # Complexity
+    "E",  # Pycodestyle errors
+    "F",  # Pyflakes errors
+    "G",  # Logging format
+    "I",  # Import sorting
     "ISC",  # Naming
     "INP",  # Implicit namespace
-    "N",    # Naming
-    "PERF", # Performance
-    "Q",    # Q for Q
+    "N",  # Naming
+    "PERF",  # Performance
+    "Q",  # Q for Q
     "SIM",  # Simplify
-    "TD",   # TODO formatting
+    "TD",  # TODO formatting
 ]
 lint.ignore = [
     "G004",  # Allow f-strings in logging
@@ -118,9 +121,26 @@ lint.ignore = [
 fix = true
 src = ["pytest_codeblock"]
 exclude = [
-    ".bzr", ".direnv", ".eggs", ".git", ".hg", ".mypy_cache", ".nox",
-    ".pants.d", ".ruff_cache", ".svn", ".tox", ".venv", "__pypackages__",
-    "_build", "buck-out", "build", "dist", "node_modules", "venv", "docs",
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+    "docs",
 ]
 lint.dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 target-version = "py39"
@@ -156,11 +176,11 @@ addopts = [
     "--capture=no",
 ]
 testpaths = [
-    "pytest_codeblock",
-    "__copy_pytest_codeblock.py",
-    "*.rst",
+#    "test*.py",
+    "**/test*.py",
+#    "*.rst",
     "**/*.rst",
-    "*.md",
+#    "*.md",
     "**/*.md",
 ]
 pythonpath = [
@@ -190,7 +210,7 @@ ignore_missing_imports   = true
 
 [tool.pydoclint]
 style = "sphinx"
-exclude = "\\.git|\\.tox|tests/data|__copy_pytest_codeblock\\.py"
+exclude = "\\.git|\\.tox|tests/data|\\.venv"
 require-return-section-when-returning-nothing = false
 allow-init-docstring = true
 arg-type-hints-in-docstring = false
