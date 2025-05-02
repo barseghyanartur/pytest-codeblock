@@ -8,7 +8,7 @@ __copyright__ = "2025 Artur Barseghyan"
 __license__ = "MIT"
 __all__ = (
     "CodeSnippet",
-    "CodeblockItem",
+    "CodeBlockItem",
     "group_snippets",
 )
 
@@ -51,7 +51,7 @@ def group_snippets(snippets: list[CodeSnippet]) -> list[CodeSnippet]:
     return combined
 
 
-class CodeblockItem(pytest.Item):
+class CodeBlockItem(pytest.Item):
     """A Pytest Item representing an executable code block."""
     def __init__(self, *, name, parent, code: str, line: int):
         super().__init__(name=name, parent=parent)
