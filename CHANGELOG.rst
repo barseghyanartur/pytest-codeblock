@@ -19,6 +19,13 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.1.2
+-----
+2025-05-03
+
+- Automatically add `codeblock` mark to documentation tests.
+- Add customisation section to documentation.
+
 0.1.1
 -----
 2025-04-30

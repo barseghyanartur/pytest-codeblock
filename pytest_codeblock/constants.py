@@ -2,6 +2,7 @@ __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2025 Artur Barseghyan"
 __license__ = "MIT"
 __all__ = (
+    "CODEBLOCK_MARK",
     "DJANGO_DB_MARKS",
     "TEST_PREFIX",
 )
@@ -13,3 +14,5 @@ DJANGO_DB_MARKS = {
 }
 
 TEST_PREFIX = "test_"
+
+CODEBLOCK_MARK = "codeblock"

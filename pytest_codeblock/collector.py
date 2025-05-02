@@ -1,14 +1,11 @@
 from dataclasses import dataclass, field
 from typing import Optional
 
-import pytest
-
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2025 Artur Barseghyan"
 __license__ = "MIT"
 __all__ = (
     "CodeSnippet",
-    "CodeBlockItem",
     "group_snippets",
 )
 
@@ -49,21 +46,3 @@ def group_snippets(snippets: list[CodeSnippet]) -> list[CodeSnippet]:
             combined.append(sn)
 
     return combined
-
-
-class CodeBlockItem(pytest.Item):
-    """A Pytest Item representing an executable code block."""
-    def __init__(self, *, name, parent, code: str, line: int):
-        super().__init__(name=name, parent=parent)
-        self.code = code
-        self.line = line
-
-    def runtest(self):
-        ns = {}
-        fname = str(self.fspath)
-        if self.name:
-            fname = f"{fname}::{self.name}"
-        exec(compile(self.code, fname, "exec"), ns)
-
-    def reportinfo(self):
-        return (self.fspath, self.line, f"code-block: {self.name}")

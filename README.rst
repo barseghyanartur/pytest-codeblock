@@ -212,6 +212,90 @@ Any fenced code block with a recognized Python language tag (e.g., ``python``,
     user = User.objects.first()
     ```
 
+Customisation/hooks
+===================
+If you want to add additional things into your specific tests, do as follows:
+
+**Add a couple of custom pytest marks**
+
+.. code-block:: rst
+
+    .. pytestmark: fakepy
+    .. code-block:: python
+        :name: test_create_pdf_file
+
+        from fake import FAKER
+
+        FAKER.pdf_file()
+
+    .. pytestmark: aws
+    .. code-block:: python
+        :name: test_create_bucket
+
+        import boto3
+
+        s3 = boto3.client("s3", region_name="us-east-1")
+        s3.create_bucket(Bucket="my-bucket")
+        assert "my-bucket" in [b["Name"] for b in s3.list_buckets()["Buckets"]]
+
+    .. pytestmark: xfail
+    .. pytestmark: openai
+    .. code-block:: python
+        :name: test_tell_me_a_joke
+
+        from openai import OpenAI
+
+        client = OpenAI()
+        completion = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {"role": "developer", "content": "You are a famous comedian."},
+                {"role": "user", "content": "Tell me a joke."},
+            ],
+        )
+
+        assert isinstance(completion.choices[0].message.content, str)
+
+**Hook into it `conftest.py`**
+
+*Filename: conftest.py*
+
+.. code-block:: python
+
+    import os
+    from contextlib import suppress
+
+    import pytest
+
+    from fake import FILE_REGISTRY
+    from moto import mock_aws
+    from pytest_codeblock.constants import CODEBLOCK_MARK
+
+    # Modify test item during collection
+    def pytest_collection_modifyitems(config, items):
+        for item in items:
+            if item.get_closest_marker(CODEBLOCK_MARK):
+                # Add `documentation` marker to `pytest-codeblock` tests
+                item.add_marker(pytest.mark.documentation)
+            if item.get_closest_marker("aws"):
+                # Apply `mock_aws` to all tests marked as `aws`
+                item.obj = mock_aws(item.obj)
+
+
+    # Setup before test runs
+    def pytest_runtest_setup(item):
+        if item.get_closest_marker("openai"):
+            # Send all OpenAI requests to locally running Ollama
+            os.environ.setdefault("OPENAI_API_KEY", "ollama")
+            os.environ.setdefault("OPENAI_BASE_URL", "http://localhost:11434/v1")
+
+
+    # Teardown after the test ends
+    def pytest_runtest_teardown(item, nextitem):
+        # Run file clean up on all tests marked as `fakepy`
+        if item.get_closest_marker("fakepy"):
+            FILE_REGISTRY.clean_up()
+
 Tests
 =====
 
