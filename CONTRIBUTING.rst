@@ -1,9 +1,9 @@
 Contributor guidelines
 ======================
 
-.. _fake.py: https://fakepy.readthedocs.io
-.. _documentation: https://fakepy.readthedocs.io/#writing-documentation
-.. _testing: https://fakepy.readthedocs.io/#testing
+.. _pytest-codeblock: https://pytest-codeblock.readthedocs.io
+.. _documentation: https://pytest-codeblock.readthedocs.io/#writing-documentation
+.. _testing: https://pytest-codeblock.readthedocs.io/#testing
 .. _pre-commit: https://pre-commit.com/#installation
 .. _black: https://black.readthedocs.io/
 .. _isort: https://pycqa.github.io/isort/
@@ -12,14 +12,12 @@ Contributor guidelines
 .. _pip-tools: https://pip-tools.readthedocs.io/
 .. _uv: https://docs.astral.sh/uv/
 .. _tox: https://tox.wiki
-.. _issues: https://github.com/barseghyanartur/fake.py/issues
-.. _discussions: https://github.com/barseghyanartur/fake.py/discussions
-.. _pull request: https://github.com/barseghyanartur/fake.py/pulls
-.. _support: https://fakepy.readthedocs.io/#support
-.. _installation: https://fakepy.readthedocs.io/#installation
-.. _features: https://fakepy.readthedocs.io/#features
-.. _recipes: https://fakepy.readthedocs.io/en/latest/recipes.html
-.. _quick start: https://fakepy.readthedocs.io/en/latest/quick_start.html
+.. _issues: https://github.com/barseghyanartur/pytest-codeblock/issues
+.. _discussions: https://github.com/barseghyanartur/pytest-codeblock/discussions
+.. _pull request: https://github.com/barseghyanartur/pytest-codeblock/pulls
+.. _support: https://pytest-codeblock.readthedocs.io/#support
+.. _installation: https://pytest-codeblock.readthedocs.io/#installation
+.. _features: https://pytest-codeblock.readthedocs.io/#features
 .. _prerequisites: https://fakepy.readthedocs.io/#prerequisites
 .. _versions manifest: https://github.com/actions/python-versions/blob/main/versions-manifest.json
 
@@ -111,16 +109,9 @@ For example:
 
 **Good to know:**
 
-- This library consists of a single ``fake.py`` module. That module is
-  dependency free, self-contained (includes all tests) and portable.
-  Do not submit pull requests splitting the ``fake.py`` module into small
-  parts. Pull requests with external dependencies in ``fake.py`` module will
-  not be accepted either.
-- Some tests contain simplified implementation of existing libraries (Django
-  ORM, TortoiseORM, SQLAlchemy). If you need to add integration tests for
-  existing functionality, you can add the relevant code and requirements
-  to the examples, along with tests. Currently, all integration tests
-  are running in the CI against the latest version of Python.
+- This library is almost dependency free.
+  Do not submit pull requests with external dependencies unless it's really
+  necessary.
 
 **General list to go through:**
 
@@ -136,13 +127,13 @@ For example:
 
 **When adding a new feature (in addition to the general list):**
 
-- Make sure to update the documentation (check whether the `installation`_,
-  `features`_, `recipes`_ and `quick start`_ require changes).
+- Make sure to update the documentation (check whether the `installation`_ and
+  `features`_ require changes).
 
 GitHub Actions
 --------------
-Only non-EOL versions of Python and software `fake.py`_ aims to integrate with
-are supported.
+Only non-EOL versions of Python and software `pytest-codeblock`_ aims to
+integrate with are supported.
 
 On GitHub Actions includes tests for more than 40 different variations of
 Python versions and integration packages. Future, non-stable versions
