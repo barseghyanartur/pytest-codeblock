@@ -88,9 +88,7 @@ Configuration
 
     [tool.pytest.ini_options]
     testpaths = [
-        "*.rst",
         "**/*.rst",
-        "*.md",
         "**/*.md",
     ]
 
