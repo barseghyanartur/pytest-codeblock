@@ -299,8 +299,8 @@ In the example below:
 
 - `moto`_ is used to mock AWS S3 service for all tests marked as ``aws``.
 - Environment variable ``OPENAI_BASE_URL`` is set
-  to `http://localhost:11434/v1` (assuming you have `Ollama`_ running) for all
-  tests marked as ``openai``.
+  to ``http://localhost:11434/v1`` (assuming you have `Ollama`_ running) for
+  all tests marked as ``openai``.
 - ``FILE_REGISTRY.clean_up()`` is executed at the end of each test marked
   as ``fakepy``.
 
