@@ -221,15 +221,17 @@ Tests can be extended and fine-tuned using pytest's standard hook system.
 
 Below is an example workflow:
 
-1. **Add custom markers** to the code blocks (`fakepy`, `aws`, `openai`, etc.).
-2. **Implement pytest hooks** in `conftest.py` to react to those markers.
+1. **Add custom markers** to the code blocks (``fakepy``, ``aws``, ``openai``).
+2. **Implement pytest hooks** in ``conftest.py`` to react to those markers.
 
 Add custom markers
 ------------------
 
-**fakepy**
+**`fakepy` marker**
 
 Sample `fake.py`_ code to generate a PDF file with random text.
+
+*Filename: README.rst*
 
 .. code-block:: rst
 
@@ -241,9 +243,11 @@ Sample `fake.py`_ code to generate a PDF file with random text.
 
         FAKER.pdf_file()
 
-**aws**
+**`aws` marker**
 
 Sample `boto3`_ code to create a bucket on AWS S3.
+
+*Filename: README.rst*
 
 .. code-block:: rst
 
@@ -257,11 +261,13 @@ Sample `boto3`_ code to create a bucket on AWS S3.
         s3.create_bucket(Bucket="my-bucket")
         assert "my-bucket" in [b["Name"] for b in s3.list_buckets()["Buckets"]]
 
-**openai**
+**`openai` marker**
 
 Sample `openai`_ code to ask LLM to tell a joke. Note, that next to a
 custom ``openai`` marker, ``xfail`` marker is used, which allows underlying
 code to fail, without marking entire test suite as failed.
+
+*Filename: README.rst*
 
 .. code-block:: rst
 
@@ -286,8 +292,6 @@ code to fail, without marking entire test suite as failed.
 Implement pytest hooks
 ----------------------
 
-*Filename: conftest.py*
-
 In the example below:
 
 - `moto`_ is used to mock AWS S3 service for all tests marked as ``aws``.
@@ -296,6 +300,8 @@ In the example below:
   tests marked as ``openai``.
 - ``FILE_REGISTRY.clean_up()`` is executed at the end of each test marked
   as ``fakepy``.
+
+*Filename: conftest.py*
 
 .. code-block:: python
 
