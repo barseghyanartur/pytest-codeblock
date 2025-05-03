@@ -227,7 +227,8 @@ Below is an example workflow:
 Add custom markers
 ------------------
 
-**`fakepy` marker**
+``fakepy`` marker
+~~~~~~~~~~~~~~~~~
 
 Sample `fake.py`_ code to generate a PDF file with random text.
 
@@ -243,7 +244,8 @@ Sample `fake.py`_ code to generate a PDF file with random text.
 
         FAKER.pdf_file()
 
-**`aws` marker**
+``aws`` marker
+~~~~~~~~~~~~~~
 
 Sample `boto3`_ code to create a bucket on AWS S3.
 
@@ -261,7 +263,8 @@ Sample `boto3`_ code to create a bucket on AWS S3.
         s3.create_bucket(Bucket="my-bucket")
         assert "my-bucket" in [b["Name"] for b in s3.list_buckets()["Buckets"]]
 
-**`openai` marker**
+``openai`` marker
+~~~~~~~~~~~~~~~~~
 
 Sample `openai`_ code to ask LLM to tell a joke. Note, that next to a
 custom ``openai`` marker, ``xfail`` marker is used, which allows underlying
