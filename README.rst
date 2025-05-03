@@ -217,7 +217,7 @@ Any fenced code block with a recognized Python language tag (e.g., ``python``,
 
 Customisation/hooks
 ===================
-Tests can be extended and fine-tuned using pytest's standard hook system.
+Tests can be extended and fine-tuned using `pytest`_'s standard hook system.
 
 Below is an example workflow:
 
