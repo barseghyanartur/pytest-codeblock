@@ -9,7 +9,8 @@ Please report security issues by emailing Artur Barseghyan
 
 Supported Versions
 ------------------
-The two most recent ``fake.py`` minor release series receive security support.
+The two most recent ``pytest-codeblock`` minor release series receive security
+support.
 It is recommended to use the latest version.
 
 .. code-block:: text
@@ -17,17 +18,16 @@ It is recommended to use the latest version.
     ┌─────────────────┬────────────────┐
     │ Version         │ Supported      │
     ├─────────────────┼────────────────┤
-    │ 0.11.x          │ Yes            │
+    │ 0.1.x           │ Yes            │
     ├─────────────────┼────────────────┤
-    │ 0.10.x          │ Yes            │
-    ├─────────────────┼────────────────┤
-    │ < 0.10          │ No             │
+    │ < 0.1           │ No             │
     └─────────────────┴────────────────┘
 
 .. note::
 
     For example, during the development cycle leading to the release
-    of ``fake.py`` 0.17.x, support will be provided for ``fake.py`` 0.16.x.
+    of ``pytest-codeblock`` 0.17.x, support will be provided
+    for ``pytest-codeblock`` 0.16.x.
 
-    Upon the release of ``fake.py`` 0.18.x, security support for ``fake.py``
-    0.16.x will end.
+    Upon the release of ``pytest-codeblock`` 0.18.x, security support
+    for ``pytest-codeblock`` 0.16.x will end.
