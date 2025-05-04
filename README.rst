@@ -224,11 +224,12 @@ Below is an example workflow:
 1. **Add custom markers** to the code blocks (``fakepy``, ``aws``, ``openai``).
 2. **Implement pytest hooks** in ``conftest.py`` to react to those markers.
 
-Add custom markers
-------------------
 
-``fakepy`` marker
-~~~~~~~~~~~~~~~~~
+Add custom markers in reStructuredText
+--------------------------------------
+
+``fakepy`` reStructuredText marker
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Sample `fake.py`_ code to generate a PDF file with random text.
 
@@ -244,8 +245,8 @@ Sample `fake.py`_ code to generate a PDF file with random text.
 
         FAKER.pdf_file()
 
-``aws`` marker
-~~~~~~~~~~~~~~
+``aws`` reStructuredText marker
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Sample `boto3`_ code to create a bucket on AWS S3.
 
@@ -263,8 +264,8 @@ Sample `boto3`_ code to create a bucket on AWS S3.
         s3.create_bucket(Bucket="my-bucket")
         assert "my-bucket" in [b["Name"] for b in s3.list_buckets()["Buckets"]]
 
-``openai`` marker
-~~~~~~~~~~~~~~~~~
+``openai`` reStructuredText marker
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Sample `openai`_ code to ask LLM to tell a joke. Note, that next to a
 custom ``openai`` marker, ``xfail`` marker is used, which allows underlying
@@ -291,6 +292,63 @@ code to fail, without marking entire test suite as failed.
         )
 
         assert isinstance(completion.choices[0].message.content, str)
+
+Add custom markers in Markdown
+------------------------------
+
+``fakepy`` Markdown marker
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+*Filename: README.md*
+
+.. code-block:: markdown
+
+    <!-- pytestmark: fakepy -->
+    ```python name=test_create_pdf_file
+    from fake import FAKER
+
+    FAKER.pdf_file()
+    ```
+
+``aws`` Markdown marker
+~~~~~~~~~~~~~~~~~~~~~~~
+
+*Filename: README.md*
+
+.. code-block:: markdown
+
+    <!-- pytestmark: aws -->
+    ```python name=test_create_bucket
+    import boto3
+
+    s3 = boto3.client("s3", region_name="us-east-1")
+    s3.create_bucket(Bucket="my-bucket")
+    assert "my-bucket" in [b["Name"] for b in s3.list_buckets()["Buckets"]]
+    ```
+
+``openai`` Markdown marker
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+*Filename: README.md*
+
+.. code-block:: markdown
+
+    <!-- pytestmark: xfail -->
+    <!-- pytestmark: openai -->
+    ```python name=test_tell_me_a_joke
+    from openai import OpenAI
+
+    client = OpenAI()
+    completion = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {"role": "developer", "content": "You are a famous comedian."},
+            {"role": "user", "content": "Tell me a joke."},
+        ],
+    )
+
+    assert isinstance(completion.choices[0].message.content, str)
+    ```
 
 Implement pytest hooks
 ----------------------
