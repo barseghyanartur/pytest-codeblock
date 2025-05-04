@@ -321,7 +321,10 @@ In the example below:
     def pytest_collection_modifyitems(config, items):
         for item in items:
             if item.get_closest_marker(CODEBLOCK_MARK):
-                # Add `documentation` marker to `pytest-codeblock` tests
+                # All `pytest-codeblock` tests are automatically assigned
+                # a `codeblock` marker, which can be used for customisation.
+                # In the example below we add an additional `documentation`
+                # marker to `pytest-codeblock` tests.
                 item.add_marker(pytest.mark.documentation)
             if item.get_closest_marker("aws"):
                 # Apply `mock_aws` to all tests marked as `aws`
