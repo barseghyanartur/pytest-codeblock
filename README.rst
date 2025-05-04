@@ -9,6 +9,11 @@ pytest-codeblock
 .. _Django: https://www.djangoproject.com
 .. _pip: https://pypi.org/project/pip/
 .. _uv: https://pypi.org/project/uv/
+.. _fake.py: https://github.com/barseghyanartur/fake.py
+.. _boto3: https://github.com/boto/boto3
+.. _moto: https://github.com/getmoto/moto
+.. _openai: https://github.com/openai/openai-python
+.. _Ollama: https://github.com/ollama/ollama
 
 .. Internal references
 
@@ -212,9 +217,22 @@ Any fenced code block with a recognized Python language tag (e.g., ``python``,
 
 Customisation/hooks
 ===================
-If you want to add additional things into your specific tests, do as follows:
+Tests can be extended and fine-tuned using `pytest`_'s standard hook system.
 
-**Add a couple of custom pytest marks**
+Below is an example workflow:
+
+1. **Add custom markers** to the code blocks (``fakepy``, ``aws``, ``openai``).
+2. **Implement pytest hooks** in ``conftest.py`` to react to those markers.
+
+Add custom markers
+------------------
+
+``fakepy`` marker
+~~~~~~~~~~~~~~~~~
+
+Sample `fake.py`_ code to generate a PDF file with random text.
+
+*Filename: README.rst*
 
 .. code-block:: rst
 
@@ -226,6 +244,15 @@ If you want to add additional things into your specific tests, do as follows:
 
         FAKER.pdf_file()
 
+``aws`` marker
+~~~~~~~~~~~~~~
+
+Sample `boto3`_ code to create a bucket on AWS S3.
+
+*Filename: README.rst*
+
+.. code-block:: rst
+
     .. pytestmark: aws
     .. code-block:: python
         :name: test_create_bucket
@@ -235,6 +262,17 @@ If you want to add additional things into your specific tests, do as follows:
         s3 = boto3.client("s3", region_name="us-east-1")
         s3.create_bucket(Bucket="my-bucket")
         assert "my-bucket" in [b["Name"] for b in s3.list_buckets()["Buckets"]]
+
+``openai`` marker
+~~~~~~~~~~~~~~~~~
+
+Sample `openai`_ code to ask LLM to tell a joke. Note, that next to a
+custom ``openai`` marker, ``xfail`` marker is used, which allows underlying
+code to fail, without marking entire test suite as failed.
+
+*Filename: README.rst*
+
+.. code-block:: rst
 
     .. pytestmark: xfail
     .. pytestmark: openai
@@ -254,7 +292,17 @@ If you want to add additional things into your specific tests, do as follows:
 
         assert isinstance(completion.choices[0].message.content, str)
 
-**Hook into it `conftest.py`**
+Implement pytest hooks
+----------------------
+
+In the example below:
+
+- `moto`_ is used to mock AWS S3 service for all tests marked as ``aws``.
+- Environment variable ``OPENAI_BASE_URL`` is set
+  to ``http://localhost:11434/v1`` (assuming you have `Ollama`_ running) for
+  all tests marked as ``openai``.
+- ``FILE_REGISTRY.clean_up()`` is executed at the end of each test marked
+  as ``fakepy``.
 
 *Filename: conftest.py*
 
@@ -273,7 +321,10 @@ If you want to add additional things into your specific tests, do as follows:
     def pytest_collection_modifyitems(config, items):
         for item in items:
             if item.get_closest_marker(CODEBLOCK_MARK):
-                # Add `documentation` marker to `pytest-codeblock` tests
+                # All `pytest-codeblock` tests are automatically assigned
+                # a `codeblock` marker, which can be used for customisation.
+                # In the example below we add an additional `documentation`
+                # marker to `pytest-codeblock` tests.
                 item.add_marker(pytest.mark.documentation)
             if item.get_closest_marker("aws"):
                 # Apply `mock_aws` to all tests marked as `aws`
@@ -283,7 +334,11 @@ If you want to add additional things into your specific tests, do as follows:
     # Setup before test runs
     def pytest_runtest_setup(item):
         if item.get_closest_marker("openai"):
-            # Send all OpenAI requests to locally running Ollama
+            # Send all OpenAI requests to locally running Ollama for all
+            # tests marked as `openai`. The tests would x-pass on environments
+            # where Ollama is up and running (assuming, you have created an
+            # alias for gpt-4o using one of the available models) and would
+            # x-fail on environments, where Ollama isn't runnig.
             os.environ.setdefault("OPENAI_API_KEY", "ollama")
             os.environ.setdefault("OPENAI_BASE_URL", "http://localhost:11434/v1")
 
