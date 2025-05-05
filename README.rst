@@ -58,6 +58,7 @@ Features
 - **Markdown and reST support**: Automatically finds fenced code blocks
   in `.md`/`.markdown` files and `.. code-block:: python` or literal blocks
   in `.rst` files.
+- Support for `.. literalinclude::` blocks in `.rst` files.
 - **Grouping by name**: Split a single example across multiple code blocks;
   the plugin concatenates them into one test.
 - **Minimal dependencies**: Only requires `pytest`_.
@@ -128,6 +129,8 @@ You can also use a literal block with a preceding name comment:
        y = 5
        print(y * 2)
 
+----
+
 **Grouping example**
 
 It's possible to split one logical test into multiple blocks.
@@ -160,7 +163,11 @@ Note the ``.. continue::`` directive.
 
 The above mentioned three snippets will run as a single test.
 
+----
+
 **pytest marks**
+
+In the example below, `django_db` marker is added to the code.
 
 .. code-block:: rst
 
@@ -171,6 +178,16 @@ The above mentioned three snippets will run as a single test.
         from django.contrib.auth.models import User
 
         user = User.objects.first()
+
+----
+
+**literalinclude**
+
+.. code-block:: rst
+
+    .. pytestmark: fakepy
+    .. literalinclude:: examples/python/create_pdf_file_example.py
+        :name: test_li_create_pdf_file
 
 Markdown usage
 --------------

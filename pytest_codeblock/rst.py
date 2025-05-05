@@ -24,6 +24,10 @@ def resolve_literalinclude_path(
     Resolve the full path for a literalinclude directive.
     Returns None if the file doesn't exist.
     """
+    _include_path = Path(include_path)
+    if _include_path.exists():
+        return str(_include_path.resolve())
+
     try:
         full_path = base_dir / include_path
         if full_path.exists():
@@ -31,6 +35,16 @@ def resolve_literalinclude_path(
     except Exception:
         pass
     return None
+
+
+def get_literalinclude_content(path):
+    try:
+        with open(path) as f:
+            return f.read()
+    except Exception as e:
+        raise RuntimeError(
+            f"Failed to read literalinclude file {path}: {e}"
+        ) from e
 
 
 def parse_rst(text: str, base_dir: Path) -> list[CodeSnippet]:
@@ -54,7 +68,7 @@ def parse_rst(text: str, base_dir: Path) -> list[CodeSnippet]:
         line = lines[i]
 
         # --------------------------------------------------------------------
-        # Collect ".. pytestmark: xyz"
+        # Collect `.. pytestmark: xyz`
         # --------------------------------------------------------------------
         m = re.match(r"^\s*\.\.\s*pytestmark:\s*(\w+)\s*$", line)
         if m:
@@ -63,9 +77,9 @@ def parse_rst(text: str, base_dir: Path) -> list[CodeSnippet]:
             continue
 
         # --------------------------------------------------------------------
-        # Highlight: Added literalinclude handling
+        # The `.. literalinclude` directive
         # --------------------------------------------------------------------
-        if line.startswith(".. literalinclude::"):
+        if line.strip().startswith(".. literalinclude::"):
             path = line.split(".. literalinclude::", 1)[1].strip()
             name = None
 
@@ -81,12 +95,10 @@ def parse_rst(text: str, base_dir: Path) -> list[CodeSnippet]:
                 full_path = resolve_literalinclude_path(base_dir, path)
                 if full_path:
                     snippet = CodeSnippet(
-                        code="",  # Empty as content will be read later
+                        code=get_literalinclude_content(full_path),
                         line=i + 1,
                         name=name,
                         marks=pending_marks.copy(),
-                        is_literalinclude=True,
-                        file_path=full_path
                     )
                     snippets.append(snippet)
 
@@ -94,7 +106,7 @@ def parse_rst(text: str, base_dir: Path) -> list[CodeSnippet]:
             continue
 
         # --------------------------------------------------------------------
-        # Collect ".. continue: foo"
+        # Collect `.. continue: foo`
         # --------------------------------------------------------------------
         m = re.match(r"^\s*\.\.\s*continue:\s*(\S+)\s*$", line)
         if m:
@@ -103,7 +115,7 @@ def parse_rst(text: str, base_dir: Path) -> list[CodeSnippet]:
             continue
 
         # --------------------------------------------------------------------
-        # Collect ".. codeblock-name: foo"
+        # Collect `.. codeblock-name: foo`
         # --------------------------------------------------------------------
         m = re.match(r"^\s*\.\.\s*codeblock-name:\s*(\S+)\s*$", line)
         if m:
@@ -112,7 +124,7 @@ def parse_rst(text: str, base_dir: Path) -> list[CodeSnippet]:
             continue
 
         # --------------------------------------------------------------------
-        # The code-block directive
+        # The `.. code-block` directive
         # --------------------------------------------------------------------
         m = re.match(r"^(\s*)\.\. (?:code-block|code)::\s*(\w+)", line)
         if m:
