@@ -7,9 +7,8 @@ Customisation examples.
 .. _moto: https://docs.getmoto.org
 .. _fake.py: https://github.com/barseghyanartur/fake.py
 
-`fake.py`_ example
-------------------
-
+`fake.py`_ example for `.. code-block::` directive
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: rst
 
     .. pytestmark: fakepy
@@ -18,10 +17,13 @@ Customisation examples.
 
         from fake import FAKER
 
-        FAKER.pdf_file()
+        file = FAKER.pdf_file()
 
-`moto`_ example
----------------
+        assert file.data["storage"].exists(str(file))
+
+`moto`_ example for `.. code-block::` directive
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. code-block:: rst
 
     .. pytestmark: aws
     .. code-block:: python
@@ -33,8 +35,9 @@ Customisation examples.
         s3.create_bucket(Bucket="my-bucket")
         assert "my-bucket" in [b["Name"] for b in s3.list_buckets()["Buckets"]]
 
-`openai`_ example
------------------
+`openai`_ example for `.. code-block::` directive
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. code-block:: rst
 
     .. pytestmark: xfail
     .. pytestmark: openai
@@ -53,3 +56,29 @@ Customisation examples.
         )
 
         assert isinstance(completion.choices[0].message.content, str)
+
+`fake.py`_ example for `.. literalinclude::` directive
+------------------------------------------------------
+.. code-block:: rst
+
+    .. pytestmark: fakepy
+    .. literalinclude:: examples/python/create_pdf_file_example.py
+        :name: test_li_create_pdf_file
+
+`moto`_ example for `.. literalinclude::` directive
+---------------------------------------------------
+.. code-block:: rst
+
+    .. pytestmark: aws
+    .. literalinclude:: examples/python/create_bucket_example.py
+        :name: test_li_create_bucket
+
+`openai`_ example for `.. literalinclude::` directive
+-----------------------------------------------------
+
+.. code-block:: rst
+
+    .. pytestmark: xfail
+    .. pytestmark: aws
+    .. literalinclude:: examples/python/tell_me_a_joke_example.py
+        :name: test_li_tell_me_a_joke
