@@ -1,6 +1,6 @@
 [project]
 name = "pytest-codeblock"
-version = "0.1.2"
+version = "0.1.3"
 description = "Pytest plugin to collect and test code blocks in reStructuredText and Markdown files."
 readme = "README.rst"
 requires-python = ">=3.9"
