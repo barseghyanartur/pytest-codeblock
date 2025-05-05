@@ -58,7 +58,7 @@ Features
 - **Markdown and reST support**: Automatically finds fenced code blocks
   in `.md`/`.markdown` files and `.. code-block:: python` or literal blocks
   in `.rst` files.
-- Support for `.. literalinclude::` blocks in `.rst` files.
+- **Support for literalinclude blocks** in `.rst` files.
 - **Grouping by name**: Split a single example across multiple code blocks;
   the plugin concatenates them into one test.
 - **Minimal dependencies**: Only requires `pytest`_.
