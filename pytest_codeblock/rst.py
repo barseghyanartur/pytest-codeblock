@@ -1,4 +1,5 @@
 import re
+from pathlib import Path
 from typing import Optional
 
 import pytest
@@ -14,8 +15,39 @@ __all__ = (
     "parse_rst",
 )
 
+# Highlight: Added helper function for literalinclude path resolution
+def resolve_literalinclude_path(
+    base_dir: Path,
+    include_path: str,
+) -> Optional[str]:
+    """
+    Resolve the full path for a literalinclude directive.
+    Returns None if the file doesn't exist.
+    """
+    _include_path = Path(include_path)
+    if _include_path.exists():
+        return str(_include_path.resolve())
 
-def parse_rst(text: str) -> list[CodeSnippet]:
+    try:
+        full_path = base_dir / include_path
+        if full_path.exists():
+            return str(full_path.resolve())
+    except Exception:
+        pass
+    return None
+
+
+def get_literalinclude_content(path):
+    try:
+        with open(path) as f:
+            return f.read()
+    except Exception as e:
+        raise RuntimeError(
+            f"Failed to read literalinclude file {path}: {e}"
+        ) from e
+
+
+def parse_rst(text: str, base_dir: Path) -> list[CodeSnippet]:
     """
     Parse an RST document into CodeSnippet objects, capturing:
       - .. pytestmark: <mark>
@@ -35,28 +67,65 @@ def parse_rst(text: str) -> list[CodeSnippet]:
     while i < n:
         line = lines[i]
 
-        # Collect ".. pytestmark: xyz"
+        # --------------------------------------------------------------------
+        # Collect `.. pytestmark: xyz`
+        # --------------------------------------------------------------------
         m = re.match(r"^\s*\.\.\s*pytestmark:\s*(\w+)\s*$", line)
         if m:
             pending_marks.append(m.group(1))
             i += 1
             continue
 
-        # Collect ".. continue: foo"
+        # --------------------------------------------------------------------
+        # The `.. literalinclude` directive
+        # --------------------------------------------------------------------
+        if line.strip().startswith(".. literalinclude::"):
+            path = line.split(".. literalinclude::", 1)[1].strip()
+            name = None
+
+            # Look ahead for name
+            j = i + 1
+            while j < len(lines) and lines[j].strip():
+                if ":name:" in lines[j]:
+                    name = lines[j].split(":name:", 1)[1].strip()
+                    break
+                j += 1
+
+            if name and name.startswith("test_"):
+                full_path = resolve_literalinclude_path(base_dir, path)
+                if full_path:
+                    snippet = CodeSnippet(
+                        code=get_literalinclude_content(full_path),
+                        line=i + 1,
+                        name=name,
+                        marks=pending_marks.copy(),
+                    )
+                    snippets.append(snippet)
+
+            i = j + 1
+            continue
+
+        # --------------------------------------------------------------------
+        # Collect `.. continue: foo`
+        # --------------------------------------------------------------------
         m = re.match(r"^\s*\.\.\s*continue:\s*(\S+)\s*$", line)
         if m:
             pending_continue = m.group(1)
             i += 1
             continue
 
-        # Collect ".. codeblock-name: foo"
+        # --------------------------------------------------------------------
+        # Collect `.. codeblock-name: foo`
+        # --------------------------------------------------------------------
         m = re.match(r"^\s*\.\.\s*codeblock-name:\s*(\S+)\s*$", line)
         if m:
             pending_name = m.group(1)
             i += 1
             continue
 
-        # The code-block directive
+        # --------------------------------------------------------------------
+        # The `.. code-block` directive
+        # --------------------------------------------------------------------
         m = re.match(r"^(\s*)\.\. (?:code-block|code)::\s*(\w+)", line)
         if m:
             base_indent = len(m.group(1))
@@ -125,7 +194,9 @@ def parse_rst(text: str) -> list[CodeSnippet]:
                 i += 1
                 continue
 
+        # --------------------------------------------------------------------
         # The literal-block via "::"
+        # --------------------------------------------------------------------
         if line.rstrip().endswith("::") and pending_name:
             # Similar override logic
             if pending_continue:
@@ -176,7 +247,7 @@ class RSTFile(pytest.File):
     """Collect RST code-block tests as real test functions."""
     def collect(self):
         text = self.fspath.read_text(encoding="utf-8")
-        raw = parse_rst(text)
+        raw = parse_rst(text, self.fspath)
 
         # Only keep test_* snippets
         tests = [
