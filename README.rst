@@ -207,6 +207,8 @@ Any fenced code block with a recognized Python language tag (e.g., ``python``,
     assert result == 9
     ```
 
+----
+
 **Grouping example**
 
 .. code-block:: markdown
@@ -220,6 +222,8 @@ Any fenced code block with a recognized Python language tag (e.g., ``python``,
     ```python name=test_grouping_example
     print(x + 1)  # Uses x from the first snippet
     ```
+
+----
 
 **pytest marks**
 
