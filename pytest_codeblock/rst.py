@@ -1,4 +1,6 @@
 import re
+import textwrap
+import traceback
 from pathlib import Path
 from typing import Optional
 
@@ -257,17 +259,39 @@ class RSTFile(pytest.File):
         combined = group_snippets(tests)
 
         for sn in combined:
+            # Bind the values we need so we don't close over `sn` itself
+            _sn_name = sn.name
+            _fpath = str(self.fspath)
+
             # Create a Python function for this snippet
             if DJANGO_DB_MARKS.intersection(sn.marks):
                 # Function *requests* the db fixture
-                def make_func(code):
+                def make_func(code, sn_name=_sn_name, fpath=_fpath):
                     def test_block(db):
-                        exec(code, {})
+                        compiled = compile(code, fpath, "exec")
+                        try:
+                            exec(compiled, {})
+                        except Exception as err:
+                            raise Exception(
+                                f"Error in "
+                                f"codeblock `{sn_name}` in {fpath}:\n"
+                                f"\n{textwrap.indent(code, prefix='    ')}\n\n"
+                                f"{traceback.format_exc()}"
+                            ) from err
                     return test_block
             else:
-                def make_func(code):
+                def make_func(code, sn_name=_sn_name, fpath=_fpath):
                     def test_block():
-                        exec(code, {})
+                        compiled = compile(code, fpath, "exec")
+                        try:
+                            exec(compiled, {})
+                        except Exception as err:
+                            raise Exception(
+                                f"Error in "
+                                f"codeblock `{sn_name}` in {fpath}:\n"
+                                f"\n{textwrap.indent(code, prefix='    ')}\n\n"
+                                f"{traceback.format_exc()}"
+                            ) from err
                     return test_block
 
             callobj = make_func(sn.code)
