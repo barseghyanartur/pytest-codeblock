@@ -22,7 +22,7 @@ pytest-codeblock
 .. _Examples: https://github.com/barseghyanartur/pytest-codeblock/tree/main/examples
 .. _Contributor guidelines: https://pytest-codeblock.readthedocs.io/en/latest/contributor_guidelines.html
 
-Test your code blocks.
+Test your documentation code blocks.
 
 .. image:: https://img.shields.io/pypi/v/pytest-codeblock.svg
    :target: https://pypi.python.org/pypi/pytest-codeblock
