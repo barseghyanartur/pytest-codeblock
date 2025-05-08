@@ -56,9 +56,9 @@ Features
 ========
 
 - **Markdown and reST support**: Automatically finds fenced code blocks
-  in `.md`/`.markdown` files and `.. code-block:: python` or literal blocks
-  in `.rst` files.
-- **Support for literalinclude blocks** in `.rst` files.
+  in ``.md``/``.markdown`` files and ``.. code-block:: python`` or literal blocks
+  in ``.rst`` files.
+- **Support for literalinclude blocks** in ``.rst`` files.
 - **Grouping by name**: Split a single example across multiple code blocks;
   the plugin concatenates them into one test.
 - **Minimal dependencies**: Only requires `pytest`_.
@@ -109,6 +109,8 @@ allows that.
 
 **Basic example**
 
+*Filename: README.rst*
+
 .. code-block:: rst
 
     .. code-block:: python
@@ -120,6 +122,8 @@ allows that.
        assert result == 9
 
 You can also use a literal block with a preceding name comment:
+
+*Filename: README.rst*
 
 .. code-block:: rst
 
@@ -136,6 +140,8 @@ You can also use a literal block with a preceding name comment:
 It's possible to split one logical test into multiple blocks.
 They will be tested under the first ``:name:`` specified.
 Note the ``.. continue::`` directive.
+
+*Filename: README.rst*
 
 .. code-block:: rst
 
@@ -169,6 +175,8 @@ The above mentioned three snippets will run as a single test.
 
 In the example below, `django_db` marker is added to the code.
 
+*Filename: README.rst*
+
 .. code-block:: rst
 
     .. pytestmark: django_db
@@ -182,6 +190,8 @@ In the example below, `django_db` marker is added to the code.
 ----
 
 **literalinclude**
+
+*Filename: README.rst*
 
 .. code-block:: rst
 
@@ -198,6 +208,8 @@ Any fenced code block with a recognized Python language tag (e.g., ``python``,
 
 **Basic example**
 
+*Filename: README.md*
+
 .. code-block:: markdown
 
     ```python name=test_basic_example
@@ -210,6 +222,8 @@ Any fenced code block with a recognized Python language tag (e.g., ``python``,
 ----
 
 **Grouping example**
+
+*Filename: README.md*
 
 .. code-block:: markdown
 
@@ -226,6 +240,8 @@ Any fenced code block with a recognized Python language tag (e.g., ``python``,
 ----
 
 **pytest marks**
+
+*Filename: README.md*
 
 .. code-block:: markdown
 
