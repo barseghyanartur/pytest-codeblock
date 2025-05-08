@@ -21,6 +21,8 @@ pytest-codeblock
 .. _Read the Docs: http://pytest-codeblock.readthedocs.io/
 .. _Examples: https://github.com/barseghyanartur/pytest-codeblock/tree/main/examples
 .. _Contributor guidelines: https://pytest-codeblock.readthedocs.io/en/latest/contributor_guidelines.html
+.. _reStructuredText docs: https://pytest-codeblock.readthedocs.io/en/latest/restructured_text.html
+.. _Markdown docs: https://pytest-codeblock.readthedocs.io/en/latest/markdown.html
 .. _llms.txt: https://barseghyanartur.github.io/pytest-codeblock/llms.txt
 
 Test your documentation code blocks.
@@ -60,21 +62,29 @@ as part of your test suite. This ensures your docs stay correct and up-to-date.
 Features
 ========
 
-- **Markdown and reST support**: Automatically finds fenced code blocks
-  in ``.md``/``.markdown`` files and ``.. code-block:: python`` or literal blocks
-  in ``.rst`` files.
-- **Support for literalinclude blocks** in ``.rst`` files.
+- **reStructuredText and Markdown support**: Automatically find and test code
+  blocks in `reStructuredText`_ (``.rst``) and `Markdown`_ (``.md``) files.
+  The only requirement here is that your code blocks shall
+  have a name starting with ``test_``.
 - **Grouping by name**: Split a single example across multiple code blocks;
   the plugin concatenates them into one test.
-- **Minimal dependencies**: Only requires `pytest`_.
+- **Pytest markers support**: Add existing or custom `pytest`_ markers
+  to the code blocks and add hook into the tests life-cycle
+  using ``conftest.py``.
 
 Prerequisites
 =============
-Python 3.9+
+- Python 3.9+
+- `pytest`_ is the only required dependency
 
 Documentation
 =============
 - Documentation is available on `Read the Docs`_.
+- For `reStructuredText`_, see a dedicated `reStructuredText docs`_.
+- For `Markdown`_, see a dedicated `Markdown docs`_.
+- Both `reStructuredText docs`_ and `Markdown docs`_ have extensive
+  documentation on `pytest`_ markers and corresponding ``conftest.py`` hooks.
+- For guidelines on contributing check the `Contributor guidelines`_.
 
 Installation
 ============
@@ -90,6 +100,8 @@ Or install with `uv`_:
 .. code-block:: sh
 
     uv pip install pytest-codeblock
+
+.. _configuration:
 
 Configuration
 =============
@@ -112,7 +124,10 @@ or literal blocks with a preceding ``.. codeblock-name: <name>``, will be
 collected and executed automatically, if your `pytest`_ `configuration`_
 allows that.
 
-**Basic example**
+``code-block`` directive example
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. note:: Note that ``:name:`` value has a ``test_`` prefix.
 
 *Filename: README.rst*
 
@@ -126,83 +141,20 @@ allows that.
        result = math.pow(3, 2)
        assert result == 9
 
-You can also use a literal block with a preceding name comment:
+
+``literalinclude`` directive example
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. note:: Note that ``:name:`` value has a ``test_`` prefix.
 
 *Filename: README.rst*
 
 .. code-block:: rst
 
-    .. codeblock-name: test_grouping_example_literal_block
-    This is a literal block::
+    .. literalinclude:: examples/python/basic_example.py
+        :name: test_li_basic_example
 
-       y = 5
-       print(y * 2)
-
-----
-
-**Grouping example**
-
-It's possible to split one logical test into multiple blocks.
-They will be tested under the first ``:name:`` specified.
-Note the ``.. continue::`` directive.
-
-*Filename: README.rst*
-
-.. code-block:: rst
-
-    .. code-block:: python
-       :name: test_grouping_example
-
-       x = 1
-
-    Some intervening text.
-
-    .. continue: test_grouping_example
-    .. code-block:: python
-       :name: test_grouping_example_part_2
-
-       y = x + 1  # Uses x from the first snippet
-       assert y == 2
-
-    Some intervening text.
-
-    .. continue: test_grouping_example
-    .. code-block:: python
-       :name: test_grouping_example_part_3
-
-       print(y)  # Uses y from the previous snippet
-
-The above mentioned three snippets will run as a single test.
-
-----
-
-**pytest marks**
-
-In the example below, `django_db` marker is added to the code.
-
-*Filename: README.rst*
-
-.. code-block:: rst
-
-    .. pytestmark: django_db
-    .. code-block:: python
-        :name: test_django
-
-        from django.contrib.auth.models import User
-
-        user = User.objects.first()
-
-----
-
-**literalinclude**
-
-*Filename: README.rst*
-
-.. code-block:: rst
-
-    .. pytestmark: fakepy
-    .. literalinclude:: examples/python/create_pdf_file_example.py
-        :name: test_li_create_pdf_file
+See a dedicated `reStructuredText docs`_ for more.
 
 Markdown usage
 --------------
@@ -211,7 +163,7 @@ Any fenced code block with a recognized Python language tag (e.g., ``python``,
 ``py``) will be collected and executed automatically, if your `pytest`_
 `configuration`_ allows that.
 
-**Basic example**
+.. note:: Note that ``name`` value has a ``test_`` prefix.
 
 *Filename: README.md*
 
@@ -224,230 +176,7 @@ Any fenced code block with a recognized Python language tag (e.g., ``python``,
     assert result == 9
     ```
 
-----
-
-**Grouping example**
-
-*Filename: README.md*
-
-.. code-block:: markdown
-
-    ```python name=test_grouping_example
-    x = 1
-    ```
-
-    Some intervening text.
-
-    ```python name=test_grouping_example
-    print(x + 1)  # Uses x from the first snippet
-    ```
-
-----
-
-**pytest marks**
-
-*Filename: README.md*
-
-.. code-block:: markdown
-
-    <!-- pytestmark: django_db -->
-    ```python name=test_django
-    from django.contrib.auth.models import User
-
-    user = User.objects.first()
-    ```
-
-Customisation/hooks
-===================
-Tests can be extended and fine-tuned using `pytest`_'s standard hook system.
-
-Below is an example workflow:
-
-1. **Add custom markers** to the code blocks (``fakepy``, ``aws``, ``openai``).
-2. **Implement pytest hooks** in ``conftest.py`` to react to those markers.
-
-
-Add custom markers in reStructuredText
---------------------------------------
-
-``fakepy`` reStructuredText marker
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Sample `fake.py`_ code to generate a PDF file with random text.
-
-*Filename: README.rst*
-
-.. code-block:: rst
-
-    .. pytestmark: fakepy
-    .. code-block:: python
-        :name: test_create_pdf_file
-
-        from fake import FAKER
-
-        FAKER.pdf_file()
-
-``aws`` reStructuredText marker
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Sample `boto3`_ code to create a bucket on AWS S3.
-
-*Filename: README.rst*
-
-.. code-block:: rst
-
-    .. pytestmark: aws
-    .. code-block:: python
-        :name: test_create_bucket
-
-        import boto3
-
-        s3 = boto3.client("s3", region_name="us-east-1")
-        s3.create_bucket(Bucket="my-bucket")
-        assert "my-bucket" in [b["Name"] for b in s3.list_buckets()["Buckets"]]
-
-``openai`` reStructuredText marker
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Sample `openai`_ code to ask LLM to tell a joke. Note, that next to a
-custom ``openai`` marker, ``xfail`` marker is used, which allows underlying
-code to fail, without marking entire test suite as failed.
-
-*Filename: README.rst*
-
-.. code-block:: rst
-
-    .. pytestmark: xfail
-    .. pytestmark: openai
-    .. code-block:: python
-        :name: test_tell_me_a_joke
-
-        from openai import OpenAI
-
-        client = OpenAI()
-        completion = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {"role": "developer", "content": "You are a famous comedian."},
-                {"role": "user", "content": "Tell me a joke."},
-            ],
-        )
-
-        assert isinstance(completion.choices[0].message.content, str)
-
-Add custom markers in Markdown
-------------------------------
-
-``fakepy`` Markdown marker
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-*Filename: README.md*
-
-.. code-block:: markdown
-
-    <!-- pytestmark: fakepy -->
-    ```python name=test_create_pdf_file
-    from fake import FAKER
-
-    FAKER.pdf_file()
-    ```
-
-``aws`` Markdown marker
-~~~~~~~~~~~~~~~~~~~~~~~
-
-*Filename: README.md*
-
-.. code-block:: markdown
-
-    <!-- pytestmark: aws -->
-    ```python name=test_create_bucket
-    import boto3
-
-    s3 = boto3.client("s3", region_name="us-east-1")
-    s3.create_bucket(Bucket="my-bucket")
-    assert "my-bucket" in [b["Name"] for b in s3.list_buckets()["Buckets"]]
-    ```
-
-``openai`` Markdown marker
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-*Filename: README.md*
-
-.. code-block:: markdown
-
-    <!-- pytestmark: xfail -->
-    <!-- pytestmark: openai -->
-    ```python name=test_tell_me_a_joke
-    from openai import OpenAI
-
-    client = OpenAI()
-    completion = client.chat.completions.create(
-        model="gpt-4o",
-        messages=[
-            {"role": "developer", "content": "You are a famous comedian."},
-            {"role": "user", "content": "Tell me a joke."},
-        ],
-    )
-
-    assert isinstance(completion.choices[0].message.content, str)
-    ```
-
-Implement pytest hooks
-----------------------
-
-In the example below:
-
-- `moto`_ is used to mock AWS S3 service for all tests marked as ``aws``.
-- Environment variable ``OPENAI_BASE_URL`` is set
-  to ``http://localhost:11434/v1`` (assuming you have `Ollama`_ running) for
-  all tests marked as ``openai``.
-- ``FILE_REGISTRY.clean_up()`` is executed at the end of each test marked
-  as ``fakepy``.
-
-*Filename: conftest.py*
-
-.. code-block:: python
-
-    import os
-    from contextlib import suppress
-
-    import pytest
-
-    from fake import FILE_REGISTRY
-    from moto import mock_aws
-    from pytest_codeblock.constants import CODEBLOCK_MARK
-
-    # Modify test item during collection
-    def pytest_collection_modifyitems(config, items):
-        for item in items:
-            if item.get_closest_marker(CODEBLOCK_MARK):
-                # All `pytest-codeblock` tests are automatically assigned
-                # a `codeblock` marker, which can be used for customisation.
-                # In the example below we add an additional `documentation`
-                # marker to `pytest-codeblock` tests.
-                item.add_marker(pytest.mark.documentation)
-            if item.get_closest_marker("aws"):
-                # Apply `mock_aws` to all tests marked as `aws`
-                item.obj = mock_aws(item.obj)
-
-
-    # Setup before test runs
-    def pytest_runtest_setup(item):
-        if item.get_closest_marker("openai"):
-            # Send all OpenAI requests to locally running Ollama for all
-            # tests marked as `openai`. The tests would x-pass on environments
-            # where Ollama is up and running (assuming, you have created an
-            # alias for gpt-4o using one of the available models) and would
-            # x-fail on environments, where Ollama isn't runnig.
-            os.environ.setdefault("OPENAI_API_KEY", "ollama")
-            os.environ.setdefault("OPENAI_BASE_URL", "http://localhost:11434/v1")
-
-
-    # Teardown after the test ends
-    def pytest_runtest_teardown(item, nextitem):
-        # Run file clean up on all tests marked as `fakepy`
-        if item.get_closest_marker("fakepy"):
-            FILE_REGISTRY.clean_up()
+See a dedicated `Markdown docs`_ for more.
 
 Tests
 =====
