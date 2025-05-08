@@ -9,17 +9,8 @@ Contents:
    :maxdepth: 2
 
    index
-   recipes
-   cheatsheet
-   creating_files
-   creating_images
-   creating_pdf
-   creating_docx
-   creating_odt
-   creating_archives
-   factories
-   customisation
-   cli
+   restructured_text
+   markdown
    security
    contributor_guidelines
    code_of_conduct
