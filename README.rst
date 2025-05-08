@@ -21,6 +21,7 @@ pytest-codeblock
 .. _Read the Docs: http://pytest-codeblock.readthedocs.io/
 .. _Examples: https://github.com/barseghyanartur/pytest-codeblock/tree/main/examples
 .. _Contributor guidelines: https://pytest-codeblock.readthedocs.io/en/latest/contributor_guidelines.html
+.. _llms.txt: https://barseghyanartur.github.io/pytest-codeblock/llms.txt
 
 Test your documentation code blocks.
 
@@ -39,6 +40,10 @@ Test your documentation code blocks.
 .. image:: https://readthedocs.org/projects/pytest-codeblock/badge/?version=latest
     :target: http://pytest-codeblock.readthedocs.io
     :alt: Documentation Status
+
+.. image:: https://img.shields.io/badge/docs-llms.txt-blue
+    :target: https://barseghyanartur.github.io/pytest-codeblock/llms.txt
+    :alt: llms.txt - documentation for LLMs
 
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
    :target: https://github.com/barseghyanartur/pytest-codeblock/#License
