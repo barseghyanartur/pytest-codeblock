@@ -2,7 +2,7 @@
 name = "pytest-codeblock"
 description = "Pytest plugin to collect and test code blocks in reStructuredText and Markdown files."
 readme = "README.rst"
-version = "0.1.5"
+version = "0.1.6"
 requires-python = ">=3.9"
 dependencies = [
     "pytest",
@@ -167,7 +167,6 @@ addopts = [
     "--ignore=.tox",
     "--ignore=requirements",
     "--ignore=release",
-    "--ignore=examples",
     "--ignore=tmp",
     "--cov-report=html",
     "--cov-report=term",
@@ -187,7 +186,7 @@ pythonpath = [
     "examples/md_example",
     "examples/rst_example",
 ]
-norecursedirs = [".git", "examples"]
+norecursedirs = [".git"]
 DJANGO_SETTINGS_MODULE = "django_settings"
 
 markers = [
