@@ -15,9 +15,11 @@ __license__ = "MIT"
 __all__ = (
     "RSTFile",
     "parse_rst",
+    "resolve_literalinclude_path",
+    "get_literalinclude_content",
 )
 
-# Highlight: Added helper function for literalinclude path resolution
+
 def resolve_literalinclude_path(
     base_dir: Path,
     include_path: str,
