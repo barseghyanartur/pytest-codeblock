@@ -30,7 +30,7 @@ def resolve_literalinclude_path(
     if _include_path.exists():
         return str(_include_path.resolve())
 
-    _base_dir = Path(base_dir.dirname) if base_dir.isfile() else base_dir
+    _base_dir = Path(base_dir.dirname) if base_dir.is_file() else base_dir
     try:
         full_path = _base_dir / include_path
         if full_path.exists():
