@@ -414,6 +414,14 @@ below):
 * All backwards incompatible changes are mentioned in this document.
 
 
+0.1.6
+-----
+
+2025-05-10
+
+* Minor fixes.
+
+
 0.1.5
 -----
 
