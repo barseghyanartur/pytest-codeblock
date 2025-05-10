@@ -19,6 +19,13 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.1.8
+-----
+2025-05-11
+
+- Move everything to `src` directory.
+- Add Python tests.
+
 0.1.7
 -----
 2025-05-11
