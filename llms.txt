@@ -26,7 +26,7 @@ Features
   blocks; the plugin concatenates them into one test.
 
 * **Pytest markers support**: Add existing or custom pytest markers to
-  the code blocks and add hook into the tests life-cycle using
+  the code blocks and hook into the tests life-cycle using
   "conftest.py".
 
 
@@ -202,6 +202,571 @@ Author
 ======
 
 Artur Barseghyan <artur.barseghyan@gmail.com>
+
+======================================================================
+
+
+reStructuredText
+================
+
+The following directives are supported:
+
+* ".. code-block:: python"
+
+* ".. code:: python"
+
+* ".. codeblock-name: <name>"
+
+* ".. literalinclude::"
+
+Any code directive, such as ".. code-block:: python", ".. code::
+python", ".. literalinclude::" or literal blocks with a preceding "..
+codeblock-name: <name>", will be collected and executed automatically,
+if your pytest configuration allows that.
+
+
+Usage examples
+--------------
+
+
+Standalone code blocks
+~~~~~~~~~~~~~~~~~~~~~~
+
+
+"code-block" directive
+""""""""""""""""""""""
+
+Note:
+
+  Note that ":name:" value has a "test_" prefix.
+
+*Filename: README.rst*
+
+   .. code-block:: python
+      :name: test_basic_example
+
+      import math
+
+      result = math.pow(3, 2)
+      assert result == 9
+
+======================================================================
+
+
+"literalinclude" directive
+""""""""""""""""""""""""""
+
+*Filename: README.rst*
+
+   .. literalinclude:: examples/python/basic_example.py
+       :name: test_li_basic_example
+
+======================================================================
+
+
+"codeblock-name" directive
+""""""""""""""""""""""""""
+
+You can also use a literal block with a preceding name comment:
+
+*Filename: README.rst*
+
+   .. codeblock-name: test_grouping_example_literal_block
+   This is a literal block::
+
+      y = 5
+      print(y * 2)
+
+======================================================================
+
+
+Grouping multiple "code-block" directives
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It's possible to split one logical test into multiple blocks. They
+will be tested under the first ":name:" specified. Note the "..
+continue::" directive.
+
+Note:
+
+  Note that "continue" directive of the "test_grouping_example_part_2"
+  and "test_grouping_example_part_3" refers to the
+  "test_grouping_example".
+
+*Filename: README.rst*
+
+   .. code-block:: python
+      :name: test_grouping_example
+
+      x = 1
+
+   Some intervening text.
+
+   .. continue: test_grouping_example
+   .. code-block:: python
+      :name: test_grouping_example_part_2
+
+      y = x + 1  # Uses x from the first snippet
+      assert y == 2
+
+   Some intervening text.
+
+   .. continue: test_grouping_example
+   .. code-block:: python
+      :name: test_grouping_example_part_3
+
+      print(y)  # Uses y from the previous snippet
+
+The above mentioned three snippets will run as a single test.
+
+======================================================================
+
+
+Adding pytest markers to "code-block" and "literalinclude" directives
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It's possible to add custom pytest markers to your "code-block" or
+"literalinclude" directives. That allows adding custom logic and
+mocking in your "conftest.py".
+
+In the example below, "django_db" marker is added to the "code-block"
+directive.
+
+Note:
+
+  Note the "pytestmark" directive "django_db" marker.
+
+*Filename: README.rst*
+
+   .. pytestmark: django_db
+   .. code-block:: python
+       :name: test_django
+
+       from django.contrib.auth.models import User
+
+       user = User.objects.first()
+
+======================================================================
+
+In the example below, "django_db" marker is added to the
+"literalinclude" directive.
+
+*Filename: README.rst*
+
+   .. pytestmark: django_db
+   .. literalinclude:: examples/python/django_example.py
+       :name: test_li_django_example
+
+
+Customisation/hooks
+-------------------
+
+Tests can be extended and fine-tuned using pytest's standard hook
+system.
+
+Below is an example workflow:
+
+1. **Add custom pytest markers** to the "code-block" or
+   "literalinclude" ("fakepy", "aws", "openai").
+
+2. **Implement pytest hooks** in "conftest.py" to react to those
+   markers.
+
+
+Add custom pytest markers
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Add "fakepy" marker
+"""""""""""""""""""
+
+The example code below will generate a PDF file with random text using
+fake.py library. Note, that a "fakepy" marker is added to the "code-
+block".
+
+In the >>`Implement pytest hooks`_<< section, you will see what can be
+done with the markers.
+
+Note:
+
+  Note the "pytestmark" directive "fakepy" marker.
+
+*Filename: README.rst*
+
+   .. pytestmark: fakepy
+   .. code-block:: python
+       :name: test_create_pdf_file
+
+       from fake import FAKER
+
+       FAKER.pdf_file()
+
+======================================================================
+
+In the example code below, a "fakepy" marker is added to the
+"literalinclude" block.
+
+*Filename: README.rst*
+
+   .. pytestmark: fakepy
+   .. literalinclude:: examples/python/create_pdf_file_example.py
+       :name: test_li_create_pdf_file
+
+======================================================================
+
+
+Add "aws" marker
+""""""""""""""""
+
+Sample boto3 code to create a bucket on AWS S3.
+
+Note:
+
+  Note the "pytestmark" directive "aws" marker.
+
+*Filename: README.rst*
+
+   .. pytestmark: aws
+   .. code-block:: python
+       :name: test_create_bucket
+
+       import boto3
+
+       s3 = boto3.client("s3", region_name="us-east-1")
+       s3.create_bucket(Bucket="my-bucket")
+       assert "my-bucket" in [b["Name"] for b in s3.list_buckets()["Buckets"]]
+
+======================================================================
+
+
+Add "openai" marker
+"""""""""""""""""""
+
+Sample openai code to ask LLM to tell a joke. Note, that next to a
+custom "openai" marker, "xfail" marker is used, which allows
+underlying code to fail, without marking entire test suite as failed.
+
+Note:
+
+  Note the "pytestmark" directive "xfail" and "openai" markers.
+
+*Filename: README.rst*
+
+   .. pytestmark: xfail
+   .. pytestmark: openai
+   .. code-block:: python
+       :name: test_tell_me_a_joke
+
+       from openai import OpenAI
+
+       client = OpenAI()
+       completion = client.chat.completions.create(
+           model="gpt-4o",
+           messages=[
+               {"role": "developer", "content": "You are a famous comedian."},
+               {"role": "user", "content": "Tell me a joke."},
+           ],
+       )
+
+       assert isinstance(completion.choices[0].message.content, str)
+
+======================================================================
+
+
+Implement pytest hooks
+~~~~~~~~~~~~~~~~~~~~~~
+
+In the example below:
+
+* moto is used to mock AWS S3 service for all tests marked as "aws".
+
+* Environment variable "OPENAI_BASE_URL" is set to
+  "http://localhost:11434/v1" (assuming you have Ollama running) for
+  all tests marked as "openai".
+
+* "FILE_REGISTRY.clean_up()" is executed at the end of each test
+  marked as "fakepy".
+
+*Filename: conftest.py*
+
+   import os
+   from contextlib import suppress
+
+   import pytest
+
+   from fake import FILE_REGISTRY
+   from moto import mock_aws
+   from pytest_codeblock.constants import CODEBLOCK_MARK
+
+   # Modify test item during collection
+   def pytest_collection_modifyitems(config, items):
+       for item in items:
+           if item.get_closest_marker(CODEBLOCK_MARK):
+               # All `pytest-codeblock` tests are automatically assigned
+               # a `codeblock` marker, which can be used for customisation.
+               # In the example below we add an additional `documentation`
+               # marker to `pytest-codeblock` tests.
+               item.add_marker(pytest.mark.documentation)
+           if item.get_closest_marker("aws"):
+               # Apply `mock_aws` to all tests marked as `aws`
+               item.obj = mock_aws(item.obj)
+
+
+   # Setup before test runs
+   def pytest_runtest_setup(item):
+       if item.get_closest_marker("openai"):
+           # Send all OpenAI requests to locally running Ollama for all
+           # tests marked as `openai`. The tests would x-pass on environments
+           # where Ollama is up and running (assuming, you have created an
+           # alias for gpt-4o using one of the available models) and would
+           # x-fail on environments, where Ollama isn't runnig.
+           os.environ.setdefault("OPENAI_API_KEY", "ollama")
+           os.environ.setdefault("OPENAI_BASE_URL", "http://localhost:11434/v1")
+
+
+   # Teardown after the test ends
+   def pytest_runtest_teardown(item, nextitem):
+       # Run file clean up on all tests marked as `fakepy`
+       if item.get_closest_marker("fakepy"):
+           FILE_REGISTRY.clean_up()
+
+======================================================================
+
+
+Markdown
+========
+
+
+Usage examples
+--------------
+
+Any fenced code block with a recognized Python language tag (e.g.,
+"python", "py") will be collected and executed automatically, if your
+pytest configuration allows that.
+
+
+Standalone code blocks
+~~~~~~~~~~~~~~~~~~~~~~
+
+Note:
+
+  Note that "name" value has a "test_" prefix.
+
+*Filename: README.md*
+
+   ```python name=test_basic_example
+   import math
+
+   result = math.pow(3, 2)
+   assert result == 9
+   ```
+
+======================================================================
+
+
+Grouping multiple code blocks
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It's possible to split one logical test into multiple blocks by
+specifying the same name.
+
+Note:
+
+  Note that both snippts share the same "name" value
+  ("test_grouping_example").
+
+*Filename: README.md*
+
+   ```python name=test_grouping_example
+   x = 1
+   ```
+
+   Some intervening text.
+
+   ```python name=test_grouping_example
+   print(x + 1)  # Uses x from the first snippet
+   ```
+
+The above mentioned three snippets will run as a single test.
+
+======================================================================
+
+
+Adding pytest markers to code blocks
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It's possible to add custom pytest markers to your code blocks. That
+allows adding custom logic and mocking in your "conftest.py".
+
+In the example below, "django_db" marker is added to the code block.
+
+Note:
+
+  Note the "pytestmark" directive "django_db" marker.
+
+*Filename: README.md*
+
+   <!-- pytestmark: django_db -->
+   ```python name=test_django
+   from django.contrib.auth.models import User
+
+   user = User.objects.first()
+   ```
+
+
+Customisation/hooks
+-------------------
+
+Tests can be extended and fine-tuned using pytest's standard hook
+system.
+
+Below is an example workflow:
+
+1. **Add custom pytest markers** to the code blocks ("fakepy", "aws",
+   "openai").
+
+2. **Implement pytest hooks** in "conftest.py" to react to those
+   markers.
+
+
+Add custom pytest markers
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Add "fakepy" marker
+"""""""""""""""""""
+
+The example code below will generate a PDF file with random text using
+fake.py library. Note, that a "fakepy" marker is added to the code
+block.
+
+In the >>`Implement pytest hooks`_<< section, you will see what can be
+done with the markers.
+
+Note:
+
+  Note the "pytestmark" directive "fakepy" marker.
+
+*Filename: README.md*
+
+   <!-- pytestmark: fakepy -->
+   ```python name=test_create_pdf_file
+   from fake import FAKER
+
+   FAKER.pdf_file()
+   ```
+
+
+Add "aws" marker
+""""""""""""""""
+
+Sample boto3 code to create a bucket on AWS S3.
+
+Note:
+
+  Note the "pytestmark" directive "aws" marker.
+
+*Filename: README.md*
+
+   <!-- pytestmark: aws -->
+   ```python name=test_create_bucket
+   import boto3
+
+   s3 = boto3.client("s3", region_name="us-east-1")
+   s3.create_bucket(Bucket="my-bucket")
+   assert "my-bucket" in [b["Name"] for b in s3.list_buckets()["Buckets"]]
+   ```
+
+
+Add "openai" marker
+"""""""""""""""""""
+
+Sample openai code to ask LLM to tell a joke. Note, that next to a
+custom "openai" marker, "xfail" marker is used, which allows
+underlying code to fail, without marking entire test suite as failed.
+
+Note:
+
+  Note the "pytestmark" directive "xfail" and "openai" markers.
+
+*Filename: README.md*
+
+   <!-- pytestmark: xfail -->
+   <!-- pytestmark: openai -->
+   ```python name=test_tell_me_a_joke
+   from openai import OpenAI
+
+   client = OpenAI()
+   completion = client.chat.completions.create(
+       model="gpt-4o",
+       messages=[
+           {"role": "developer", "content": "You are a famous comedian."},
+           {"role": "user", "content": "Tell me a joke."},
+       ],
+   )
+
+   assert isinstance(completion.choices[0].message.content, str)
+   ```
+
+======================================================================
+
+
+Implement pytest hooks
+~~~~~~~~~~~~~~~~~~~~~~
+
+In the example below:
+
+* moto is used to mock AWS S3 service for all tests marked as "aws".
+
+* Environment variable "OPENAI_BASE_URL" is set to
+  "http://localhost:11434/v1" (assuming you have Ollama running) for
+  all tests marked as "openai".
+
+* "FILE_REGISTRY.clean_up()" is executed at the end of each test
+  marked as "fakepy".
+
+*Filename: conftest.py*
+
+   import os
+   from contextlib import suppress
+
+   import pytest
+
+   from fake import FILE_REGISTRY
+   from moto import mock_aws
+   from pytest_codeblock.constants import CODEBLOCK_MARK
+
+   # Modify test item during collection
+   def pytest_collection_modifyitems(config, items):
+       for item in items:
+           if item.get_closest_marker(CODEBLOCK_MARK):
+               # All `pytest-codeblock` tests are automatically assigned
+               # a `codeblock` marker, which can be used for customisation.
+               # In the example below we add an additional `documentation`
+               # marker to `pytest-codeblock` tests.
+               item.add_marker(pytest.mark.documentation)
+           if item.get_closest_marker("aws"):
+               # Apply `mock_aws` to all tests marked as `aws`
+               item.obj = mock_aws(item.obj)
+
+
+   # Setup before test runs
+   def pytest_runtest_setup(item):
+       if item.get_closest_marker("openai"):
+           # Send all OpenAI requests to locally running Ollama for all
+           # tests marked as `openai`. The tests would x-pass on environments
+           # where Ollama is up and running (assuming, you have created an
+           # alias for gpt-4o using one of the available models) and would
+           # x-fail on environments, where Ollama isn't runnig.
+           os.environ.setdefault("OPENAI_API_KEY", "ollama")
+           os.environ.setdefault("OPENAI_BASE_URL", "http://localhost:11434/v1")
+
+
+   # Teardown after the test ends
+   def pytest_runtest_teardown(item, nextitem):
+       # Run file clean up on all tests marked as `fakepy`
+       if item.get_closest_marker("fakepy"):
+           FILE_REGISTRY.clean_up()
 
 ======================================================================
 
