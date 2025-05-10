@@ -2,7 +2,7 @@ import re
 import textwrap
 import traceback
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 import pytest
 
@@ -21,7 +21,7 @@ __all__ = (
 
 
 def resolve_literalinclude_path(
-    base_dir: Path | str,
+    base_dir: Union[str, Path],
     include_path: str,
 ) -> Optional[str]:
     """
