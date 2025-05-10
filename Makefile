@@ -1,5 +1,5 @@
 # Update version ONLY here
-VERSION := 0.1.7
+VERSION := 0.1.8
 SHELL := /bin/bash
 # Makefile for project
 VENV := ~/.virtualenvs/pytest-codeblock/bin/activate
@@ -81,8 +81,8 @@ clean:
 	rm -rf .mypy_cache/
 	rm -rf .ruff_cache/
 	rm -rf dist/
-	rm -rf pytest_codeblock.egg-info/
-	rm -rf pytest-codeblock.egg-info/
+	rm -rf src/pytest_codeblock.egg-info/
+	rm -rf src/pytest-codeblock.egg-info/
 
 compile-requirements:
 	source $(VENV) && uv pip compile --all-extras -o docs/requirements.txt pyproject.toml
@@ -94,10 +94,10 @@ update-version:
 	@echo "Updating version in pyproject.toml and __init__.py"
 	@if [ "$(UNAME_S)" = "Darwin" ]; then \
 		gsed -i 's/version = "[0-9.]\+"/version = "$(VERSION)"/' pyproject.toml; \
-		gsed -i 's/__version__ = "[0-9.]\+"/__version__ = "$(VERSION)"/' pytest_codeblock/__init__.py; \
+		gsed -i 's/__version__ = "[0-9.]\+"/__version__ = "$(VERSION)"/' src/pytest_codeblock/__init__.py; \
 	else \
 		sed -i 's/version = "[0-9.]\+"/version = "$(VERSION)"/' pyproject.toml; \
-		sed -i 's/__version__ = "[0-9.]\+"/__version__ = "$(VERSION)"/' pytest_codeblock/__init__.py; \
+		sed -i 's/__version__ = "[0-9.]\+"/__version__ = "$(VERSION)"/' src/pytest_codeblock/__init__.py; \
 	fi
 
 build:
@@ -113,7 +113,7 @@ test-release:
 	source $(VENV) && twine upload --repository testpypi dist/* --verbose
 
 mypy:
-	source $(VENV) && mypy pytest_codeblock/
+	source $(VENV) && mypy src/pytest_codeblock/
 
 %:
 	@:
