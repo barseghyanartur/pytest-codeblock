@@ -1,5 +1,5 @@
 # Update version ONLY here
-VERSION := 0.1.6
+VERSION := 0.1.7
 SHELL := /bin/bash
 # Makefile for project
 VENV := ~/.virtualenvs/pytest-codeblock/bin/activate
