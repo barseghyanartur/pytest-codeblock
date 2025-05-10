@@ -2,7 +2,7 @@
 name = "pytest-codeblock"
 description = "Pytest plugin to collect and test code blocks in reStructuredText and Markdown files."
 readme = "README.rst"
-version = "0.1.7"
+version = "0.1.8"
 requires-python = ">=3.9"
 dependencies = [
     "pytest",
@@ -85,9 +85,10 @@ pytest_codeblock = "pytest_codeblock"
 
 [tool.setuptools]
 # No single-file modules; we use packages.find below
+package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
-where = ["."]
+where = ["src"]
 include = ["pytest_codeblock", "pytest_codeblock.*"]
 
 [build-system]
@@ -119,7 +120,7 @@ lint.ignore = [
 ]
 # Enable auto-fix for formatting and import sorting
 fix = true
-src = ["pytest_codeblock"]
+src = ["src/pytest_codeblock"]
 exclude = [
     ".bzr",
     ".direnv",
@@ -155,7 +156,7 @@ known-third-party  = []
 [tool.doc8]
 ignore-path = [
     "docs/requirements.txt",
-    "pytest-codeblock.egg-info/SOURCES.txt",
+    "src/pytest-codeblock.egg-info/SOURCES.txt",
 ]
 
 [tool.pytest.ini_options]
@@ -183,6 +184,7 @@ testpaths = [
     "**/*.md",
 ]
 pythonpath = [
+    "src",
     "examples/md_example",
     "examples/rst_example",
 ]
