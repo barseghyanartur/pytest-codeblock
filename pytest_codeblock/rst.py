@@ -2,7 +2,7 @@ import re
 import textwrap
 import traceback
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 import pytest
 
@@ -21,7 +21,7 @@ __all__ = (
 
 
 def resolve_literalinclude_path(
-    base_dir: Path,
+    base_dir: Union[str, Path],
     include_path: str,
 ) -> Optional[str]:
     """
@@ -29,12 +29,18 @@ def resolve_literalinclude_path(
     Returns None if the file doesn't exist.
     """
     _include_path = Path(include_path)
+
+    # If `include_path` is already absolute or relative and exists, done
     if _include_path.exists():
         return str(_include_path.resolve())
 
-    _base_dir = Path(base_dir.dirname) if base_dir.is_file() else base_dir
+    # If base_path is a file, switch to its parent directory
+    _base_path = Path(base_dir)
+    if _base_path.is_file():
+        _base_path = _base_path.parent
+
     try:
-        full_path = _base_dir / include_path
+        full_path = _base_path / include_path
         if full_path.exists():
             return str(full_path.resolve())
     except Exception:
