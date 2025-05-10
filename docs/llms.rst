@@ -2,6 +2,14 @@
 
 ----
 
+.. include:: restructured_text.rst
+
+----
+
+.. include:: markdown.rst
+
+----
+
 .. include:: security.rst
 
 ----

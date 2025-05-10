@@ -69,8 +69,7 @@ Features
 - **Grouping by name**: Split a single example across multiple code blocks;
   the plugin concatenates them into one test.
 - **Pytest markers support**: Add existing or custom `pytest`_ markers
-  to the code blocks and add hook into the tests life-cycle
-  using ``conftest.py``.
+  to the code blocks and hook into the tests life-cycle using ``conftest.py``.
 
 Prerequisites
 =============
