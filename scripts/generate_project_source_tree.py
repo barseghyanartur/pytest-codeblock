@@ -132,8 +132,8 @@ def main():
     output_dir = output.parent.resolve()
 
     # Header + tree
-    header = f"""Project Overview
-================
+    header = f"""Project source-tree
+===================
 
 Below is the layout of our project (to {args.depth} levels), followed by
 the contents of each key file.
