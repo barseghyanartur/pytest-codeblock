@@ -1077,8 +1077,8 @@ Indices and tables
 ======================================================================
 
 
-Project Overview
-================
+Project source-tree
+===================
 
 Below is the layout of our project (to 10 levels), followed by the
 contents of each key file.
@@ -1893,8 +1893,8 @@ docs/source_tree.rst
 
 docs/source_tree.rst
 
-   Project Overview
-   ================
+   Project source-tree
+   ===================
 
    Below is the layout of our project (to 10 levels), followed by
    the contents of each key file.
@@ -2752,8 +2752,8 @@ scripts/generate_project_source_tree.py
        output_dir = output.parent.resolve()
 
        # Header + tree
-       header = f"""Project Overview
-   ================
+       header = f"""Project source-tree
+   ===================
 
    Below is the layout of our project (to {args.depth} levels), followed by
    the contents of each key file.
