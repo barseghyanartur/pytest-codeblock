@@ -1,5 +1,5 @@
-Project Overview
-================
+Project source-tree
+===================
 
 Below is the layout of our project (to 10 levels), followed by
 the contents of each key file.
