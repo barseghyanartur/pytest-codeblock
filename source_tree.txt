@@ -1,1084 +1,5 @@
-pytest-codeblock
-****************
-
-Test your documentation code blocks.
-
-[image: PyPI Version][image][image: Supported Python
-versions][image][image: Build Status][image][image: Documentation
-Status][image][image: llms.txt - documentation for LLMs][image][image:
-MIT][image][image: Coverage][image]
-
->>`pytest-codeblock`_<< is a Pytest plugin that discovers Python code
-examples in your reStructuredText and Markdown documentation files and
-runs them as part of your test suite. This ensures your docs stay
-correct and up-to-date.
-
-
-Features
-========
-
-* **reStructuredText and Markdown support**: Automatically find and
-  test code blocks in reStructuredText (".rst") and Markdown (".md")
-  files. The only requirement here is that your code blocks shall have
-  a name starting with "test_".
-
-* **Grouping by name**: Split a single example across multiple code
-  blocks; the plugin concatenates them into one test.
-
-* **Pytest markers support**: Add existing or custom pytest markers to
-  the code blocks and hook into the tests life-cycle using
-  "conftest.py".
-
-
-Prerequisites
-=============
-
-* Python 3.9+
-
-* pytest is the only required dependency
-
-
-Documentation
-=============
-
-* Documentation is available on Read the Docs.
-
-* For reStructuredText, see a dedicated reStructuredText docs.
-
-* For Markdown, see a dedicated Markdown docs.
-
-* Both reStructuredText docs and Markdown docs have extensive
-  documentation on pytest markers and corresponding "conftest.py"
-  hooks.
-
-* For guidelines on contributing check the Contributor guidelines.
-
-
-Installation
-============
-
-Install with pip:
-
-   pip install pytest-codeblock
-
-Or install with >>`uv`_<<:
-
-   uv pip install pytest-codeblock
-
-
-Configuration
-=============
-
-*Filename: pyproject.toml*
-
-   [tool.pytest.ini_options]
-   testpaths = [
-       "**/*.rst",
-       "**/*.md",
-   ]
-
-
-Usage
-=====
-
-
-reStructruredText usage
------------------------
-
-Any code directive, such as ".. code-block:: python", ".. code::
-python", or literal blocks with a preceding ".. codeblock-name:
-<name>", will be collected and executed automatically, if your pytest
-configuration allows that.
-
-
-"code-block" directive example
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Note:
-
-  Note that ":name:" value has a "test_" prefix.
-
-*Filename: README.rst*
-
-   .. code-block:: python
-      :name: test_basic_example
-
-      import math
-
-      result = math.pow(3, 2)
-      assert result == 9
-
-
-"literalinclude" directive example
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Note:
-
-  Note that ":name:" value has a "test_" prefix.
-
-*Filename: README.rst*
-
-   .. literalinclude:: examples/python/basic_example.py
-       :name: test_li_basic_example
-
-See a dedicated reStructuredText docs for more.
-
-
-Markdown usage
---------------
-
-Any fenced code block with a recognized Python language tag (e.g.,
-"python", "py") will be collected and executed automatically, if your
-pytest configuration allows that.
-
-Note:
-
-  Note that "name" value has a "test_" prefix.
-
-*Filename: README.md*
-
-   ```python name=test_basic_example
-   import math
-
-   result = math.pow(3, 2)
-   assert result == 9
-   ```
-
-See a dedicated Markdown docs for more.
-
-
-Tests
-=====
-
-Run the tests with pytest:
-
-   pytest
-
-
-Writing documentation
-=====================
-
-Keep the following hierarchy.
-
-   =====
-   title
-   =====
-
-   header
-   ======
-
-   sub-header
-   ----------
-
-   sub-sub-header
-   ~~~~~~~~~~~~~~
-
-   sub-sub-sub-header
-   ^^^^^^^^^^^^^^^^^^
-
-   sub-sub-sub-sub-header
-   ++++++++++++++++++++++
-
-   sub-sub-sub-sub-sub-header
-   **************************
-
-
-License
-=======
-
-MIT
-
-
-Support
-=======
-
-For security issues contact me at the e-mail given in the Author
-section.
-
-For overall issues, go to GitHub.
-
-
-Author
-======
-
-Artur Barseghyan <artur.barseghyan@gmail.com>
-
-======================================================================
-
-
-reStructuredText
-================
-
-The following directives are supported:
-
-* ".. code-block:: python"
-
-* ".. code:: python"
-
-* ".. codeblock-name: <name>"
-
-* ".. literalinclude::"
-
-Any code directive, such as ".. code-block:: python", ".. code::
-python", ".. literalinclude::" or literal blocks with a preceding "..
-codeblock-name: <name>", will be collected and executed automatically,
-if your pytest configuration allows that.
-
-
-Usage examples
---------------
-
-
-Standalone code blocks
-~~~~~~~~~~~~~~~~~~~~~~
-
-
-"code-block" directive
-""""""""""""""""""""""
-
-Note:
-
-  Note that ":name:" value has a "test_" prefix.
-
-*Filename: README.rst*
-
-   .. code-block:: python
-      :name: test_basic_example
-
-      import math
-
-      result = math.pow(3, 2)
-      assert result == 9
-
-======================================================================
-
-
-"literalinclude" directive
-""""""""""""""""""""""""""
-
-*Filename: README.rst*
-
-   .. literalinclude:: examples/python/basic_example.py
-       :name: test_li_basic_example
-
-======================================================================
-
-
-"codeblock-name" directive
-""""""""""""""""""""""""""
-
-You can also use a literal block with a preceding name comment:
-
-*Filename: README.rst*
-
-   .. codeblock-name: test_grouping_example_literal_block
-   This is a literal block::
-
-      y = 5
-      print(y * 2)
-
-======================================================================
-
-
-Grouping multiple "code-block" directives
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-It's possible to split one logical test into multiple blocks. They
-will be tested under the first ":name:" specified. Note the "..
-continue::" directive.
-
-Note:
-
-  Note that "continue" directive of the "test_grouping_example_part_2"
-  and "test_grouping_example_part_3" refers to the
-  "test_grouping_example".
-
-*Filename: README.rst*
-
-   .. code-block:: python
-      :name: test_grouping_example
-
-      x = 1
-
-   Some intervening text.
-
-   .. continue: test_grouping_example
-   .. code-block:: python
-      :name: test_grouping_example_part_2
-
-      y = x + 1  # Uses x from the first snippet
-      assert y == 2
-
-   Some intervening text.
-
-   .. continue: test_grouping_example
-   .. code-block:: python
-      :name: test_grouping_example_part_3
-
-      print(y)  # Uses y from the previous snippet
-
-The above mentioned three snippets will run as a single test.
-
-======================================================================
-
-
-Adding pytest markers to "code-block" and "literalinclude" directives
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-It's possible to add custom pytest markers to your "code-block" or
-"literalinclude" directives. That allows adding custom logic and
-mocking in your "conftest.py".
-
-In the example below, "django_db" marker is added to the "code-block"
-directive.
-
-Note:
-
-  Note the "pytestmark" directive "django_db" marker.
-
-*Filename: README.rst*
-
-   .. pytestmark: django_db
-   .. code-block:: python
-       :name: test_django
-
-       from django.contrib.auth.models import User
-
-       user = User.objects.first()
-
-======================================================================
-
-In the example below, "django_db" marker is added to the
-"literalinclude" directive.
-
-*Filename: README.rst*
-
-   .. pytestmark: django_db
-   .. literalinclude:: examples/python/django_example.py
-       :name: test_li_django_example
-
-
-Customisation/hooks
--------------------
-
-Tests can be extended and fine-tuned using pytest's standard hook
-system.
-
-Below is an example workflow:
-
-1. **Add custom pytest markers** to the "code-block" or
-   "literalinclude" ("fakepy", "aws", "openai").
-
-2. **Implement pytest hooks** in "conftest.py" to react to those
-   markers.
-
-
-Add custom pytest markers
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-Add "fakepy" marker
-"""""""""""""""""""
-
-The example code below will generate a PDF file with random text using
-fake.py library. Note, that a "fakepy" marker is added to the "code-
-block".
-
-In the >>`Implement pytest hooks`_<< section, you will see what can be
-done with the markers.
-
-Note:
-
-  Note the "pytestmark" directive "fakepy" marker.
-
-*Filename: README.rst*
-
-   .. pytestmark: fakepy
-   .. code-block:: python
-       :name: test_create_pdf_file
-
-       from fake import FAKER
-
-       FAKER.pdf_file()
-
-======================================================================
-
-In the example code below, a "fakepy" marker is added to the
-"literalinclude" block.
-
-*Filename: README.rst*
-
-   .. pytestmark: fakepy
-   .. literalinclude:: examples/python/create_pdf_file_example.py
-       :name: test_li_create_pdf_file
-
-======================================================================
-
-
-Add "aws" marker
-""""""""""""""""
-
-Sample boto3 code to create a bucket on AWS S3.
-
-Note:
-
-  Note the "pytestmark" directive "aws" marker.
-
-*Filename: README.rst*
-
-   .. pytestmark: aws
-   .. code-block:: python
-       :name: test_create_bucket
-
-       import boto3
-
-       s3 = boto3.client("s3", region_name="us-east-1")
-       s3.create_bucket(Bucket="my-bucket")
-       assert "my-bucket" in [b["Name"] for b in s3.list_buckets()["Buckets"]]
-
-======================================================================
-
-
-Add "openai" marker
-"""""""""""""""""""
-
-Sample openai code to ask LLM to tell a joke. Note, that next to a
-custom "openai" marker, "xfail" marker is used, which allows
-underlying code to fail, without marking entire test suite as failed.
-
-Note:
-
-  Note the "pytestmark" directive "xfail" and "openai" markers.
-
-*Filename: README.rst*
-
-   .. pytestmark: xfail
-   .. pytestmark: openai
-   .. code-block:: python
-       :name: test_tell_me_a_joke
-
-       from openai import OpenAI
-
-       client = OpenAI()
-       completion = client.chat.completions.create(
-           model="gpt-4o",
-           messages=[
-               {"role": "developer", "content": "You are a famous comedian."},
-               {"role": "user", "content": "Tell me a joke."},
-           ],
-       )
-
-       assert isinstance(completion.choices[0].message.content, str)
-
-======================================================================
-
-
-Implement pytest hooks
-~~~~~~~~~~~~~~~~~~~~~~
-
-In the example below:
-
-* moto is used to mock AWS S3 service for all tests marked as "aws".
-
-* Environment variable "OPENAI_BASE_URL" is set to
-  "http://localhost:11434/v1" (assuming you have Ollama running) for
-  all tests marked as "openai".
-
-* "FILE_REGISTRY.clean_up()" is executed at the end of each test
-  marked as "fakepy".
-
-*Filename: conftest.py*
-
-   import os
-   from contextlib import suppress
-
-   import pytest
-
-   from fake import FILE_REGISTRY
-   from moto import mock_aws
-   from pytest_codeblock.constants import CODEBLOCK_MARK
-
-   # Modify test item during collection
-   def pytest_collection_modifyitems(config, items):
-       for item in items:
-           if item.get_closest_marker(CODEBLOCK_MARK):
-               # All `pytest-codeblock` tests are automatically assigned
-               # a `codeblock` marker, which can be used for customisation.
-               # In the example below we add an additional `documentation`
-               # marker to `pytest-codeblock` tests.
-               item.add_marker(pytest.mark.documentation)
-           if item.get_closest_marker("aws"):
-               # Apply `mock_aws` to all tests marked as `aws`
-               item.obj = mock_aws(item.obj)
-
-
-   # Setup before test runs
-   def pytest_runtest_setup(item):
-       if item.get_closest_marker("openai"):
-           # Send all OpenAI requests to locally running Ollama for all
-           # tests marked as `openai`. The tests would x-pass on environments
-           # where Ollama is up and running (assuming, you have created an
-           # alias for gpt-4o using one of the available models) and would
-           # x-fail on environments, where Ollama isn't runnig.
-           os.environ.setdefault("OPENAI_API_KEY", "ollama")
-           os.environ.setdefault("OPENAI_BASE_URL", "http://localhost:11434/v1")
-
-
-   # Teardown after the test ends
-   def pytest_runtest_teardown(item, nextitem):
-       # Run file clean up on all tests marked as `fakepy`
-       if item.get_closest_marker("fakepy"):
-           FILE_REGISTRY.clean_up()
-
-======================================================================
-
-
-Markdown
-========
-
-
-Usage examples
---------------
-
-Any fenced code block with a recognized Python language tag (e.g.,
-"python", "py") will be collected and executed automatically, if your
-pytest configuration allows that.
-
-
-Standalone code blocks
-~~~~~~~~~~~~~~~~~~~~~~
-
-Note:
-
-  Note that "name" value has a "test_" prefix.
-
-*Filename: README.md*
-
-   ```python name=test_basic_example
-   import math
-
-   result = math.pow(3, 2)
-   assert result == 9
-   ```
-
-======================================================================
-
-
-Grouping multiple code blocks
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-It's possible to split one logical test into multiple blocks by
-specifying the same name.
-
-Note:
-
-  Note that both snippts share the same "name" value
-  ("test_grouping_example").
-
-*Filename: README.md*
-
-   ```python name=test_grouping_example
-   x = 1
-   ```
-
-   Some intervening text.
-
-   ```python name=test_grouping_example
-   print(x + 1)  # Uses x from the first snippet
-   ```
-
-The above mentioned three snippets will run as a single test.
-
-======================================================================
-
-
-Adding pytest markers to code blocks
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-It's possible to add custom pytest markers to your code blocks. That
-allows adding custom logic and mocking in your "conftest.py".
-
-In the example below, "django_db" marker is added to the code block.
-
-Note:
-
-  Note the "pytestmark" directive "django_db" marker.
-
-*Filename: README.md*
-
-   <!-- pytestmark: django_db -->
-   ```python name=test_django
-   from django.contrib.auth.models import User
-
-   user = User.objects.first()
-   ```
-
-
-Customisation/hooks
--------------------
-
-Tests can be extended and fine-tuned using pytest's standard hook
-system.
-
-Below is an example workflow:
-
-1. **Add custom pytest markers** to the code blocks ("fakepy", "aws",
-   "openai").
-
-2. **Implement pytest hooks** in "conftest.py" to react to those
-   markers.
-
-
-Add custom pytest markers
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-Add "fakepy" marker
-"""""""""""""""""""
-
-The example code below will generate a PDF file with random text using
-fake.py library. Note, that a "fakepy" marker is added to the code
-block.
-
-In the >>`Implement pytest hooks`_<< section, you will see what can be
-done with the markers.
-
-Note:
-
-  Note the "pytestmark" directive "fakepy" marker.
-
-*Filename: README.md*
-
-   <!-- pytestmark: fakepy -->
-   ```python name=test_create_pdf_file
-   from fake import FAKER
-
-   FAKER.pdf_file()
-   ```
-
-
-Add "aws" marker
-""""""""""""""""
-
-Sample boto3 code to create a bucket on AWS S3.
-
-Note:
-
-  Note the "pytestmark" directive "aws" marker.
-
-*Filename: README.md*
-
-   <!-- pytestmark: aws -->
-   ```python name=test_create_bucket
-   import boto3
-
-   s3 = boto3.client("s3", region_name="us-east-1")
-   s3.create_bucket(Bucket="my-bucket")
-   assert "my-bucket" in [b["Name"] for b in s3.list_buckets()["Buckets"]]
-   ```
-
-
-Add "openai" marker
-"""""""""""""""""""
-
-Sample openai code to ask LLM to tell a joke. Note, that next to a
-custom "openai" marker, "xfail" marker is used, which allows
-underlying code to fail, without marking entire test suite as failed.
-
-Note:
-
-  Note the "pytestmark" directive "xfail" and "openai" markers.
-
-*Filename: README.md*
-
-   <!-- pytestmark: xfail -->
-   <!-- pytestmark: openai -->
-   ```python name=test_tell_me_a_joke
-   from openai import OpenAI
-
-   client = OpenAI()
-   completion = client.chat.completions.create(
-       model="gpt-4o",
-       messages=[
-           {"role": "developer", "content": "You are a famous comedian."},
-           {"role": "user", "content": "Tell me a joke."},
-       ],
-   )
-
-   assert isinstance(completion.choices[0].message.content, str)
-   ```
-
-======================================================================
-
-
-Implement pytest hooks
-~~~~~~~~~~~~~~~~~~~~~~
-
-In the example below:
-
-* moto is used to mock AWS S3 service for all tests marked as "aws".
-
-* Environment variable "OPENAI_BASE_URL" is set to
-  "http://localhost:11434/v1" (assuming you have Ollama running) for
-  all tests marked as "openai".
-
-* "FILE_REGISTRY.clean_up()" is executed at the end of each test
-  marked as "fakepy".
-
-*Filename: conftest.py*
-
-   import os
-   from contextlib import suppress
-
-   import pytest
-
-   from fake import FILE_REGISTRY
-   from moto import mock_aws
-   from pytest_codeblock.constants import CODEBLOCK_MARK
-
-   # Modify test item during collection
-   def pytest_collection_modifyitems(config, items):
-       for item in items:
-           if item.get_closest_marker(CODEBLOCK_MARK):
-               # All `pytest-codeblock` tests are automatically assigned
-               # a `codeblock` marker, which can be used for customisation.
-               # In the example below we add an additional `documentation`
-               # marker to `pytest-codeblock` tests.
-               item.add_marker(pytest.mark.documentation)
-           if item.get_closest_marker("aws"):
-               # Apply `mock_aws` to all tests marked as `aws`
-               item.obj = mock_aws(item.obj)
-
-
-   # Setup before test runs
-   def pytest_runtest_setup(item):
-       if item.get_closest_marker("openai"):
-           # Send all OpenAI requests to locally running Ollama for all
-           # tests marked as `openai`. The tests would x-pass on environments
-           # where Ollama is up and running (assuming, you have created an
-           # alias for gpt-4o using one of the available models) and would
-           # x-fail on environments, where Ollama isn't runnig.
-           os.environ.setdefault("OPENAI_API_KEY", "ollama")
-           os.environ.setdefault("OPENAI_BASE_URL", "http://localhost:11434/v1")
-
-
-   # Teardown after the test ends
-   def pytest_runtest_teardown(item, nextitem):
-       # Run file clean up on all tests marked as `fakepy`
-       if item.get_closest_marker("fakepy"):
-           FILE_REGISTRY.clean_up()
-
-======================================================================
-
-
-Security Policy
-===============
-
-
-Reporting a Vulnerability
--------------------------
-
-**Do not report security issues on GitHub!**
-
-Please report security issues by emailing Artur Barseghyan
-<artur.barseghyan@gmail.com>.
-
-
-Supported Versions
-------------------
-
-The two most recent "pytest-codeblock" minor release series receive
-security support. It is recommended to use the latest version.
-
-   ┌─────────────────┬────────────────┐
-   │ Version         │ Supported      │
-   ├─────────────────┼────────────────┤
-   │ 0.1.x           │ Yes            │
-   ├─────────────────┼────────────────┤
-   │ < 0.1           │ No             │
-   └─────────────────┴────────────────┘
-
-Note:
-
-  For example, during the development cycle leading to the release of
-  "pytest-codeblock" 0.17.x, support will be provided for "pytest-
-  codeblock" 0.16.x.Upon the release of "pytest-codeblock" 0.18.x,
-  security support for "pytest-codeblock" 0.16.x will end.
-
-======================================================================
-
-
-Contributor guidelines
-======================
-
-
-Developer prerequisites
------------------------
-
-
-pre-commit
-~~~~~~~~~~
-
-Refer to pre-commit for installation instructions.
-
-TL;DR:
-
-   curl -LsSf https://astral.sh/uv/install.sh | sh  # Install uv
-   uv tool install pre-commit  # Install pre-commit
-   pre-commit install  # Install pre-commit hooks
-
-Installing pre-commit will ensure you adhere to the project code
-quality standards.
-
-
-Code standards
---------------
-
-ruff and doc8 will be automatically triggered by pre-commit.
-
-ruff is configured to do the job of black and isort as well.
-
-Still, if you want to run checks manually:
-
-   make doc8
-   make ruff
-
-
-Requirements
-------------
-
-Requirements are compiled using >>`uv`_<<.
-
-   make compile-requirements
-
-
-Virtual environment
--------------------
-
-You are advised to work in virtual environment.
-
-TL;DR:
-
-   python -m venv env
-   pip install -e .[all]
-
-
-Documentation
--------------
-
-Check the documentation.
-
-
-Testing
--------
-
-Check testing.
-
-If you introduce changes or fixes, make sure to test them locally
-using all supported environments. For that use tox.
-
-   tox
-
-In any case, GitHub Actions will catch potential errors, but using tox
-speeds things up.
-
-For a quick test of the package and all examples, use the following
-*Makefile* command:
-
-   make test-all
-
-
-Pull requests
--------------
-
-You can contribute to the project by making a pull request.
-
-For example:
-
-* To fix documentation typos.
-
-* To improve documentation (for instance, to add new recipe or fix an
-  existing recipe that doesn't seem to work).
-
-* To introduce a new feature (for instance, add support for a non-
-  supported file type).
-
-**Good to know:**
-
-* This library is almost dependency free. Do not submit pull requests
-  with external dependencies unless it's really necessary.
-
-**General list to go through:**
-
-* Does your change require documentation update?
-
-* Does your change require update to tests?
-
-* Does your change rely on third-party package or a cloud based
-  service? If so, please consider turning it into a dedicated
-  standalone package, since this library is dependency free (and will
-  always stay so).
-
-**When fixing bugs (in addition to the general list):**
-
-* Make sure to add regression tests.
-
-**When adding a new feature (in addition to the general list):**
-
-* Make sure to update the documentation (check whether the
-  installation and features require changes).
-
-
-GitHub Actions
---------------
-
-Only non-EOL versions of Python and software >>`pytest-codeblock`_<<
-aims to integrate with are supported.
-
-On GitHub Actions includes tests for more than 40 different variations
-of Python versions and integration packages. Future, non-stable
-versions of Python are being tested too, so that new
-features/incompatibilities could be seen and adopted early.
-
-For the list of Python versions supported by GitHub, see GitHub
-Actions versions manifest.
-
-
-Questions
----------
-
-Questions can be asked on GitHub discussions.
-
-
-Issues
-------
-
-For reporting a bug or filing a feature request, use GitHub issues.
-
-**Do not report security issues on GitHub**. Check the support
-section.
-
-======================================================================
-
-
-Release history and notes
-=========================
-
-Sequence based identifiers are used for versioning (schema follows
-below):
-
-   major.minor[.revision]
-
-* It is always safe to upgrade within the same minor version (for
-  example, from 0.3 to 0.3.4).
-
-* Minor version changes might be backwards incompatible. Read the
-  release notes carefully before upgrading (for example, when
-  upgrading from 0.3.4 to 0.4).
-
-* All backwards incompatible changes are mentioned in this document.
-
-
-0.1.8
------
-
-2025-05-11
-
-* Move everything to *src* directory.
-
-* Add Python tests.
-
-
-0.1.7
------
-
-2025-05-11
-
-* Minor fixes.
-
-
-0.1.6
------
-
-2025-05-10
-
-* Minor fixes.
-
-
-0.1.5
------
-
-2025-05-07
-
-* Improve error tracebacks.
-
-
-0.1.4
------
-
-2025-05-05
-
-* Fixes in *.. literalinclude* blocks.
-
-
-0.1.3
------
-
-2025-05-05
-
-* Add support for *.. literalinclude* blocks.
-
-
-0.1.2
------
-
-2025-05-03
-
-* Automatically add *codeblock* mark to documentation tests.
-
-* Add customisation section to documentation.
-
-
-0.1.1
------
-
-2025-04-30
-
-* Support Python 3.9.
-
-
-0.1
----
-
-2025-04-29
-
-Note:
-
-  In memory of the victims of the Armenian Genocide.
-
-* Initial beta release.
-
-======================================================================
-
-
-Package
-=======
-
-
-Indices and tables
-==================
-
-* Index
-
-* Module Index
-
-* Search Page
-
-======================================================================
-
-
 Project Overview
-================
+****************
 
 Below is the layout of our project (to 10 levels), followed by the
 contents of each key file.
@@ -1143,7 +64,7 @@ Project directory layout
 
 
 docs/_implement_pytest_hooks.rst
---------------------------------
+================================
 
 docs/_implement_pytest_hooks.rst
 
@@ -1203,7 +124,7 @@ docs/_implement_pytest_hooks.rst
 
 
 docs/changelog.rst
-------------------
+==================
 
 docs/changelog.rst
 
@@ -1211,7 +132,7 @@ docs/changelog.rst
 
 
 docs/code_of_conduct.rst
-------------------------
+========================
 
 docs/code_of_conduct.rst
 
@@ -1219,7 +140,7 @@ docs/code_of_conduct.rst
 
 
 docs/conf.py
-------------
+============
 
 docs/conf.py
 
@@ -1314,7 +235,7 @@ docs/conf.py
 
 
 docs/contributor_guidelines.rst
--------------------------------
+===============================
 
 docs/contributor_guidelines.rst
 
@@ -1322,7 +243,7 @@ docs/contributor_guidelines.rst
 
 
 docs/documentation.rst
-----------------------
+======================
 
 docs/documentation.rst
 
@@ -1347,7 +268,7 @@ docs/documentation.rst
 
 
 docs/index.rst
---------------
+==============
 
 docs/index.rst
 
@@ -1356,7 +277,7 @@ docs/index.rst
 
 
 docs/llms.rst
--------------
+=============
 
 docs/llms.rst
 
@@ -1392,7 +313,7 @@ docs/llms.rst
 
 
 docs/markdown.rst
------------------
+=================
 
 docs/markdown.rst
 
@@ -1579,7 +500,7 @@ docs/markdown.rst
 
 
 docs/package.rst
-----------------
+================
 
 docs/package.rst
 
@@ -1601,7 +522,7 @@ docs/package.rst
 
 
 docs/restructured_text.rst
---------------------------
+==========================
 
 docs/restructured_text.rst
 
@@ -1881,7 +802,7 @@ docs/restructured_text.rst
 
 
 docs/security.rst
------------------
+=================
 
 docs/security.rst
 
@@ -1889,7 +810,7 @@ docs/security.rst
 
 
 docs/source_tree.rst
---------------------
+====================
 
 docs/source_tree.rst
 
@@ -2198,7 +1119,7 @@ docs/source_tree.rst
 
 
 examples/md_example/README.md
------------------------------
+=============================
 
 examples/md_example/README.md
 
@@ -2261,7 +1182,7 @@ examples/md_example/README.md
 
 
 examples/md_example/customisation.md
-------------------------------------
+====================================
 
 examples/md_example/customisation.md
 
@@ -2316,13 +1237,13 @@ examples/md_example/customisation.md
 
 
 examples/python/__init__.py
----------------------------
+===========================
 
 examples/python/__init__.py
 
 
 examples/python/basic_example.py
---------------------------------
+================================
 
 examples/python/basic_example.py
 
@@ -2333,7 +1254,7 @@ examples/python/basic_example.py
 
 
 examples/python/create_bucket_example.py
-----------------------------------------
+========================================
 
 examples/python/create_bucket_example.py
 
@@ -2345,7 +1266,7 @@ examples/python/create_bucket_example.py
 
 
 examples/python/create_pdf_file_example.py
-------------------------------------------
+==========================================
 
 examples/python/create_pdf_file_example.py
 
@@ -2357,7 +1278,7 @@ examples/python/create_pdf_file_example.py
 
 
 examples/python/django_example.py
----------------------------------
+=================================
 
 examples/python/django_example.py
 
@@ -2367,7 +1288,7 @@ examples/python/django_example.py
 
 
 examples/python/tell_me_a_joke_example.py
------------------------------------------
+=========================================
 
 examples/python/tell_me_a_joke_example.py
 
@@ -2386,7 +1307,7 @@ examples/python/tell_me_a_joke_example.py
 
 
 examples/rst_example/README.rst
--------------------------------
+===============================
 
 examples/rst_example/README.rst
 
@@ -2468,13 +1389,13 @@ examples/rst_example/README.rst
 
 
 examples/rst_example/__init__.py
---------------------------------
+================================
 
 examples/rst_example/__init__.py
 
 
 examples/rst_example/customisation.rst
---------------------------------------
+======================================
 
 examples/rst_example/customisation.rst
 
@@ -2565,7 +1486,7 @@ examples/rst_example/customisation.rst
 
 
 examples/rst_example/django_settings.py
----------------------------------------
+=======================================
 
 examples/rst_example/django_settings.py
 
@@ -2614,7 +1535,7 @@ examples/rst_example/django_settings.py
 
 
 scripts/generate_project_source_tree.py
----------------------------------------
+=======================================
 
 scripts/generate_project_source_tree.py
 
@@ -2819,7 +1740,7 @@ scripts/generate_project_source_tree.py
 
 
 src/pytest_codeblock/__init__.py
---------------------------------
+================================
 
 src/pytest_codeblock/__init__.py
 
@@ -2850,7 +1771,7 @@ src/pytest_codeblock/__init__.py
 
 
 src/pytest_codeblock/collector.py
----------------------------------
+=================================
 
 src/pytest_codeblock/collector.py
 
@@ -2905,7 +1826,7 @@ src/pytest_codeblock/collector.py
 
 
 src/pytest_codeblock/constants.py
----------------------------------
+=================================
 
 src/pytest_codeblock/constants.py
 
@@ -2930,7 +1851,7 @@ src/pytest_codeblock/constants.py
 
 
 src/pytest_codeblock/md.py
---------------------------
+==========================
 
 src/pytest_codeblock/md.py
 
@@ -3099,7 +2020,7 @@ src/pytest_codeblock/md.py
 
 
 src/pytest_codeblock/rst.py
----------------------------
+===========================
 
 src/pytest_codeblock/rst.py
 
@@ -3421,13 +2342,13 @@ src/pytest_codeblock/rst.py
 
 
 src/pytest_codeblock/tests/__init__.py
---------------------------------------
+======================================
 
 src/pytest_codeblock/tests/__init__.py
 
 
 src/pytest_codeblock/tests/test_pytest_codeblock.py
----------------------------------------------------
+===================================================
 
 src/pytest_codeblock/tests/test_pytest_codeblock.py
 
@@ -3555,7 +2476,7 @@ src/pytest_codeblock/tests/test_pytest_codeblock.py
 
 
 src/pytest_codeblock/tests/tests.rst
-------------------------------------
+====================================
 
 src/pytest_codeblock/tests/tests.rst
 

@@ -1,0 +1,149 @@
+Contributor guidelines
+**********************
+
+
+Developer prerequisites
+=======================
+
+
+pre-commit
+----------
+
+Refer to pre-commit for installation instructions.
+
+TL;DR:
+
+   curl -LsSf https://astral.sh/uv/install.sh | sh  # Install uv
+   uv tool install pre-commit  # Install pre-commit
+   pre-commit install  # Install pre-commit hooks
+
+Installing pre-commit will ensure you adhere to the project code
+quality standards.
+
+
+Code standards
+==============
+
+ruff and doc8 will be automatically triggered by pre-commit.
+
+ruff is configured to do the job of black and isort as well.
+
+Still, if you want to run checks manually:
+
+   make doc8
+   make ruff
+
+
+Requirements
+============
+
+Requirements are compiled using uv.
+
+   make compile-requirements
+
+
+Virtual environment
+===================
+
+You are advised to work in virtual environment.
+
+TL;DR:
+
+   python -m venv env
+   pip install -e .[all]
+
+
+Documentation
+=============
+
+Check the documentation.
+
+
+Testing
+=======
+
+Check testing.
+
+If you introduce changes or fixes, make sure to test them locally
+using all supported environments. For that use tox.
+
+   tox
+
+In any case, GitHub Actions will catch potential errors, but using tox
+speeds things up.
+
+For a quick test of the package and all examples, use the following
+*Makefile* command:
+
+   make test-all
+
+
+Pull requests
+=============
+
+You can contribute to the project by making a pull request.
+
+For example:
+
+* To fix documentation typos.
+
+* To improve documentation (for instance, to add new recipe or fix an
+  existing recipe that doesn't seem to work).
+
+* To introduce a new feature (for instance, add support for a non-
+  supported file type).
+
+**Good to know:**
+
+* This library is almost dependency free. Do not submit pull requests
+  with external dependencies unless it's really necessary.
+
+**General list to go through:**
+
+* Does your change require documentation update?
+
+* Does your change require update to tests?
+
+* Does your change rely on third-party package or a cloud based
+  service? If so, please consider turning it into a dedicated
+  standalone package, since this library is dependency free (and will
+  always stay so).
+
+**When fixing bugs (in addition to the general list):**
+
+* Make sure to add regression tests.
+
+**When adding a new feature (in addition to the general list):**
+
+* Make sure to update the documentation (check whether the
+  installation and features require changes).
+
+
+GitHub Actions
+==============
+
+Only non-EOL versions of Python and software pytest-codeblock aims to
+integrate with are supported.
+
+On GitHub Actions includes tests for more than 40 different variations
+of Python versions and integration packages. Future, non-stable
+versions of Python are being tested too, so that new
+features/incompatibilities could be seen and adopted early.
+
+For the list of Python versions supported by GitHub, see GitHub
+Actions versions manifest.
+
+
+Questions
+=========
+
+Questions can be asked on GitHub discussions.
+
+
+Issues
+======
+
+For reporting a bug or filing a feature request, use GitHub issues.
+
+**Do not report security issues on GitHub**. Check the support
+section.
