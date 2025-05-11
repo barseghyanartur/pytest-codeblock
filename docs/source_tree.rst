@@ -1,7 +1,8 @@
 Project Overview
 ================
 
-Below is the layout of our project (to 10 levels), followed by the contents of each key file.
+Below is the layout of our project (to 10 levels), followed by
+the contents of each key file.
 
 .. code-block:: bash
    :caption: Project directory layout
@@ -27,7 +28,8 @@ Below is the layout of our project (to 10 levels), followed by the contents of e
    │   ├── package.rst
    │   ├── requirements.txt
    │   ├── restructured_text.rst
-   │   └── security.rst
+   │   ├── security.rst
+   │   └── source_tree.rst
    ├── examples
    │   ├── md_example
    │   │   ├── customisation.md
@@ -144,6 +146,13 @@ docs/security.rst
 .. literalinclude:: security.rst
    :language: rst
    :caption: docs/security.rst
+
+docs/source_tree.rst
+--------------------
+
+.. literalinclude:: source_tree.rst
+   :language: rst
+   :caption: docs/source_tree.rst
 
 examples/md_example/README.md
 -----------------------------
