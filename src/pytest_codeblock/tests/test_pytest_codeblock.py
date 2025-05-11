@@ -6,6 +6,19 @@ from pytest_codeblock.rst import (
     resolve_literalinclude_path,
 )
 
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2025 Artur Barseghyan"
+__license__ = "MIT"
+__all__ = (
+    "test_group_snippets_different_names",
+    "test_group_snippets_merges_named",
+    "test_parse_markdown_simple",
+    "test_parse_markdown_with_pytestmark",
+    "test_parse_rst_literalinclude",
+    "test_parse_rst_simple",
+    "test_resolve_literalinclude_and_content",
+)
+
 
 def test_group_snippets_merges_named():
     # Two snippets with the same name should be combined

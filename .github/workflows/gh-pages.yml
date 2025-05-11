@@ -19,7 +19,8 @@ jobs:
       - name: Install docs deps
         run: pip install -r docs/requirements.txt
       - name: Build llms.txt
-        run: sphinx-build -n -D master_doc=llms -b text docs build/text llms.rst
+#        run: sphinx-build -n -D master_doc=llms -b text docs build/text llms.rst
+        run: sphinx-build -n -b text docs build/text
       - name: Publish
         uses: peaceiris/actions-gh-pages@v4
         with:

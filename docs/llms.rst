@@ -23,3 +23,7 @@
 ----
 
 .. include:: package.rst
+
+----
+
+.. include:: source_tree.rst
