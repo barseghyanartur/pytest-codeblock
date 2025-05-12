@@ -77,14 +77,11 @@ build = [
     "wheel",
 ]
 
-[project.scripts]
-# No CLI entry points for this plugin
-
 [project.entry-points."pytest11"]
 pytest_codeblock = "pytest_codeblock"
 
 [tool.setuptools]
-# No single-file modules; we use packages.find below
+
 package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
@@ -150,8 +147,8 @@ target-version = "py39"
 "conftest.py" = ["PERF203"]
 
 [tool.ruff.lint.isort]
-known-first-party  = ["pytest_codeblock"]
-known-third-party  = []
+known-first-party = ["pytest_codeblock"]
+known-third-party = []
 
 [tool.doc8]
 ignore-path = [
@@ -176,11 +173,8 @@ addopts = [
     "--capture=no",
 ]
 testpaths = [
-#    "test*.py",
     "**/test*.py",
-#    "*.rst",
     "**/*.rst",
-#    "*.md",
     "**/*.md",
 ]
 pythonpath = [
@@ -212,11 +206,11 @@ exclude_lines = [
 ]
 
 [tool.mypy]
-check_untyped_defs       = true
-warn_unused_ignores      = true
-warn_redundant_casts     = true
-warn_unused_configs      = true
-ignore_missing_imports   = true
+check_untyped_defs = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_unused_configs = true
+ignore_missing_imports = true
 
 [tool.pydoclint]
 style = "sphinx"
