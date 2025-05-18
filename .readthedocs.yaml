@@ -39,5 +39,5 @@ build:
       # The default commands for generating the HTML and pdf formats will still run.
       htmlzip:
         - echo "Override default build command for htmlzip format"
-        - mkdir -p $READTHEDOCS_OUTPUT/text/
-        - sphinx-build -n -b text docs $READTHEDOCS_OUTPUT/text/
+        - mkdir -p $READTHEDOCS_OUTPUT/html/
+        - sphinx-build -n -b text docs $READTHEDOCS_OUTPUT/html/
