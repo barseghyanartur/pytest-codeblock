@@ -257,8 +257,8 @@ def parse_rst(text: str, base_dir: Path) -> list[CodeSnippet]:
 class RSTFile(pytest.File):
     """Collect RST code-block tests as real test functions."""
     def collect(self):
-        text = self.fspath.read_text(encoding="utf-8")
-        raw = parse_rst(text, self.fspath)
+        text = self.path.read_text(encoding="utf-8")
+        raw = parse_rst(text, self.path)
 
         # Only keep test_* snippets
         tests = [
@@ -269,7 +269,7 @@ class RSTFile(pytest.File):
         for sn in combined:
             # Bind the values we need so we don't close over `sn` itself
             _sn_name = sn.name
-            _fpath = str(self.fspath)
+            _fpath = str(self.path)
 
             # Create a Python function for this snippet
             if DJANGO_DB_MARKS.intersection(sn.marks):

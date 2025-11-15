@@ -19,6 +19,13 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.2
+---
+2025-11-15
+
+- Handle deprecations for pytest 9.x. The ``fspath`` argument is replaced with
+  ``path`` and the code is updated accordingly.
+
 0.1.8
 -----
 2025-05-11
