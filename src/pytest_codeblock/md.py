@@ -129,7 +129,7 @@ class MarkdownFile(pytest.File):
     snippets.
     """
     def collect(self):
-        text = self.fspath.read_text(encoding="utf-8")
+        text = self.path.read_text(encoding="utf-8")
         raw = parse_markdown(text)
         # keep only snippets named test_*
         tests = [
