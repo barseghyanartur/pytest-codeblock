@@ -1,8 +1,10 @@
+from pathlib import Path
+
 from .md import MarkdownFile
 from .rst import RSTFile
 
 __title__ = "pytest-codeblock"
-__version__ = "0.1.8"
+__version__ = "0.2"
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2025 Artur Barseghyan"
 __license__ = "MIT"
@@ -17,8 +19,8 @@ def pytest_collect_file(parent, path):
     file_name = str(path).lower()
     if file_name.endswith((".md", ".markdown")):
         # Use the MarkdownFile collector for Markdown files
-        return MarkdownFile.from_parent(parent=parent, fspath=path)
+        return MarkdownFile.from_parent(parent=parent, path=Path(path))
     if file_name.endswith(".rst"):
         # Use the RSTFile collector for reStructuredText files
-        return RSTFile.from_parent(parent=parent, fspath=path)
+        return RSTFile.from_parent(parent=parent, path=Path(path))
     return None
