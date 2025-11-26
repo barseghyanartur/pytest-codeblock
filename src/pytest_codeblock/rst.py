@@ -292,8 +292,8 @@ class RSTFile(pytest.File):
             # Build list of fixture names requested by this snippet
             _fixture_names: list[str] = list(sn.fixtures)
 
-            # If snippet is marked as needing DB, also request the `db` fixture,
-            # unless user already added it explicitly.
+            # If snippet is marked as needing DB, also request the `db`
+            # fixture, unless user already added it explicitly.
             if (
                 DJANGO_DB_MARKS.intersection(sn.marks)
                 and "db" not in _fixture_names
@@ -314,8 +314,7 @@ class RSTFile(pytest.File):
                     try:
                         # Make fixtures available as top-level names
                         # inside the executed snippet.
-                        globals_dict = dict(fixtures)
-                        exec(compiled, globals_dict)
+                        exec(compiled, dict(fixtures))
                     except Exception as err:
                         raise Exception(
                             f"Error in "

@@ -1,20 +1,18 @@
-pytest-fixtures
-===============
-pytest-fixtures examples.
-
+Requesting pytest-fixtures
+==========================
 .. External references
-.. _openai: https://github.com/openai/openai-python
-.. _moto: https://docs.getmoto.org
-.. _fake.py: https://github.com/barseghyanartur/fake.py
+.. _pytest-fixtures: https://docs.pytest.org/en/6.2.x/fixture.html
 
-`fake.py`_ example for `.. code-block::` directive with pytest-fixtures
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`pytest-fixtures`_ examples.
+
+`pytest-fixtures`_ example for `.. code-block::` directive
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: rst
 
     .. pytestfixture: tmp_path
     .. pytestfixture: http_request
     .. code-block:: python
-        :name: test_files
+        :name: test_path_and_http_request
 
         d = tmp_path / "sub"
         d.mkdir()  # Create the directory
