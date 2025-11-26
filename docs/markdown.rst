@@ -111,6 +111,12 @@ In the example below, ``tmp_path`` fixture is requested for the code block.
 
 Multiple ``pytestfixture`` directives are supported. Add one on each line.
 
+.. note::
+
+    When combining ``pytestfixture`` and ``continue`` directives together,
+    request pytest-fixtures only in the first ``code-block``, as they will
+    automatically become available in all continuing blocks.
+
 Custom pytest-fixtures are supported as well. Just define them in
 your ``conftest.py`` file.
 
