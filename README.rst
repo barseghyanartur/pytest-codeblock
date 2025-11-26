@@ -70,6 +70,8 @@ Features
   the plugin concatenates them into one test.
 - **Pytest markers support**: Add existing or custom `pytest`_ markers
   to the code blocks and hook into the tests life-cycle using ``conftest.py``.
+- **Pytest fixtures support**: Request existing or custom `pytest`_ fixtures
+  to the code blocks.
 
 Prerequisites
 =============

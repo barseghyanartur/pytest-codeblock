@@ -86,6 +86,34 @@ In the example below, ``django_db`` marker is added to the code block.
     user = User.objects.first()
     ```
 
+Requesting pytest fixtures for code blocks
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It's possible to request existing or custom pytest fixtures for code blocks.
+That allows adding custom logic and mocking in ``conftest.py``.
+
+In the example below, ``tmp_path`` fixture is requested for the code block.
+
+.. note:: Note the ``pytestfixture`` directive ``tmp_path`` fixture.
+
+*Filename: README.md*
+
+.. code-block:: markdown
+
+    <!-- pytestfixture: tmp_path -->
+    ```python name=test_path
+    d = tmp_path / "sub"
+    d.mkdir()  # Create the directory
+    assert d.is_dir()  # Verify it was created and is a directory
+    ```
+
+----
+
+Multiple ``pytestfixture`` directives are supported. Add one on each line.
+
+Custom pytest-fixtures are supported as well. Just define them in
+your ``conftest.py`` file.
+
 Customisation/hooks
 -------------------
 Tests can be extended and fine-tuned using `pytest`_'s standard hook system.

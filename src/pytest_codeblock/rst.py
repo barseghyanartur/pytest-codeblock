@@ -125,6 +125,10 @@ def parse_rst(text: str, base_dir: Path) -> list[CodeSnippet]:
                     )
                     snippets.append(snippet)
 
+                    # TODO: Is this needed?
+                    # pending_marks.clear()
+                    # pending_fixtures.clear()
+
             i = j + 1
             continue
 
