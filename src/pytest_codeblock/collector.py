@@ -18,6 +18,8 @@ class CodeSnippet:
     name: Optional[str] = None  # Identifier for grouping (None if anonymous)
     marks: list[str] = field(default_factory=list)
     # Collected pytest marks (e.g. ['django_db']), parsed from doc comments
+    fixtures: list[str] = field(default_factory=list)
+    # Collected pytest fixtures (e.g. ['tmp_path']), parsed from doc comments
 
 
 def group_snippets(snippets: list[CodeSnippet]) -> list[CodeSnippet]:
@@ -40,8 +42,10 @@ def group_snippets(snippets: list[CodeSnippet]) -> list[CodeSnippet]:
             seen_sn = seen[key]
             seen_sn.code += "\n" + sn.code
             seen_sn.marks.extend(sn.marks)
+            seen_sn.fixtures.extend(sn.fixtures)
         else:
             sn.marks = list(sn.marks)  # copy
+            sn.fixtures = list(sn.fixtures)  # copy
             seen[key] = sn
             combined.append(sn)
 

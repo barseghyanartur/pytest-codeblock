@@ -70,6 +70,8 @@ Features
   the plugin concatenates them into one test.
 - **Pytest markers support**: Add existing or custom `pytest`_ markers
   to the code blocks and hook into the tests life-cycle using ``conftest.py``.
+- **Pytest fixtures support**: Request existing or custom `pytest`_ fixtures
+  to the code blocks.
 
 Prerequisites
 =============
@@ -104,15 +106,8 @@ Or install with `uv`_:
 
 Configuration
 =============
-*Filename: pyproject.toml*
-
-.. code-block:: text
-
-    [tool.pytest.ini_options]
-    testpaths = [
-        "**/*.rst",
-        "**/*.md",
-    ]
+No configuration needed. All your `.rst` and `.md` files shall be picked
+automatically.
 
 Usage
 =====
@@ -120,8 +115,7 @@ reStructruredText usage
 -----------------------
 Any code directive, such as ``.. code-block:: python``, ``.. code:: python``,
 or literal blocks with a preceding ``.. codeblock-name: <name>``, will be
-collected and executed automatically, if your `pytest`_ `configuration`_
-allows that.
+collected and executed automatically by `pytest`_.
 
 ``code-block`` directive example
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -159,8 +153,7 @@ Markdown usage
 --------------
 
 Any fenced code block with a recognized Python language tag (e.g., ``python``,
-``py``) will be collected and executed automatically, if your `pytest`_
-`configuration`_ allows that.
+``py``) will be collected and executed automatically by `pytest`_.
 
 .. note:: Note that ``name`` value has a ``test_`` prefix.
 
@@ -185,6 +178,20 @@ Run the tests with `pytest`_:
 .. code-block:: sh
 
     pytest
+
+Troubleshooting
+===============
+If something doesn't work, try to add this to your pyproject.toml:
+
+*Filename: pyproject.toml*
+
+.. code-block:: text
+
+    [tool.pytest.ini_options]
+    testpaths = [
+        "**/*.rst",
+        "**/*.md",
+    ]
 
 Writing documentation
 =====================

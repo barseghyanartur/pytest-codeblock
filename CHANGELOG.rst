@@ -19,6 +19,16 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.3
+---
+2025-11-26
+
+.. note::
+
+    Release is dedicated to my beloved son Rafayel. Happy birthday!
+
+- Make it possible to request pytest-fixtures.
+
 0.2
 ---
 2025-11-15
