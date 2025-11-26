@@ -71,7 +71,7 @@ Features
 - **Pytest markers support**: Add existing or custom `pytest`_ markers
   to the code blocks and hook into the tests life-cycle using ``conftest.py``.
 - **Pytest fixtures support**: Request existing or custom `pytest`_ fixtures
-  to the code blocks.
+  for the code blocks.
 
 Prerequisites
 =============
