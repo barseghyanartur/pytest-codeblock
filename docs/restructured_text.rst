@@ -159,6 +159,52 @@ directive.
     .. literalinclude:: examples/python/django_example.py
         :name: test_li_django_example
 
+----
+
+Requesting pytest fixtures for ``code-block`` and ``literalinclude`` directives
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It's possible to request existing or custom pytest fixtures in ``code-block``
+or ``literalinclude`` directives. That allows adding custom logic and mocking
+in ``conftest.py``.
+
+In the example below, ``tmp_path`` fixture is requested for the ``code-block``
+directive.
+
+.. note:: Note the ``pytestfixture`` directive ``tmp_path`` fixture.
+
+*Filename: README.rst*
+
+.. code-block:: rst
+
+    .. pytestfixture: tmp_path
+    .. code-block:: python
+        :name: test_path
+
+        d = tmp_path / "sub"
+        d.mkdir()  # Create the directory
+        assert d.is_dir()  # Verify it was created and is a directory
+
+----
+
+In the example below, ``tmp_path`` fixture is requested for the ``literalinclude``
+directive.
+
+*Filename: README.rst*
+
+.. code-block:: rst
+
+    .. pytestfixture: tmp_path
+    .. literalinclude:: examples/python/tmp_path_example.py
+        :name: test_li_tmp_path_example
+
+----
+
+Multiple ``pytestfixture`` directives are supported. Add one on each line.
+
+Custom pytest-fixtures are supported as well. Just define them in
+your ``conftest.py`` file.
+
 Customisation/hooks
 -------------------
 Tests can be extended and fine-tuned using `pytest`_'s standard hook system.
