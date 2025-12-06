@@ -19,6 +19,13 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.3.1
+-----
+2025-12-06
+
+- Test against Python 3.14.
+- Add sphinx-llms-txt-link integration.
+
 0.3
 ---
 2025-11-26
