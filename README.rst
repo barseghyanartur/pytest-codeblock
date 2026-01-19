@@ -65,7 +65,8 @@ Features
 - **reStructuredText and Markdown support**: Automatically find and test code
   blocks in `reStructuredText`_ (``.rst``) and `Markdown`_ (``.md``) files.
   The only requirement here is that your code blocks shall
-  have a name starting with ``test_``.
+  have a name starting with ``test_``. Async code snippets are supported as
+  well.
 - **Grouping by name**: Split a single example across multiple code blocks;
   the plugin concatenates them into one test.
 - **Pytest markers support**: Add existing or custom `pytest`_ markers
