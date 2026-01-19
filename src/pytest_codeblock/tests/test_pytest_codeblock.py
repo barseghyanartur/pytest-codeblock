@@ -1,4 +1,5 @@
 from pytest_codeblock.collector import CodeSnippet, group_snippets
+from pytest_codeblock.helpers import contains_top_level_await, wrap_async_code
 from pytest_codeblock.md import parse_markdown
 from pytest_codeblock.rst import (
     get_literalinclude_content,
@@ -7,7 +8,7 @@ from pytest_codeblock.rst import (
 )
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
-__copyright__ = "2025 Artur Barseghyan"
+__copyright__ = "2025-2026 Artur Barseghyan"
 __license__ = "MIT"
 __all__ = (
     "test_group_snippets_different_names",
@@ -119,3 +120,55 @@ def test_parse_rst_literalinclude(tmp_path):
     sn = snippets[0]
     assert sn.name == "test_li"
     assert "z=3" in sn.code
+
+
+def test_contains_top_level_await_positive():
+    """Verify detection of various async constructs."""
+    # Direct await
+    assert contains_top_level_await("await asyncio.sleep(0)") is True
+    # Async function definition
+    assert contains_top_level_await("async def foo(): pass") is True
+    # Async with
+    assert contains_top_level_await("async with lock: pass") is True
+    # Async for
+    assert contains_top_level_await("async for i in range(1): pass") is True
+
+
+def test_contains_top_level_await_negative():
+    """Verify that sync code or strings containing keywords are ignored."""
+    # Standard sync code
+    assert contains_top_level_await("import time; time.sleep(1)") is False
+    # Keywords inside strings
+    assert contains_top_level_await("print('this is an await')") is False
+    # Comments should be ignored
+    assert contains_top_level_await("# await inside comment") is False
+
+
+def test_contains_top_level_await_invalid_syntax():
+    """Verify that invalid syntax returns False rather than crashing."""
+    assert contains_top_level_await("def main(:") is False
+
+
+def test_wrap_async_code_structure():
+    """Verify the transformation logic and indentation."""
+    code = "await asyncio.sleep(1)\nreturn 42"
+    wrapped = wrap_async_code(code)
+
+    # Check for the boilerplate components
+    assert "async def __async_main__():" in wrapped
+    assert "asyncio.run(__async_main__())" in wrapped
+
+    # Check that the original code is indented correctly (4 spaces)
+    assert "    await asyncio.sleep(1)" in wrapped
+    assert "    return 42" in wrapped
+
+
+def test_wrap_async_code_execution_integrity():
+    """
+    Verify that the wrapped code is still valid Python and can be compiled.
+    This ensures wrap_async_code doesn't break the AST.
+    """
+    code = "val = 1 + 1"
+    wrapped = wrap_async_code(code)
+    # If compile fails, the test fails
+    assert compile(wrapped, "<string>", "exec")

@@ -4,9 +4,9 @@ from .md import MarkdownFile
 from .rst import RSTFile
 
 __title__ = "pytest-codeblock"
-__version__ = "0.3.1"
+__version__ = "0.3.2"
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
-__copyright__ = "2025 Artur Barseghyan"
+__copyright__ = "2025-2026 Artur Barseghyan"
 __license__ = "MIT"
 __all__ = (
     "pytest_collect_file",
