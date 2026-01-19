@@ -19,6 +19,12 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.3.2
+-----
+2026-01-19
+
+- Add support for `async` in code blocks.
+
 0.3.1
 -----
 2025-12-06

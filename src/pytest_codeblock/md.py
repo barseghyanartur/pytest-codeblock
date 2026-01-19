@@ -1,3 +1,4 @@
+import asyncio
 import inspect
 import re
 import textwrap
@@ -8,9 +9,10 @@ import pytest
 
 from .collector import CodeSnippet, group_snippets
 from .constants import CODEBLOCK_MARK, DJANGO_DB_MARKS, TEST_PREFIX
+from .helpers import contains_top_level_await, wrap_async_code
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
-__copyright__ = "2025 Artur Barseghyan"
+__copyright__ = "2025-2026 Artur Barseghyan"
 __license__ = "MIT"
 __all__ = (
     "MarkdownFile",
@@ -176,16 +178,30 @@ class MarkdownFile(pytest.File):
                 # but we override __signature__ so pytest passes the right
                 # fixtures and names.
                 def test_block(**fixtures):
-                    compiled = compile(code, fpath, "exec")
+                    # Auto-wrap async code
+                    ex_code = code
+                    if contains_top_level_await(code):
+                        ex_code = wrap_async_code(code)
+
+                    try:
+                        compiled = compile(ex_code, fpath, "exec")
+                    except SyntaxError as err:
+                        raise SyntaxError(
+                            f"Syntax error in "
+                            f"codeblock `{sn_name}` in {fpath}:\n"
+                            f"\n{textwrap.indent(ex_code, prefix='    ')}\n\n"
+                            f"{traceback.format_exc()}"
+                        ) from err
+
                     try:
                         # Make fixtures available as top-level names
                         # inside the executed snippet.
-                        exec(compiled, dict(fixtures))
+                        exec(compiled, {"asyncio": asyncio, **dict(fixtures)})
                     except Exception as err:
                         raise Exception(
                             f"Error in "
                             f"codeblock `{sn_name}` in {fpath}:\n"
-                            f"\n{textwrap.indent(code, prefix='    ')}\n\n"
+                            f"\n{textwrap.indent(ex_code, prefix='    ')}\n\n"
                             f"{traceback.format_exc()}"
                         ) from err
 
