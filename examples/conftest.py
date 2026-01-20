@@ -2,6 +2,14 @@ from types import SimpleNamespace
 
 import pytest
 
+__author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
+__copyright__ = "2025-2026 Artur Barseghyan"
+__license__ = "MIT"
+__all__ = (
+    "http_request_factory",
+    "http_request",
+)
+
 
 @pytest.fixture
 def http_request_factory():
