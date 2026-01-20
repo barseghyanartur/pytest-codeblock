@@ -8,6 +8,8 @@ __license__ = "MIT"
 __all__ = (
     "http_request_factory",
     "http_request",
+    "markdown_simple",
+    "markdown_with_pytest_mark",
 )
 
 
@@ -27,3 +29,21 @@ def http_request_factory():
 def http_request(http_request_factory):
     test_data = {"param1": "value1", "signature": "mock-sig"}
     return http_request_factory(test_data)
+
+
+@pytest.fixture
+def markdown_simple():
+    return """
+```python name=test_example
+x=1
+assert x==1
+```"""
+
+
+@pytest.fixture
+def markdown_with_pytest_mark():
+    return """
+<!-- pytestmark: django_db -->
+```python name=test_db
+from django.db import models
+```"""

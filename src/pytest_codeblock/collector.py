@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from typing import Optional
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
-__copyright__ = "2025 Artur Barseghyan"
+__copyright__ = "2025-2026 Artur Barseghyan"
 __license__ = "MIT"
 __all__ = (
     "CodeSnippet",

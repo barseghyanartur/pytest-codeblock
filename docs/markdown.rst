@@ -65,6 +65,24 @@ The above mentioned three snippets will run as a single test.
 
 ----
 
+Async
+~~~~~
+You can use `top-level await` in your code blocks. The code will be
+automatically wrapped in an async function.
+
+*Filename: README.md*
+
+.. code-block:: markdown
+
+    ```python name=test_async_example
+    import asyncio
+
+    result = await asyncio.sleep(0.1, result=42)
+    assert result == 42
+    ```
+
+----
+
 Adding pytest markers to code blocks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -212,21 +230,3 @@ Implement pytest hooks
 ~~~~~~~~~~~~~~~~~~~~~~
 
 .. include:: _implement_pytest_hooks.rst
-
-----
-
-Async
-~~~~~
-You can use `top-level await` in your code blocks. The code will be
-automatically wrapped in an async function.
-
-*Filename: README.md*
-
-.. code-block:: markdown
-
-    ```python name=test_async_example
-    import asyncio
-
-    result = await asyncio.sleep(0.1, result=42)
-    assert result == 42
-    ```

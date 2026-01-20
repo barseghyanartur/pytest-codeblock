@@ -121,8 +121,9 @@ def parse_markdown(text: str) -> list[CodeSnippet]:
                     fixtures=pending_fixtures.copy(),
                 ))
                 # reset pending marks after collecting
-                pending_marks.clear()
+                pending_marks = [CODEBLOCK_MARK]  # Reset to default
                 snippet_name = None
+                pending_fixtures.clear()  # Clear pending fixtures
             else:
                 # collect code lines (dedent by block_indent)
                 if line.strip() == "":
