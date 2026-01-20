@@ -106,3 +106,52 @@ Tests
     # Should include both default and django_db marks
     assert "django_db" in sn.marks
     assert "codeblock" in sn.marks
+
+----
+
+.. pytestfixture: tmp_path
+.. pytestfixture: http_request
+.. code-block:: python
+    :name: test_pytest_fixtures_1
+
+    d = tmp_path / "sub"
+    d.mkdir()  # Create the directory
+    assert d.is_dir()  # Verify it was created and is a directory
+
+    assert isinstance(http_request.GET, dict)
+
+----
+
+.. pytestfixture: tmp_path
+.. pytestfixture: http_request
+.. code-block:: python
+    :name: test_pytest_fixtures_2
+
+    d = tmp_path / "sub"
+    d.mkdir()  # Create the directory
+    assert d.is_dir()  # Verify it was created and is a directory
+
+    assert isinstance(http_request.GET, dict)
+
+----
+
+.. pytestfixture: tmp_path
+.. pytestfixture: http_request
+.. code-block:: python
+    :name: test_pytest_fixtures_3
+
+    d = tmp_path / "sub"
+    d.mkdir()  # Create the directory
+    assert d.is_dir()  # Verify it was created and is a directory
+
+    assert isinstance(http_request.GET, dict)
+
+----
+
+.. code-block:: python
+    :name: test_async_example
+
+    import asyncio
+
+    result = await asyncio.sleep(0.1, result=42)
+    assert result == 42

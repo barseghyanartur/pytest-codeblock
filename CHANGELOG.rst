@@ -19,6 +19,14 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.3.3
+-----
+2026-01-20
+
+- Minor code and documentation fixes.
+- Add a dedicated tests.md file for markdown specific testing.
+- Tested against Python 3.14.
+
 0.3.2
 -----
 2026-01-19

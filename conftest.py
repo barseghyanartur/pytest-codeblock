@@ -7,7 +7,7 @@ from moto import mock_aws
 from pytest_codeblock.constants import CODEBLOCK_MARK
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
-__copyright__ = "2025 Artur Barseghyan"
+__copyright__ = "2025-2026 Artur Barseghyan"
 __license__ = "MIT"
 __all__ = (
     "pytest_collection_modifyitems",
