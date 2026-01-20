@@ -25,6 +25,7 @@ are used for versioning (schema follows below):
 
 - Minor code and documentation fixes.
 - Add a dedicated tests.md file for markdown specific testing.
+- Tested against Python 3.14.
 
 0.3.2
 -----
