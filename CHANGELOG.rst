@@ -19,6 +19,13 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.3.4
+-----
+2026-01-21
+
+- Add new syntax for grouping multiple code blocks in markdown files.
+- Add more tests to tests.md and tests.rst files for markup specific testing.
+
 0.3.3
 -----
 2026-01-20
