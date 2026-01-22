@@ -41,11 +41,14 @@ Standalone code blocks
 Grouping multiple code blocks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-It's possible to split one logical test into multiple blocks by specifying
-the same name.
+It's possible to split one logical test into multiple blocks.
+They will be tested under the first ``name`` specified.
+Note the ``<!-- continue: test_group_new_syntax -->`` directive.
 
-.. note:: Note that both snippts share the same ``name``
-          value (``test_grouping_example``).
+.. note:: Note that ``continue`` directive of
+          the ``test_grouping_example_part_2``
+          and ``test_grouping_example_part_3`` refers to
+          the ``test_grouping_example``.
 
 *Filename: README.md*
 
@@ -57,8 +60,18 @@ the same name.
 
     Some intervening text.
 
-    ```python name=test_grouping_example
-    print(x + 1)  # Uses x from the first snippet
+    <!-- continue: test_grouping_example -->
+    ```python name=test_grouping_example_part_2
+    y = x + 1  # Uses x from the first snippet
+    assert y == 2
+    ```
+
+    Some intervening text.
+
+    <!-- continue: test_grouping_example -->
+    ```python name=test_grouping_example_part_3
+
+    print(y)  # Uses y from the previous snippet
     ```
 
 The above mentioned three snippets will run as a single test.
