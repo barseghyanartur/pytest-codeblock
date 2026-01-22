@@ -1,6 +1,9 @@
 Tests
 =====
 
+test_group_snippets_merges_named
+--------------------------------
+
 .. code-block:: python
     :name: test_group_snippets_merges_named
 
@@ -30,6 +33,9 @@ Tests
 
 ----
 
+test_group_snippets_different_names
+-----------------------------------
+
 .. code-block:: python
     :name: test_group_snippets_different_names
 
@@ -53,6 +59,9 @@ Tests
     assert combined[1].name.startswith("bar")
 
 ----
+
+test_parse_markdown_simple
+--------------------------
 
 .. code-block:: python
     :name: test_parse_markdown_simple
@@ -81,6 +90,9 @@ Tests
 
 ----
 
+test_parse_markdown_with_pytestmark
+-----------------------------------
+
 .. code-block:: python
     :name: test_parse_markdown_with_pytestmark
 
@@ -108,6 +120,9 @@ Tests
     assert "codeblock" in sn.marks
 
 ----
+
+test_pytest_fixtures
+--------------------
 
 .. pytestfixture: tmp_path
 .. pytestfixture: http_request
@@ -148,6 +163,9 @@ Tests
 
 ----
 
+test_async_example
+------------------
+
 .. code-block:: python
     :name: test_async_example
 
@@ -155,3 +173,22 @@ Tests
 
     result = await asyncio.sleep(0.1, result=42)
     assert result == 42
+
+----
+
+test_group_snippets
+-------------------
+
+.. code-block:: python
+    :name: test_group_snippets
+
+    text_2 = "Jude"
+
+Something in between
+
+.. continue: test_group_snippets
+.. code-block:: python
+    :name: test_group_snippets_part_2
+
+    assert text_2
+    print(text_2)

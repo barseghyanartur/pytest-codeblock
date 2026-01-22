@@ -1,5 +1,7 @@
 # Tests
 
+## test_group_snippets_merges_named
+
 ```python name=test_group_snippets_merges_named
 import pytest
 from pathlib import Path
@@ -28,6 +30,8 @@ assert "m" in cs.marks
 
 ----
 
+## test_group_snippets_different_names
+
 ```python name=test_group_snippets_different_names
 import pytest
 from pathlib import Path
@@ -50,6 +54,8 @@ assert combined[1].name.startswith("bar")
 ```
 
 ----
+
+## test_parse_markdown_simple
 
 <!-- pytestfixture: markdown_simple -->
 ```python name=test_parse_markdown_simple
@@ -74,6 +80,8 @@ assert "x=1" in sn.code
 
 ----
 
+## markdown_with_pytest_mark
+
 <!-- pytestfixture: markdown_with_pytest_mark -->
 ```python name=test_parse_markdown_with_pytestmark
 import pytest
@@ -97,6 +105,8 @@ assert "codeblock" in sn.marks
 ```
 
 ----
+
+## test_pytest_fixtures
 
 <!-- pytestfixture: tmp_path -->
 <!-- pytestfixture: http_request -->
@@ -134,9 +144,42 @@ assert isinstance(http_request.GET, dict)
 
 ----
 
+## test_async_example
+
 ```python name=test_async_example
 import asyncio
 
 result = await asyncio.sleep(0.1, result=42)
 assert result == 42
+```
+
+----
+
+## test_group_old_syntax
+
+```python name=test_group_old_syntax
+text_1 = "Hey"
+```
+
+Something in between
+
+```python name=test_group_old_syntax
+assert text_1
+print(text_1)
+```
+
+----
+
+## test_group_new_syntax
+
+```python name=test_group_new_syntax
+text_2 = "Jude"
+```
+
+Something in between
+
+<!-- continue: test_group_new_syntax -->
+```python name=test_group_new_syntax_part_2
+assert text_2
+print(text_2)
 ```
