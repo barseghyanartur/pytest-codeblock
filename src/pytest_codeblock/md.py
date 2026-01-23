@@ -28,22 +28,22 @@ def parse_markdown(text: str) -> list[CodeSnippet]:
     Supports:
       - <!-- pytestmark: <mark> --> comments immediately before a code fence
       - <!-- codeblock-name: <name> --> comments for naming
-      - <!-- continue:  <name> --> comments for grouping with a named snippet
+      - <!-- continue: <name> --> comments for grouping with a named snippet
       - Fenced code blocks with ```python (and optional name=<name> in the
         info string)
 
     Captures each snippet's name, code, starting line, and any pytest marks.
     """
-    snippets:  list[CodeSnippet] = []
+    snippets: list[CodeSnippet] = []
     lines = text.splitlines()
-    pending_name:  Optional[str] = None
+    pending_name: Optional[str] = None
     pending_continue: Optional[str] = None
     pending_marks: list[str] = [CODEBLOCK_MARK]
     pending_fixtures: list[str] = []
     in_block = False
     fence = ""
     block_indent = 0
-    code_buffer:  list[str] = []
+    code_buffer: list[str] = []
     snippet_name: Optional[str] = None
     start_line = 0
 
@@ -173,7 +173,7 @@ class MarkdownFile(pytest.File):
             _fpath = str(self.path)
 
             # Build list of fixture names requested by this snippet
-            _fixture_names:  list[str] = list(sn.fixtures)
+            _fixture_names: list[str] = list(sn.fixtures)
 
             # If snippet is marked as needing DB, also request the `db`
             # fixture, unless user already added it explicitly.
