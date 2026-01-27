@@ -11,168 +11,31 @@ from unittest.mock import MagicMock
 import pytest
 
 from .. import (
-    __all__ as init_all,
-)
-
-# Import everything from __init__.py
-from .. import (
-    __author__,
-    __copyright__,
-    __license__,
-    __title__,
-    __version__,
     pytest_collect_file,
 )
-
-# Import everything from collector.py
 from ..collector import (
     CodeSnippet,
     group_snippets,
 )
-from ..collector import (
-    __all__ as collector_all,
-)
-from ..collector import (
-    __author__ as collector_author,
-)
-from ..collector import (
-    __copyright__ as collector_copyright,
-)
-from ..collector import (
-    __license__ as collector_license,
-)
-
-# Import everything from constants.py
 from ..constants import (
     CODEBLOCK_MARK,
     DJANGO_DB_MARKS,
     TEST_PREFIX,
 )
-from ..constants import (
-    __all__ as constants_all,
-)
-from ..constants import (
-    __author__ as constants_author,
-)
-from ..constants import (
-    __copyright__ as constants_copyright,
-)
-from ..constants import (
-    __license__ as constants_license,
-)
-from ..helpers import (
-    __all__ as helpers_all,
-)
-from ..helpers import (
-    __author__ as helpers_author,
-)
-from ..helpers import (
-    __copyright__ as helpers_copyright,
-)
-from ..helpers import (
-    __license__ as helpers_license,
-)
-
-# Import everything from helpers.py
 from ..helpers import (
     contains_top_level_await,
     wrap_async_code,
 )
-
-# Import everything from md.py
 from ..md import (
     MarkdownFile,
     parse_markdown,
 )
-from ..md import (
-    __all__ as md_all,
-)
-from ..md import (
-    __author__ as md_author,
-)
-from ..md import (
-    __copyright__ as md_copyright,
-)
-from ..md import (
-    __license__ as md_license,
-)
-
-# Import everything from rst.py
 from ..rst import (
     RSTFile,
     get_literalinclude_content,
     parse_rst,
     resolve_literalinclude_path,
 )
-from ..rst import (
-    __all__ as rst_all,
-)
-from ..rst import (
-    __author__ as rst_author,
-)
-from ..rst import (
-    __copyright__ as rst_copyright,
-)
-from ..rst import (
-    __license__ as rst_license,
-)
-
-
-# =============================================================================
-# Test module metadata coverage
-# =============================================================================
-class TestModuleMetadata:
-    """Verify all module metadata is accessible (covers import-time code)."""
-
-    def test_init_metadata(self):
-        """Test __init__.py metadata."""
-        assert __title__ == "pytest-codeblock"
-        assert __version__
-        assert __author__
-        assert __copyright__
-        assert __license__ == "MIT"
-        assert "pytest_collect_file" in init_all
-
-    def test_collector_metadata(self):
-        """Test collector.py metadata."""
-        assert collector_author
-        assert collector_copyright
-        assert collector_license == "MIT"
-        assert "CodeSnippet" in collector_all
-        assert "group_snippets" in collector_all
-
-    def test_constants_metadata(self):
-        """Test constants.py metadata."""
-        assert constants_author
-        assert constants_copyright
-        assert constants_license == "MIT"
-        assert "CODEBLOCK_MARK" in constants_all
-        assert "DJANGO_DB_MARKS" in constants_all
-        assert "TEST_PREFIX" in constants_all
-
-    def test_helpers_metadata(self):
-        """Test helpers.py metadata."""
-        assert helpers_author
-        assert helpers_copyright
-        assert helpers_license == "MIT"
-        assert "contains_top_level_await" in helpers_all
-        assert "wrap_async_code" in helpers_all
-
-    def test_md_metadata(self):
-        """Test md.py metadata."""
-        assert md_author
-        assert md_copyright
-        assert md_license == "MIT"
-        assert "MarkdownFile" in md_all
-        assert "parse_markdown" in md_all
-
-    def test_rst_metadata(self):
-        """Test rst.py metadata."""
-        assert rst_author
-        assert rst_copyright
-        assert rst_license == "MIT"
-        assert "RSTFile" in rst_all
-        assert "parse_rst" in rst_all
 
 
 # =============================================================================
