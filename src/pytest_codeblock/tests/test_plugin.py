@@ -537,35 +537,44 @@ class TestParseRst:
         assert "django_db" in snippets[0].marks
 
     def test_parse_pytestfixture(self, tmp_path):
+        """Test the .. pytestfixture: directive."""
         rst = """
 .. pytestfixture: tmp_path
 
 .. code-block:: python
-   :name: test_fixture
+    :name: test_fixture_rst
 
-   pass
+    import os
 """
         snippets = parse_rst(rst, tmp_path)
+
+        assert len(snippets) == 1
         assert "tmp_path" in snippets[0].fixtures
 
     def test_parse_continue_directive(self, tmp_path):
+        """Test the .. continue: directive for grouping RST snippets."""
         rst = """
 .. code-block:: python
-   :name: test_cont
+    :name: test_rst_setup
 
-   a = 1
+    a = 10
 
-.. continue: test_cont
+Some text.
+
+.. continue: test_rst_setup
 
 .. code-block:: python
 
-   b = 2
+    b = a + 5
+    assert b == 15
 """
         snippets = parse_rst(rst, tmp_path)
+
         grouped = group_snippets(snippets)
-        matching = [s for s in grouped if s.name == "test_cont"]
-        assert "a = 1" in matching[0].code
-        assert "b = 2" in matching[0].code
+        test_snippets = [s for s in grouped if s.name == "test_rst_setup"]
+        assert len(test_snippets) == 1
+        assert "a = 10" in test_snippets[0].code
+        assert "b = a + 5" in test_snippets[0].code
 
     def test_parse_codeblock_name(self, tmp_path):
         rst = """
@@ -579,17 +588,20 @@ class TestParseRst:
         assert snippets[0].name == "test_named"
 
     def test_parse_literal_block(self, tmp_path):
+        """Test parsing of literal blocks via :: syntax."""
         rst = """
 .. codeblock-name: test_literal
 
-Example::
+Example code::
 
-   x = 1
-   y = 2
+result = 1 + 2
+assert result == 3
 """
         snippets = parse_rst(rst, tmp_path)
+
         assert len(snippets) == 1
-        assert "x = 1" in snippets[0].code
+        assert snippets[0].name == "test_literal"
+        assert "result = 1 + 2" in snippets[0].code
 
     def test_parse_literalinclude(self, tmp_path):
         code_file = tmp_path / "example.py"
