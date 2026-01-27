@@ -11,12 +11,7 @@ Tests targeting internal coverage gaps:
 import pytest
 
 from .. import pytest_collect_file
-from ..collector import CodeSnippet, group_snippets
-from ..constants import (
-    CODEBLOCK_MARK,
-    DJANGO_DB_MARKS,
-    TEST_PREFIX,
-)
+from ..collector import group_snippets
 from ..md import MarkdownFile, parse_markdown
 from ..rst import (
     RSTFile,
@@ -29,124 +24,9 @@ __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2025-2026 Artur Barseghyan"
 __license__ = "MIT"
 __all__ = (
-    "test_constants_values",
-    "test_group_snippets_anonymous",
-    "test_group_snippets_fixture_merging",
-    "test_parse_markdown_continue_directive",
-    "test_parse_markdown_codeblock_name_directive",
-    "test_parse_markdown_pytestfixture_directive",
     "test_parse_rst_continue_directive",
     "test_parse_rst_literal_block",
 )
-
-
-# ---------------------------------------------------------------------------
-# constants.py coverage
-# ---------------------------------------------------------------------------
-def test_constants_values():
-    """Verify constants are defined and have expected values."""
-    assert CODEBLOCK_MARK == "codeblock"
-    assert TEST_PREFIX == "test_"
-    assert "django_db" in DJANGO_DB_MARKS
-    assert "db" in DJANGO_DB_MARKS
-    assert "transactional_db" in DJANGO_DB_MARKS
-
-
-# ---------------------------------------------------------------------------
-# collector.py coverage - anonymous snippets
-# ---------------------------------------------------------------------------
-def test_group_snippets_anonymous():
-    """Test that anonymous snippets (name=None) get auto-generated names."""
-    sn1 = CodeSnippet(name=None, code="a=1", line=1)
-    sn2 = CodeSnippet(name=None, code="b=2", line=5)
-    sn3 = CodeSnippet(name=None, code="c=3", line=10)
-
-    combined = group_snippets([sn1, sn2, sn3])
-
-    assert len(combined) == 3
-    # Anonymous snippets get codeblock1, codeblock2, codeblock3
-    names = [sn.name for sn in combined]
-    # name stays None but key used
-    assert "codeblock1" in names or combined[0].name is None
-    # The snippets should remain separate since they have different auto-keys
-    assert combined[0].code == "a=1"
-    assert combined[1].code == "b=2"
-    assert combined[2].code == "c=3"
-
-
-def test_group_snippets_fixture_merging():
-    """Test that fixtures are accumulated when merging named snippets."""
-    sn1 = CodeSnippet(name="test_f", code="x=1", line=1, fixtures=["tmp_path"])
-    sn2 = CodeSnippet(name="test_f", code="y=2", line=5, fixtures=["capsys"])
-
-    combined = group_snippets([sn1, sn2])
-
-    assert len(combined) == 1
-    # Fixtures should be merged
-    assert "tmp_path" in combined[0].fixtures
-    assert "capsys" in combined[0].fixtures
-    # Code should be concatenated
-    assert "x=1" in combined[0].code
-    assert "y=2" in combined[0].code
-
-
-# ---------------------------------------------------------------------------
-# md.py coverage - directive parsing
-# ---------------------------------------------------------------------------
-def test_parse_markdown_continue_directive():
-    """Test the <!-- continue: name --> directive for grouping snippets."""
-    text = """
-```python name=test_setup
-x = 1
-```
-
-Some text in between.
-
-<!-- continue: test_setup -->
-```python
-y = x + 1
-assert y == 2
-```
-"""
-    snippets = parse_markdown(text)
-
-    # Both blocks should be grouped under test_setup
-    grouped = group_snippets(snippets)
-    test_snippets = [s for s in grouped if s.name == "test_setup"]
-    assert len(test_snippets) == 1
-    assert "x = 1" in test_snippets[0].code
-    assert "y = x + 1" in test_snippets[0].code
-
-
-def test_parse_markdown_codeblock_name_directive():
-    """Test the <!-- codeblock-name: name --> directive."""
-    text = """
-<!-- codeblock-name: test_named -->
-```python
-z = 42
-assert z == 42
-```
-"""
-    snippets = parse_markdown(text)
-
-    assert len(snippets) == 1
-    assert snippets[0].name == "test_named"
-
-
-def test_parse_markdown_pytestfixture_directive():
-    """Test the <!-- pytestfixture: name --> directive."""
-    text = """
-<!-- pytestfixture: tmp_path -->
-<!-- pytestfixture: capsys -->
-```python name=test_with_fixtures
-print("hello")
-```
-"""
-    snippets = parse_markdown(text)
-
-    assert len(snippets) == 1
-    assert "tmp_path" in snippets[0].fixtures
-    assert "capsys" in snippets[0].fixtures
 
 
 # ---------------------------------------------------------------------------

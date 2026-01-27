@@ -127,25 +127,42 @@ class TestGroupSnippets:
         assert len(result) == 2
 
     def test_group_snippets_anonymous(self):
-        """Test anonymous snippets get auto-names."""
+        """Test anonymous snippets (name=None) get auto-generated names."""
         sn1 = CodeSnippet(name=None, code="a=1", line=1)
         sn2 = CodeSnippet(name=None, code="b=2", line=5)
         sn3 = CodeSnippet(name=None, code="c=3", line=10)
-        result = group_snippets([sn1, sn2, sn3])
-        # Each anonymous snippet should remain separate
-        assert len(result) == 3
+
+        combined = group_snippets([sn1, sn2, sn3])
+
+        assert len(combined) == 3
+        # Anonymous snippets get codeblock1, codeblock2, codeblock3
+        names = [sn.name for sn in combined]
+        # name stays None but key used
+        assert "codeblock1" in names or combined[0].name is None
+        # The snippets should remain separate since they have different
+        # auto-keys
+        assert combined[0].code == "a=1"
+        assert combined[1].code == "b=2"
+        assert combined[2].code == "c=3"
 
     def test_group_snippets_fixtures_merge(self):
         """Test fixtures are accumulated when merging."""
         sn1 = CodeSnippet(
-            name="test_x", code="a=1", line=1, fixtures=["tmp_path"]
+            name="test_f", code="x=1", line=1, fixtures=["tmp_path"]
         )
         sn2 = CodeSnippet(
-            name="test_x", code="b=2", line=5, fixtures=["capsys"]
+            name="test_f", code="y=2", line=5, fixtures=["capsys"]
         )
-        result = group_snippets([sn1, sn2])
-        assert "tmp_path" in result[0].fixtures
-        assert "capsys" in result[0].fixtures
+
+        combined = group_snippets([sn1, sn2])
+
+        assert len(combined) == 1
+        # Fixtures should be merged
+        assert "tmp_path" in combined[0].fixtures
+        assert "capsys" in combined[0].fixtures
+        # Code should be concatenated
+        assert "x=1" in combined[0].code
+        assert "y=2" in combined[0].code
 
 
 # =============================================================================
@@ -303,41 +320,57 @@ pass
         assert "django_db" in snippets[0].marks
 
     def test_parse_with_pytestfixture(self):
+        """Test the <!-- pytestfixture: name --> directive."""
         text = """
 <!-- pytestfixture: tmp_path -->
-```python name=test_fixture
-pass
+<!-- pytestfixture: capsys -->
+```python name=test_with_fixtures
+print("hello")
 ```
 """
         snippets = parse_markdown(text)
+
+        assert len(snippets) == 1
         assert "tmp_path" in snippets[0].fixtures
+        assert "capsys" in snippets[0].fixtures
 
     def test_parse_continue_directive(self):
+        """Test the <!-- continue: name --> directive for grouping snippets."""
         text = """
-```python name=test_cont
-a = 1
+```python name=test_setup
+x = 1
 ```
 
-<!-- continue: test_cont -->
+Some text in between.
+
+<!-- continue: test_setup -->
 ```python
-b = 2
+y = x + 1
+assert y == 2
 ```
 """
         snippets = parse_markdown(text)
+
+        # Both blocks should be grouped under test_setup
         grouped = group_snippets(snippets)
-        matching = [s for s in grouped if s.name == "test_cont"]
-        assert len(matching) == 1
-        assert "a = 1" in matching[0].code
-        assert "b = 2" in matching[0].code
+        test_snippets = [s for s in grouped if s.name == "test_setup"]
+        assert len(test_snippets) == 1
+        assert "x = 1" in test_snippets[0].code
+        assert "y = x + 1" in test_snippets[0].code
+
 
     def test_parse_codeblock_name_directive(self):
+        """Test the <!-- codeblock-name: name --> directive."""
         text = """
 <!-- codeblock-name: test_named -->
 ```python
 z = 42
+assert z == 42
 ```
 """
         snippets = parse_markdown(text)
+
+        assert len(snippets) == 1
         assert snippets[0].name == "test_named"
 
     def test_parse_py_language(self):
