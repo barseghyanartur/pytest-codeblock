@@ -50,8 +50,15 @@ serve_docs:
 install:
 	source $(VENV) && pip install -e .[all]
 
+# Run tests with pytest
 test: clean
 	source $(VENV) && pytest -vrx -s
+
+# Run tests with coverage
+test-cov: clean
+	coverage run --source=src/pytest_codeblock --omit="*/tests/*,*/conftest.py" -m pytest -vrx -s src/pytest_codeblock/tests/ -o "addopts=" -o "testpaths=src/pytest_codeblock/tests"
+	coverage report --omit="*/tests/*,*/conftest.py,examples/*"
+	coverage html --omit="*/tests/*,*/conftest.py,examples/*"
 
 shell:
 	source $(VENV) && ipython
