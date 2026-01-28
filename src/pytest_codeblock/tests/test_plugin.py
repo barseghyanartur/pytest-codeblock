@@ -298,7 +298,7 @@ class TestPytestCollectFile:
 class TestParseMarkdown:
     """Test parse_markdown function."""
 
-    def test_parse_simple_block(self):
+    def test_parse_simple_codeblock(self):
         text = """
 ```python name=test_simple
 x = 1
@@ -358,7 +358,6 @@ assert y == 2
         assert "x = 1" in test_snippets[0].code
         assert "y = x + 1" in test_snippets[0].code
 
-
     def test_parse_codeblock_name_directive(self):
         """Test the <!-- codeblock-name: name --> directive."""
         text = """
@@ -391,14 +390,20 @@ x = 1
         snippets = parse_markdown(text)
         assert len(snippets) == 1
 
-    def test_parse_non_python_ignored(self):
+    def test_parse_non_python_codeblock_ignored(self):
         text = """
-```javascript
+```javascript name=test_js
 console.log("hi");
+```
+
+```python name=test_py
+x = 1
 ```
 """
         snippets = parse_markdown(text)
-        assert len(snippets) == 0
+        # Only Python blocks should be collected
+        assert len(snippets) == 1
+        assert snippets[0].name == "test_py"
 
     def test_parse_name_colon_syntax(self):
         text = """
@@ -409,7 +414,7 @@ x = 1
         snippets = parse_markdown(text)
         assert snippets[0].name == "test_colon"
 
-    def test_parse_empty_block(self):
+    def test_parse_empty_codeblock(self):
         text = """
 ```python name=test_empty
 ```

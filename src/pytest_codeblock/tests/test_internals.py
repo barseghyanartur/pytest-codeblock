@@ -27,17 +27,6 @@ __license__ = "MIT"
 # Additional unit tests for uncovered paths
 # ---------------------------------------------------------------------------
 
-def test_parse_markdown_empty_code_block():
-    """Test parsing an empty code block."""
-    text = """
-```python name=test_empty
-```
-"""
-    snippets = parse_markdown(text)
-    assert len(snippets) == 1
-    assert snippets[0].code == ""
-
-
 def test_parse_markdown_mixed_indentation():
     """Test parsing code with mixed indentation levels."""
     text = """
