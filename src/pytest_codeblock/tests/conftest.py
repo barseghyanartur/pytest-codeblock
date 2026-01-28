@@ -13,6 +13,9 @@ __all__ = (
 )
 
 
+pytest_plugins = ["pytester"]
+
+
 @pytest.fixture
 def http_request_factory():
     """

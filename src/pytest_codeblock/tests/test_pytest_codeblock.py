@@ -1,7 +1,7 @@
-from pytest_codeblock.collector import CodeSnippet, group_snippets
-from pytest_codeblock.helpers import contains_top_level_await, wrap_async_code
-from pytest_codeblock.md import parse_markdown
-from pytest_codeblock.rst import (
+from ..collector import CodeSnippet, group_snippets
+from ..helpers import contains_top_level_await, wrap_async_code
+from ..md import parse_markdown
+from ..rst import (
     get_literalinclude_content,
     parse_rst,
     resolve_literalinclude_path,
