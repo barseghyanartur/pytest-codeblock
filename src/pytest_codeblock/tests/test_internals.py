@@ -27,50 +27,6 @@ __license__ = "MIT"
 # Additional unit tests for uncovered paths
 # ---------------------------------------------------------------------------
 
-def test_parse_markdown_mixed_indentation():
-    """Test parsing code with mixed indentation levels."""
-    text = """
-    ```python name=test_indented
-    x = 1
-        y = 2
-    z = 3
-    ```
-"""
-    snippets = parse_markdown(text)
-    assert len(snippets) == 1
-    # Code should be dedented based on fence indentation
-    assert "x = 1" in snippets[0].code
-
-
-def test_parse_markdown_non_python_block():
-    """Test that non-Python code blocks are skipped."""
-    text = """
-```javascript name=test_js
-console.log("hello");
-```
-
-```python name=test_py
-x = 1
-```
-"""
-    snippets = parse_markdown(text)
-    # Only Python blocks should be collected
-    assert len(snippets) == 1
-    assert snippets[0].name == "test_py"
-
-
-def test_parse_markdown_name_with_colon_syntax():
-    """Test name= vs name: syntax in fence info string."""
-    text = """
-```python name:test_colon
-a = 1
-```
-"""
-    snippets = parse_markdown(text)
-    assert len(snippets) == 1
-    assert snippets[0].name == "test_colon"
-
-
 def test_parse_rst_code_directive_variant(tmp_path):
     """Test parsing .. code:: python (alternative to code-block)."""
     rst = """

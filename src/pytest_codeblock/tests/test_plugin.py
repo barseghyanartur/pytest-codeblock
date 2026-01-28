@@ -391,6 +391,7 @@ x = 1
         assert len(snippets) == 1
 
     def test_parse_non_python_codeblock_ignored(self):
+        """Test that non-Python code blocks are skipped."""
         text = """
 ```javascript name=test_js
 console.log("hi");
@@ -406,6 +407,7 @@ x = 1
         assert snippets[0].name == "test_py"
 
     def test_parse_name_colon_syntax(self):
+        """Test name= vs name: syntax in fence info string."""
         text = """
 ```python name:test_colon
 x = 1
@@ -443,6 +445,20 @@ x = 1
 """
         snippets = parse_markdown(text)
         assert len(snippets) == 1
+
+    def test_parse_markdown_mixed_indentation(self):
+        """Test parsing codeblock with mixed indentation levels."""
+        text = """
+    ```python name=test_indented
+    x = 1
+        y = 2
+    z = 3
+        ```
+"""
+        snippets = parse_markdown(text)
+        assert len(snippets) == 1
+        # Code should be dedented based on fence indentation
+        assert "x = 1" in snippets[0].code
 
 
 # =============================================================================
