@@ -447,28 +447,33 @@ class TestResolveLiteralincludePath:
     """Test resolve_literalinclude_path function."""
 
     def test_absolute_path_exists(self, tmp_path):
-        f = tmp_path / "code.py"
-        f.write_text("x=1")
-        result = resolve_literalinclude_path(tmp_path, str(f))
-        assert result == str(f.resolve())
+        """Test with an absolute path that exists."""
+        file = tmp_path / "test.py"
+        file.write_text("print('hello')")
+        result = resolve_literalinclude_path(tmp_path, str(file))
+        assert result == str(file.resolve())
 
     def test_relative_path_exists(self, tmp_path):
-        f = tmp_path / "code.py"
-        f.write_text("x=1")
-        result = resolve_literalinclude_path(tmp_path, "code.py")
-        assert result == str(f.resolve())
+        """Test with a relative path that exists."""
+        file = tmp_path / "subdir" / "test.py"
+        file.parent.mkdir(parents=True)
+        file.write_text("print('hello')")
+        result = resolve_literalinclude_path(tmp_path, "subdir/test.py")
+        assert result == str(file.resolve())
 
     def test_base_is_file(self, tmp_path):
         """Test when base_dir is a file (uses parent)."""
-        doc = tmp_path / "doc.rst"
-        doc.write_text("test")
-        code = tmp_path / "code.py"
-        code.write_text("x=1")
-        result = resolve_literalinclude_path(doc, "code.py")
-        assert result == str(code.resolve())
+        base_file = tmp_path / "doc.rst"
+        base_file.write_text("some rst")
+        target = tmp_path / "code.py"
+        target.write_text("x = 1")
+        # Pass the file as base_dir - function should use its parent
+        result = resolve_literalinclude_path(base_file, "code.py")
+        assert result == str(target.resolve())
 
     def test_nonexistent_returns_none(self, tmp_path):
-        result = resolve_literalinclude_path(tmp_path, "missing.py")
+        """Test with a path that doesn't exist."""
+        result = resolve_literalinclude_path(tmp_path, "nonexistent.py")
         assert result is None
 
     def test_exception_handling(self, tmp_path):
@@ -485,14 +490,17 @@ class TestGetLiteralincludeContent:
     """Test get_literalinclude_content function."""
 
     def test_read_success(self, tmp_path):
-        f = tmp_path / "code.py"
-        f.write_text("x = 42\ny = 43")
-        content = get_literalinclude_content(str(f))
+        """Test reads file correctly."""
+        file = tmp_path / "test.py"
+        file.write_text("x = 42\ny = 43")
+        content = get_literalinclude_content(str(file))
         assert content == "x = 42\ny = 43"
 
     def test_read_failure(self, tmp_path):
-        """Test RuntimeError on missing file."""
-        with pytest.raises(RuntimeError, match="Failed to read"):
+        """Test get_literalinclude_content raises on missing file."""
+        with pytest.raises(
+            RuntimeError, match="Failed to read literalinclude file"
+        ):
             get_literalinclude_content(str(tmp_path / "missing.py"))
 
 

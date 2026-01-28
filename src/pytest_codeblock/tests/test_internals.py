@@ -15,9 +15,7 @@ from ..collector import group_snippets
 from ..md import MarkdownFile, parse_markdown
 from ..rst import (
     RSTFile,
-    get_literalinclude_content,
     parse_rst,
-    resolve_literalinclude_path,
 )
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
@@ -28,59 +26,6 @@ __license__ = "MIT"
 # ---------------------------------------------------------------------------
 # Additional unit tests for uncovered paths
 # ---------------------------------------------------------------------------
-
-
-def test_resolve_literalinclude_path_absolute_exists(tmp_path):
-    """Test resolve_literalinclude_path with an absolute path that exists."""
-    file = tmp_path / "test.py"
-    file.write_text("print('hello')")
-    result = resolve_literalinclude_path(tmp_path, str(file))
-    assert result == str(file.resolve())
-
-
-def test_resolve_literalinclude_path_relative_exists(tmp_path):
-    """Test resolve_literalinclude_path with a relative path."""
-    file = tmp_path / "subdir" / "test.py"
-    file.parent.mkdir(parents=True)
-    file.write_text("print('hello')")
-    result = resolve_literalinclude_path(tmp_path, "subdir/test.py")
-    assert result == str(file.resolve())
-
-
-def test_resolve_literalinclude_path_base_is_file(tmp_path):
-    """Test resolve_literalinclude_path when base_dir is a file.
-    Should use parent.
-    """
-    base_file = tmp_path / "doc.rst"
-    base_file.write_text("some rst")
-    target = tmp_path / "code.py"
-    target.write_text("x = 1")
-    # Pass the file as base_dir - function should use its parent
-    result = resolve_literalinclude_path(base_file, "code.py")
-    assert result == str(target.resolve())
-
-
-def test_resolve_literalinclude_path_nonexistent(tmp_path):
-    """Test resolve_literalinclude_path with a path that doesn't exist."""
-    result = resolve_literalinclude_path(tmp_path, "nonexistent.py")
-    assert result is None
-
-
-def test_get_literalinclude_content_success(tmp_path):
-    """Test get_literalinclude_content reads file correctly."""
-    file = tmp_path / "test.py"
-    file.write_text("x = 42\ny = 43")
-    content = get_literalinclude_content(str(file))
-    assert content == "x = 42\ny = 43"
-
-
-def test_get_literalinclude_content_error(tmp_path):
-    """Test get_literalinclude_content raises on missing file."""
-    with pytest.raises(
-        RuntimeError, match="Failed to read literalinclude file"
-    ):
-        get_literalinclude_content(str(tmp_path / "missing.py"))
-
 
 def test_parse_markdown_empty_code_block():
     """Test parsing an empty code block."""
