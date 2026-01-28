@@ -11,7 +11,6 @@ Tests targeting internal coverage gaps:
 import pytest
 
 from .. import pytest_collect_file
-from ..collector import group_snippets
 from ..md import MarkdownFile, parse_markdown
 from ..rst import (
     RSTFile,
@@ -27,83 +26,6 @@ __license__ = "MIT"
 # Additional unit tests for uncovered paths
 # ---------------------------------------------------------------------------
 
-def test_parse_rst_code_directive_variant(tmp_path):
-    """Test parsing .. code:: python (alternative to code-block)."""
-    rst = """
-.. code:: python
-   :name: test_code_variant
-
-   result = 42
-"""
-    snippets = parse_rst(rst, tmp_path)
-    assert len(snippets) == 1
-    assert snippets[0].name == "test_code_variant"
-
-
-def test_parse_rst_empty_code_block(tmp_path):
-    """Test parsing an empty RST code block."""
-    rst = """
-.. code-block:: python
-   :name: test_empty_rst
-
-"""
-    snippets = parse_rst(rst, tmp_path)
-    # Empty blocks are collected but have no snippets
-    assert len(snippets) == 0
-
-
-def test_parse_rst_continue_in_literal_block(tmp_path):
-    """Test continue directive with literal block syntax."""
-    rst = """
-.. codeblock-name: test_lit_continue
-
-Part 1::
-
-   a = 1
-
-.. continue: test_lit_continue
-
-.. codeblock-name: test_lit_continue
-
-Part 2::
-
-   b = 2
-"""
-    snippets = parse_rst(rst, tmp_path)
-    grouped = group_snippets(snippets)
-    # Should have grouped the snippets
-    matching = [s for s in grouped if s.name == "test_lit_continue"]
-    assert len(matching) >= 1
-
-
-def test_parse_rst_literalinclude_with_name(tmp_path):
-    """Test literalinclude directive with test_ name."""
-    # Create the file to include
-    code_file = tmp_path / "example.py"
-    code_file.write_text("def hello():\n    print('world')")
-
-    rst = """
-.. literalinclude:: example.py
-   :name: test_include_example
-"""
-    snippets = parse_rst(rst, tmp_path)
-    assert len(snippets) == 1
-    assert snippets[0].name == "test_include_example"
-    assert "def hello():" in snippets[0].code
-
-
-def test_parse_rst_literalinclude_without_test_prefix(tmp_path):
-    """Test literalinclude without test_ prefix is skipped."""
-    code_file = tmp_path / "example.py"
-    code_file.write_text("x = 1")
-
-    rst = """
-.. literalinclude:: example.py
-   :name: example_not_test
-"""
-    snippets = parse_rst(rst, tmp_path)
-    # Should be empty because name doesn't start with test_
-    assert len(snippets) == 0
 
 
 def test_pytest_collect_file_hook_markdown(tmp_path):

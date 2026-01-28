@@ -543,7 +543,7 @@ class TestParseRst:
         assert snippets[0].name == "test_rst"
 
     def test_parse_code_directive(self, tmp_path):
-        """Test .. code:: python variant."""
+        """Test .. code:: python (alternative to code-block)."""
         rst = """
 .. code:: python
    :name: test_code
@@ -552,6 +552,7 @@ class TestParseRst:
 """
         snippets = parse_rst(rst, tmp_path)
         assert len(snippets) == 1
+        assert snippets[0].name == "test_code"
 
     def test_parse_pytestmark(self, tmp_path):
         rst = """
@@ -632,7 +633,33 @@ assert result == 3
         assert snippets[0].name == "test_literal"
         assert "result = 1 + 2" in snippets[0].code
 
+    def test_parse_rst_continue_in_literal_block(self, tmp_path):
+        """Test continue directive with literal block syntax."""
+        rst = """
+.. codeblock-name: test_lit_continue
+
+Part 1::
+
+a = 1
+
+.. continue: test_lit_continue
+
+.. codeblock-name: test_lit_continue
+
+Part 2::
+
+b = 2
+    """
+        snippets = parse_rst(rst, tmp_path)
+        grouped = group_snippets(snippets)
+        # Should have grouped the snippets
+        matching = [s for s in grouped if s.name == "test_lit_continue"]
+        assert len(matching) >= 1
+
+
     def test_parse_literalinclude(self, tmp_path):
+        """Test literalinclude directive with test_ name."""
+        # Create the file to include
         code_file = tmp_path / "example.py"
         code_file.write_text("def hello(): pass")
         rst = """
@@ -644,14 +671,15 @@ assert result == 3
         assert "def hello():" in snippets[0].code
 
     def test_parse_literalinclude_no_test_prefix(self, tmp_path):
-        """Literalinclude without test_ prefix is skipped."""
+        """Test literalinclude without test_ prefix is skipped."""
         code_file = tmp_path / "example.py"
-        code_file.write_text("x=1")
+        code_file.write_text("x = 1")
         rst = """
 .. literalinclude:: example.py
    :name: example_not_test
 """
         snippets = parse_rst(rst, tmp_path)
+        # Should be empty because name doesn't start with test_
         assert len(snippets) == 0
 
     def test_parse_non_python_code_block(self, tmp_path):
@@ -676,7 +704,7 @@ x = 1
         # Content not indented, should not collect
         assert len(snippets) == 0
 
-    def test_parse_literal_block_eof(self, tmp_path):
+    def test_parse_literal_codeblock_eof(self, tmp_path):
         """Literal block at end of file."""
         rst = """
 .. codeblock-name: test_eof
@@ -686,14 +714,15 @@ Block::"""
         # No content after ::
         assert len(snippets) == 0
 
-    def test_parse_empty_code_block(self, tmp_path):
-        """Empty code block."""
+    def test_parse_empty_codeblock(self, tmp_path):
+        """Test parsing an empty code block."""
         rst = """
 .. code-block:: python
    :name: test_empty
 
 """
         snippets = parse_rst(rst, tmp_path)
+        # Empty blocks are collected but have no snippets
         assert len(snippets) == 0
 
 
