@@ -67,7 +67,7 @@ Features
   The only requirement here is that your code blocks shall
   have a name starting with ``test_``. Async code snippets are supported as
   well.
-- **Grouping by name**: Split a single example across multiple code blocks;
+- **Grouping**: Split a single example across multiple code blocks;
   the plugin concatenates them into one test.
 - **Pytest markers support**: Add existing or custom `pytest`_ markers
   to the code blocks and hook into the tests life-cycle using ``conftest.py``.
