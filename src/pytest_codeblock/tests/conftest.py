@@ -50,3 +50,13 @@ def markdown_with_pytest_mark():
 ```python name=test_db
 from django.db import models
 ```"""
+
+
+@pytest.fixture
+def pytester_subprocess(pytester):
+    """
+    Wrapper that forces subprocess mode to avoid deprecation warning conflicts
+    when the plugin uses the old `path` argument signature.
+    """
+    pytester.runpytest = pytester.runpytest_subprocess
+    return pytester

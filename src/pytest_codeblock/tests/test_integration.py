@@ -387,7 +387,7 @@ assert z == 42
     def test_parse_py_language(self):
         """Test markdown with 'py' as language identifier."""
         text = """
-```py name=test_py
+```py name=test_py_lang
 x = 1
 ```
 """
@@ -400,7 +400,7 @@ x = 1
     def test_parse_python3_language(self):
         """Test markdown with 'python3' as language identifier."""
         text = """
-```python3 name=test_py3
+```python3 name=test_python3
 x = 1
 ```
 """
@@ -817,206 +817,237 @@ Block::
 
 
 # =============================================================================
-# Test MarkdownFile.collect() method
+# Integration tests using pytester - exercises collectors and hook
 # =============================================================================
-# class TestMarkdownFileCollect:
-#     """Test MarkdownFile collector."""
 
-#     def test_collect_basic(self, tmp_path):
-#         """Test basic collection."""
-#         md_file = tmp_path / "test.md"
-#         md_file.write_text("""
-# ```python name=test_basic
-# assert 1 + 1 == 2
-# ```
-# """)
-#         parent = MagicMock()
-#         parent.path = tmp_path
-#         parent.session = MagicMock()
-#         parent.config = MagicMock()
-
-#         collector = MarkdownFile.from_parent(parent=parent, path=md_file)
-#         items = list(collector.collect())
-#         assert len(items) == 1
-#         assert items[0].name == "test_basic"
-
-#     def test_collect_with_fixture(self, tmp_path):
-#         """Test collection with fixtures (line 184)."""
-#         md_file = tmp_path / "test.md"
-#         md_file.write_text("""
-# <!-- pytestfixture: tmp_path -->
-# ```python name=test_with_fixture
-# x = 1
-# ```
-# """)
-#         parent = MagicMock()
-#         parent.path = tmp_path
-#         parent.session = MagicMock()
-#         parent.config = MagicMock()
-
-#         collector = MarkdownFile.from_parent(parent=parent, path=md_file)
-#         items = list(collector.collect())
-#         assert len(items) == 1
-
-#     def test_collect_with_django_mark(self, tmp_path):
-#         """Test collection adds db fixture for django_db mark."""
-#         md_file = tmp_path / "test.md"
-#         md_file.write_text("""
-# <!-- pytestmark: django_db -->
-# ```python name=test_django
-# pass
-# ```
-# """)
-#         parent = MagicMock()
-#         parent.path = tmp_path
-#         parent.session = MagicMock()
-#         parent.config = MagicMock()
-
-#         collector = MarkdownFile.from_parent(parent=parent, path=md_file)
-#         items = list(collector.collect())
-#         assert len(items) == 1
-
-#     def test_collect_non_test_prefix_skipped(self, tmp_path):
-#         """Snippets without test_ prefix are skipped."""
-#         md_file = tmp_path / "test.md"
-#         md_file.write_text("""
-# ```python name=example_not_test
-# x = 1
-# ```
-# """)
-#         parent = MagicMock()
-#         parent.path = tmp_path
-#         parent.session = MagicMock()
-#         parent.config = MagicMock()
-
-#         collector = MarkdownFile.from_parent(parent=parent, path=md_file)
-#         items = list(collector.collect())
-#         assert len(items) == 0
-
-
-# =============================================================================
+# -----------------------------------------------------------------------------
 # Test RSTFile.collect() method
-# =============================================================================
-# class TestRSTFileCollect:
-#     """Test RSTFile collector."""
+# -----------------------------------------------------------------------------
 
-#     def test_collect_basic(self, tmp_path):
-#         """Test basic collection."""
-#         rst_file = tmp_path / "test.rst"
-#         rst_file.write_text("""
-# .. code-block:: python
-#    :name: test_basic
+class TestMarkdownCollector:
+    """Integration tests for MarkdownFile collector."""
 
-#    assert 1 + 1 == 2
-# """)
-#         parent = MagicMock()
-#         parent.path = tmp_path
-#         parent.session = MagicMock()
-#         parent.config = MagicMock()
+    def test_collect_simple_markdown(self, pytester_subprocess):
+        """Test that MarkdownFile collects and runs test snippets."""
+        pytester_subprocess.makefile(
+            ".md",
+            test_simple="""
+# Test File
 
-#         collector = RSTFile.from_parent(parent=parent, path=rst_file)
-#         items = list(collector.collect())
-#         assert len(items) == 1
-#         assert items[0].name == "test_basic"
+```python name=test_basic
+x = 1
+assert x == 1
+```
+""",
+        )
+        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
+        result.assert_outcomes(passed=1)
+        assert "test_basic" in result.stdout.str()
 
-#     def test_collect_with_fixture(self, tmp_path):
-#         """Test collection with fixtures."""
-#         rst_file = tmp_path / "test.rst"
-#         rst_file.write_text("""
-# .. pytestfixture: tmp_path
+    def test_collect_with_fixture(self, pytester_subprocess):
+        """Test that fixtures are properly injected."""
+        pytester_subprocess.makefile(
+            ".md",
+            test_fixture="""
+<!-- pytestfixture: tmp_path -->
+```python name=test_uses_tmp_path
+assert tmp_path.exists()
+```
+""",
+        )
+        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
+        result.assert_outcomes(passed=1)
 
-# .. code-block:: python
-#    :name: test_with_fixture
+    def test_collect_async_code(self, pytester_subprocess):
+        """Test that async code is automatically wrapped."""
+        pytester_subprocess.makefile(
+            ".md",
+            test_async="""
+```python name=test_async_snippet
+import asyncio
+await asyncio.sleep(0)
+```
+""",
+        )
+        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
+        result.assert_outcomes(passed=1)
 
-#    x = 1
-# """)
-#         parent = MagicMock()
-#         parent.path = tmp_path
-#         parent.session = MagicMock()
-#         parent.config = MagicMock()
+    def test_syntax_error_reporting(self, pytester_subprocess):
+        """Test that syntax errors in snippets are properly reported."""
+        pytester_subprocess.makefile(
+            ".md",
+            test_syntax="""
+```python name=test_bad_syntax
+def broken(:
+    pass
+```
+""",
+        )
+        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
+        result.assert_outcomes(failed=1)
+        assert (
+            "SyntaxError" in result.stdout.str()
+            or "syntax" in result.stdout.str().lower()
+        )
 
-#         collector = RSTFile.from_parent(parent=parent, path=rst_file)
-#         items = list(collector.collect())
-#         assert len(items) == 1
-
-#     def test_collect_with_django_mark(self, tmp_path):
-#         """Test collection adds db fixture for django_db mark."""
-#         rst_file = tmp_path / "test.rst"
-#         rst_file.write_text("""
-# .. pytestmark: django_db
-
-# .. code-block:: python
-#    :name: test_django
-
-#    pass
-# """)
-#         parent = MagicMock()
-#         parent.path = tmp_path
-#         parent.session = MagicMock()
-#         parent.config = MagicMock()
-
-#         collector = RSTFile.from_parent(parent=parent, path=rst_file)
-#         items = list(collector.collect())
-#         assert len(items) == 1
-
-#     def test_collect_non_test_prefix_skipped(self, tmp_path):
-#         """Snippets without test_ prefix are skipped."""
-#         rst_file = tmp_path / "test.rst"
-#         rst_file.write_text("""
-# .. code-block:: python
-#    :name: example_not_test
-
-#    x = 1
-# """)
-#         parent = MagicMock()
-#         parent.path = tmp_path
-#         parent.session = MagicMock()
-#         parent.config = MagicMock()
-
-#         collector = RSTFile.from_parent(parent=parent, path=rst_file)
-#         items = list(collector.collect())
-#         assert len(items) == 0
+    def test_runtime_error_reporting(self, pytester_subprocess):
+        """Test that runtime errors in snippets are properly reported."""
+        pytester_subprocess.makefile(
+            ".md",
+            test_runtime="""
+```python name=test_runtime_error
+raise ValueError("intentional error")
+```
+""",
+        )
+        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
+        result.assert_outcomes(failed=1)
+        assert "ValueError" in result.stdout.str()
 
 
-# =============================================================================
-# Test async code handling in collectors
-# =============================================================================
-# class TestAsyncCodeHandling:
-#     """Test async code detection and wrapping in collectors."""
+# -----------------------------------------------------------------------------
+# Test RSTFile.collect() method
+# -----------------------------------------------------------------------------
 
-#     def test_markdown_async_code(self, tmp_path):
-#         """Test MarkdownFile handles async code."""
-#         md_file = tmp_path / "test.md"
-#         md_file.write_text("""
-# ```python name=test_async
-# import asyncio
-# await asyncio.sleep(0)
-# ```
-# """)
-#         parent = MagicMock()
-#         parent.path = tmp_path
-#         parent.session = MagicMock()
-#         parent.config = MagicMock()
+class TestRSTCollector:
+    """Integration tests for RSTFile collector."""
 
-#         collector = MarkdownFile.from_parent(parent=parent, path=md_file)
-#         items = list(collector.collect())
-#         assert len(items) == 1
+    def test_collect_simple_rst(self, pytester_subprocess):
+        """Test that RSTFile collects and runs test snippets."""
+        pytester_subprocess.makefile(
+            ".rst",
+            test_simple="""
+Test File
+=========
 
-#     def test_rst_async_code(self, tmp_path):
-#         """Test RSTFile handles async code."""
-#         rst_file = tmp_path / "test.rst"
-#         rst_file.write_text("""
-# .. code-block:: python
-#    :name: test_async
+.. code-block:: python
+   :name: test_rst_basic
 
-#    import asyncio
-#    await asyncio.sleep(0)
-# """)
-#         parent = MagicMock()
-#         parent.path = tmp_path
-#         parent.session = MagicMock()
-#         parent.config = MagicMock()
+   y = 2
+   assert y == 2
+""",
+        )
+        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
+        result.assert_outcomes(passed=1)
+        assert "test_rst_basic" in result.stdout.str()
 
-#         collector = RSTFile.from_parent(parent=parent, path=rst_file)
-#         items = list(collector.collect())
-#         assert len(items) == 1
+    def test_collect_with_fixture(self, pytester_subprocess):
+        """Test that RST fixtures are properly injected."""
+        pytester_subprocess.makefile(
+            ".rst",
+            test_fixture="""
+.. pytestfixture: tmp_path
+
+.. code-block:: python
+   :name: test_rst_fixture
+
+   assert tmp_path.is_dir()
+""",
+        )
+        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
+        result.assert_outcomes(passed=1)
+
+    def test_collect_async_code(self, pytester_subprocess):
+        """Test that RST async code is automatically wrapped."""
+        pytester_subprocess.makefile(
+            ".rst",
+            test_async="""
+.. code-block:: python
+   :name: test_rst_async
+
+   import asyncio
+   await asyncio.sleep(0)
+""",
+        )
+        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
+        result.assert_outcomes(passed=1)
+
+    def test_syntax_error_reporting(self, pytester_subprocess):
+        """Test that syntax errors in RST snippets are reported."""
+        pytester_subprocess.makefile(
+            ".rst",
+            test_syntax="""
+.. code-block:: python
+   :name: test_rst_bad_syntax
+
+   class Broken(:
+       pass
+""",
+        )
+        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
+        result.assert_outcomes(failed=1)
+
+
+# ---------------------------------------------------------------------------
+# Tests for pytest_collect_file hook dispatch
+# ---------------------------------------------------------------------------
+
+
+class TestPytestCollectFileHook:
+    """Tests for pytest_collect_file hook dispatch."""
+
+    def test_hook_dispatches_markdown(self, pytester_subprocess):
+        """Test that .md files are dispatched to MarkdownFile."""
+        pytester_subprocess.makefile(
+            ".md",
+            readme="""
+```python name=test_md_hook
+assert True
+```
+""",
+        )
+        result = pytester_subprocess.runpytest(
+            "-v", "--collect-only", "-p", "no:django"
+        )
+        assert "test_md_hook" in result.stdout.str()
+
+    def test_hook_dispatches_rst(self, pytester_subprocess):
+        """Test that .rst files are dispatched to RSTFile."""
+        pytester_subprocess.makefile(
+            ".rst",
+            readme="""
+.. code-block:: python
+   :name: test_rst_hook
+
+   assert True
+""",
+        )
+        result = pytester_subprocess.runpytest(
+            "-v", "--collect-only", "-p", "no:django"
+        )
+        assert "test_rst_hook" in result.stdout.str()
+
+    def test_hook_ignores_other_files(self, pytester_subprocess):
+        """Test that non-.md/.rst files are ignored."""
+        pytester_subprocess.makefile(".txt", notes="Some notes")
+        result = pytester_subprocess.runpytest(
+            "-v", "--collect-only", "-p", "no:django"
+        )
+        # Should not fail, just collect nothing from .txt
+        assert result.ret == 5  # Exit code 5 = no tests collected
+
+# ---------------------------------------------------------------------------
+# Tests for Django DB mark handling
+# ---------------------------------------------------------------------------
+
+class TestDjangoDbMarks:
+    """Tests for Django DB mark handling."""
+
+    def test_django_db_mark_applied(self, pytester_subprocess):
+        """Test that django_db mark is applied when specified."""
+        pytester_subprocess.makefile(
+            ".md",
+            test_marks="""
+<!-- pytestmark: django_db -->
+```python name=test_with_db_mark
+# This would use the db fixture in a real Django project
+x = 1
+```
+""",
+        )
+        result = pytester_subprocess.runpytest(
+            "-v", "--collect-only", "-p", "no:django"
+        )
+        assert "test_with_db_mark" in result.stdout.str()
+        # The mark should be present (we can't fully test Django integration
+        # without Django)
