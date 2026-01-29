@@ -776,13 +776,14 @@ x = 1
     # -------------------------------------------------------------------------
 
     def test_parse_literal_codeblock_eof(self, tmp_path):
-        """Literal block at end of file."""
+        """Test literal block at end of file."""
         rst = """
 .. codeblock-name: test_eof
 
 Block::"""
+        # No content after the :: - end of file
         snippets = parse_rst(rst, tmp_path)
-        # No content after ::
+        # Should handle gracefully
         assert len(snippets) == 0
 
     # -------------------------------------------------------------------------
@@ -800,15 +801,16 @@ Block::"""
 
     # -------------------------------------------------------------------------
 
-    def test_parse_rst_literal_block_at_eof(self, tmp_path):
-        """Test literal block at end of file."""
+    def test_parse_literal_block_empty_line_after(self, tmp_path):
+        """Test literal block with just empty line after (edge case)."""
         rst = """
-.. codeblock-name: test_eof
+.. codeblock-name: test_empty_after
 
-Code block::"""
-        # No content after the :: - end of file
+Block::
+
+"""
         snippets = parse_rst(rst, tmp_path)
-        # Should handle gracefully
+        # Empty block at end
         assert len(snippets) == 0
 
 

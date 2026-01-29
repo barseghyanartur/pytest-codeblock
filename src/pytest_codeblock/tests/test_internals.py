@@ -11,7 +11,6 @@ Tests targeting internal coverage gaps:
 import pytest
 
 from ..md import parse_markdown
-from ..rst import parse_rst
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2025-2026 Artur Barseghyan"
@@ -21,19 +20,6 @@ __license__ = "MIT"
 # ---------------------------------------------------------------------------
 # Edge case tests for remaining uncovered paths
 # ---------------------------------------------------------------------------
-
-
-def test_parse_rst_literal_block_empty_line_after(tmp_path):
-    """Test RST literal block with just empty line after (edge case)."""
-    rst = """
-.. codeblock-name: test_empty_after
-
-Block::
-
-"""
-    snippets = parse_rst(rst, tmp_path)
-    # Empty block at end
-    assert len(snippets) == 0
 
 
 def test_resolve_literalinclude_path_exception_handling(tmp_path, monkeypatch):
