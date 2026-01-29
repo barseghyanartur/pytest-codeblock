@@ -56,9 +56,9 @@ test: clean
 
 # Run tests with coverage
 test-cov: clean
-	coverage run --source=src/pytest_codeblock --omit="*/tests/*,*/conftest.py" -m pytest -vrx -s src/pytest_codeblock/tests/ -o "addopts=" -o "testpaths=src/pytest_codeblock/tests"
-	coverage report --omit="*/tests/*,*/conftest.py,examples/*"
-	coverage html --omit="*/tests/*,*/conftest.py,examples/*"
+	source $(VENV) && coverage run --source=src/pytest_codeblock --omit="*/tests/*,*/conftest.py" -m pytest -vrx -s src/pytest_codeblock/tests/ -o "addopts=" -o "testpaths=src/pytest_codeblock/tests"
+	source $(VENV) && coverage report --omit="*/tests/*,*/conftest.py,examples/*"
+	source $(VENV) && coverage html --omit="*/tests/*,*/conftest.py,examples/*"
 
 shell:
 	source $(VENV) && ipython
