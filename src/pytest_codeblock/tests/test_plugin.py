@@ -656,7 +656,6 @@ b = 2
         matching = [s for s in grouped if s.name == "test_lit_continue"]
         assert len(matching) >= 1
 
-
     def test_parse_literalinclude(self, tmp_path):
         """Test literalinclude directive with test_ name."""
         # Create the file to include
