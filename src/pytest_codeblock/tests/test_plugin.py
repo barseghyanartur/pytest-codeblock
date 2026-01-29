@@ -394,7 +394,10 @@ x = 1
         snippets = parse_markdown(text)
         assert len(snippets) == 1
 
+    # -------------------------------------------------------------------------
+
     def test_parse_python3_language(self):
+        """Test markdown with 'python3' as language identifier."""
         text = """
 ```python3 name=test_py3
 x = 1
@@ -402,6 +405,8 @@ x = 1
 """
         snippets = parse_markdown(text)
         assert len(snippets) == 1
+
+    # -------------------------------------------------------------------------
 
     def test_parse_non_python_codeblock_ignored(self):
         """Test that non-Python code blocks are skipped."""
@@ -419,6 +424,8 @@ x = 1
         assert len(snippets) == 1
         assert snippets[0].name == "test_py"
 
+    # -------------------------------------------------------------------------
+
     def test_parse_name_colon_syntax(self):
         """Test name= vs name: syntax in fence info string."""
         text = """
@@ -429,7 +436,10 @@ x = 1
         snippets = parse_markdown(text)
         assert snippets[0].name == "test_colon"
 
+    # -------------------------------------------------------------------------
+
     def test_parse_empty_codeblock(self):
+        """Test parse empty code block."""
         text = """
 ```python name=test_empty
 ```
@@ -437,6 +447,8 @@ x = 1
         snippets = parse_markdown(text)
         assert len(snippets) == 1
         assert snippets[0].code == ""
+
+    # -------------------------------------------------------------------------
 
     def test_parse_indented_fence(self):
         """Test fence with indentation."""
@@ -447,6 +459,8 @@ x = 1
 """
         snippets = parse_markdown(text)
         assert len(snippets) == 1
+
+    # -------------------------------------------------------------------------
 
     # TODO: Remove?
     def test_parse_fence_regex_edge_case(self):
@@ -459,6 +473,8 @@ x = 1
 """
         snippets = parse_markdown(text)
         assert len(snippets) == 1
+
+    # -------------------------------------------------------------------------
 
     def test_parse_markdown_mixed_indentation(self):
         """Test parsing codeblock with mixed indentation levels."""
@@ -473,6 +489,8 @@ x = 1
         assert len(snippets) == 1
         # Code should be dedented based on fence indentation
         assert "x = 1" in snippets[0].code
+
+    # -------------------------------------------------------------------------
 
     def test_parse_short_line_in_block(self):
         """Test code block with line shorter than indent."""
@@ -560,6 +578,7 @@ class TestParseRst:
     """Test parse_rst function."""
 
     def test_parse_code_block(self, tmp_path):
+        """Test .. code-block:: python directive."""
         rst = """
 .. code-block:: python
    :name: test_rst
@@ -569,6 +588,8 @@ class TestParseRst:
         snippets = parse_rst(rst, tmp_path)
         assert len(snippets) == 1
         assert snippets[0].name == "test_rst"
+
+    # -------------------------------------------------------------------------
 
     def test_parse_code_directive(self, tmp_path):
         """Test .. code:: python (alternative to code-block)."""
@@ -582,6 +603,8 @@ class TestParseRst:
         assert len(snippets) == 1
         assert snippets[0].name == "test_code"
 
+    # -------------------------------------------------------------------------
+
     def test_parse_pytestmark(self, tmp_path):
         rst = """
 .. pytestmark: django_db
@@ -593,6 +616,8 @@ class TestParseRst:
 """
         snippets = parse_rst(rst, tmp_path)
         assert "django_db" in snippets[0].marks
+
+    # -------------------------------------------------------------------------
 
     def test_parse_pytestfixture(self, tmp_path):
         """Test the .. pytestfixture: directive."""
@@ -608,6 +633,8 @@ class TestParseRst:
 
         assert len(snippets) == 1
         assert "tmp_path" in snippets[0].fixtures
+
+    # -------------------------------------------------------------------------
 
     def test_parse_continue_directive(self, tmp_path):
         """Test the .. continue: directive for grouping RST snippets."""
@@ -634,6 +661,8 @@ Some text.
         assert "a = 10" in test_snippets[0].code
         assert "b = a + 5" in test_snippets[0].code
 
+    # -------------------------------------------------------------------------
+
     def test_parse_codeblock_name(self, tmp_path):
         rst = """
 .. codeblock-name: test_named
@@ -644,6 +673,8 @@ Some text.
 """
         snippets = parse_rst(rst, tmp_path)
         assert snippets[0].name == "test_named"
+
+    # -------------------------------------------------------------------------
 
     def test_parse_literal_block(self, tmp_path):
         """Test parsing of literal blocks via :: syntax."""
@@ -660,6 +691,8 @@ assert result == 3
         assert len(snippets) == 1
         assert snippets[0].name == "test_literal"
         assert "result = 1 + 2" in snippets[0].code
+
+    # -------------------------------------------------------------------------
 
     def test_parse_rst_continue_in_literal_block(self, tmp_path):
         """Test continue directive with literal block syntax."""
@@ -684,6 +717,8 @@ b = 2
         matching = [s for s in grouped if s.name == "test_lit_continue"]
         assert len(matching) >= 1
 
+    # -------------------------------------------------------------------------
+
     def test_parse_literalinclude(self, tmp_path):
         """Test literalinclude directive with test_ name."""
         # Create the file to include
@@ -697,6 +732,8 @@ b = 2
         assert len(snippets) == 1
         assert "def hello():" in snippets[0].code
 
+    # -------------------------------------------------------------------------
+
     def test_parse_literalinclude_no_test_prefix(self, tmp_path):
         """Test literalinclude without test_ prefix is skipped."""
         code_file = tmp_path / "example.py"
@@ -709,6 +746,8 @@ b = 2
         # Should be empty because name doesn't start with test_
         assert len(snippets) == 0
 
+    # -------------------------------------------------------------------------
+
     def test_parse_non_python_code_block(self, tmp_path):
         """Non-python code blocks are skipped."""
         rst = """
@@ -718,6 +757,8 @@ b = 2
 """
         snippets = parse_rst(rst, tmp_path)
         assert len(snippets) == 0
+
+    # -------------------------------------------------------------------------
 
     def test_parse_wrong_indent(self, tmp_path):
         """Code at wrong indent level."""
@@ -732,6 +773,8 @@ x = 1
         # Should not collect this as a valid snippet
         assert len(snippets) == 0
 
+    # -------------------------------------------------------------------------
+
     def test_parse_literal_codeblock_eof(self, tmp_path):
         """Literal block at end of file."""
         rst = """
@@ -741,6 +784,8 @@ Block::"""
         snippets = parse_rst(rst, tmp_path)
         # No content after ::
         assert len(snippets) == 0
+
+    # -------------------------------------------------------------------------
 
     def test_parse_empty_codeblock(self, tmp_path):
         """Test parsing an empty code block."""
@@ -752,6 +797,8 @@ Block::"""
         snippets = parse_rst(rst, tmp_path)
         # Empty blocks are collected but have no snippets
         assert len(snippets) == 0
+
+    # -------------------------------------------------------------------------
 
     def test_parse_rst_literal_block_at_eof(self, tmp_path):
         """Test literal block at end of file."""
