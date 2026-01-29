@@ -299,6 +299,7 @@ class TestParseMarkdown:
     """Test parse_markdown function."""
 
     def test_parse_simple_codeblock(self):
+        """Test basic code block parsing."""
         text = """
 ```python name=test_simple
 x = 1
@@ -309,7 +310,10 @@ x = 1
         assert snippets[0].name == "test_simple"
         assert "x = 1" in snippets[0].code
 
+    # -------------------------------------------------------------------------
+
     def test_parse_with_pytestmark(self):
+        """Test the <!-- pytestmark: mark --> directive."""
         text = """
 <!-- pytestmark: django_db -->
 ```python name=test_marked
@@ -318,6 +322,8 @@ pass
 """
         snippets = parse_markdown(text)
         assert "django_db" in snippets[0].marks
+
+    # -------------------------------------------------------------------------
 
     def test_parse_with_pytestfixture(self):
         """Test the <!-- pytestfixture: name --> directive."""
@@ -333,6 +339,8 @@ print("hello")
         assert len(snippets) == 1
         assert "tmp_path" in snippets[0].fixtures
         assert "capsys" in snippets[0].fixtures
+
+    # -------------------------------------------------------------------------
 
     def test_parse_continue_directive(self):
         """Test the <!-- continue: name --> directive for grouping snippets."""
@@ -358,6 +366,8 @@ assert y == 2
         assert "x = 1" in test_snippets[0].code
         assert "y = x + 1" in test_snippets[0].code
 
+    # -------------------------------------------------------------------------
+
     def test_parse_codeblock_name_directive(self):
         """Test the <!-- codeblock-name: name --> directive."""
         text = """
@@ -372,7 +382,10 @@ assert z == 42
         assert len(snippets) == 1
         assert snippets[0].name == "test_named"
 
+    # -------------------------------------------------------------------------
+
     def test_parse_py_language(self):
+        """Test markdown with 'py' as language identifier."""
         text = """
 ```py name=test_py
 x = 1
