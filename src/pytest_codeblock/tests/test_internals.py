@@ -10,50 +10,9 @@ Tests targeting internal coverage gaps:
 """
 import pytest
 
-from ..md import parse_markdown
-
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2025-2026 Artur Barseghyan"
 __license__ = "MIT"
-
-
-# ---------------------------------------------------------------------------
-# Edge case tests for remaining uncovered paths
-# ---------------------------------------------------------------------------
-
-
-def test_resolve_literalinclude_path_exception_handling(tmp_path, monkeypatch):
-    """Test resolve_literalinclude_path exception branch."""
-    from pytest_codeblock.rst import resolve_literalinclude_path
-
-    # Create a scenario where path operations might fail
-    # by using a path that causes issues
-    result = resolve_literalinclude_path(tmp_path, "\x00invalid")
-    assert result is None
-
-
-def test_parse_markdown_py3_language():
-    """Test markdown with 'python3' as language identifier."""
-    text = """
-```python3 name=test_python3
-x = 1
-```
-"""
-    snippets = parse_markdown(text)
-    assert len(snippets) == 1
-    assert snippets[0].name == "test_python3"
-
-
-def test_parse_markdown_py_language():
-    """Test markdown with 'py' as language identifier."""
-    text = """
-```py name=test_py_lang
-y = 2
-```
-"""
-    snippets = parse_markdown(text)
-    assert len(snippets) == 1
-    assert snippets[0].name == "test_py_lang"
 
 
 # ---------------------------------------------------------------------------

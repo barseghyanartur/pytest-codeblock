@@ -393,6 +393,7 @@ x = 1
 """
         snippets = parse_markdown(text)
         assert len(snippets) == 1
+        assert snippets[0].name == "test_py_lang"
 
     # -------------------------------------------------------------------------
 
@@ -405,6 +406,7 @@ x = 1
 """
         snippets = parse_markdown(text)
         assert len(snippets) == 1
+        assert snippets[0].name == "test_python3"
 
     # -------------------------------------------------------------------------
 
