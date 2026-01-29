@@ -272,7 +272,7 @@ class TestPytestCollectFile:
     def test_collect_other_file_returns_none(self, tmp_path):
         """Test other file types return None."""
         txt_file = tmp_path / "test.txt"
-        txt_file.write_text("hello")
+        txt_file.write_text("Some text")
 
         parent = MagicMock()
         result = pytest_collect_file(parent, txt_file)

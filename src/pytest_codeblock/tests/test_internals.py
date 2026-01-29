@@ -10,85 +10,12 @@ Tests targeting internal coverage gaps:
 """
 import pytest
 
-from .. import pytest_collect_file
-from ..md import MarkdownFile, parse_markdown
-from ..rst import (
-    RSTFile,
-    parse_rst,
-)
+from ..md import parse_markdown
+from ..rst import parse_rst
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2025-2026 Artur Barseghyan"
 __license__ = "MIT"
-
-
-# ---------------------------------------------------------------------------
-# Additional unit tests for uncovered paths
-# ---------------------------------------------------------------------------
-
-
-
-def test_pytest_collect_file_hook_markdown(tmp_path):
-    """Test pytest_collect_file returns MarkdownFile for .md files."""
-    from unittest.mock import MagicMock
-
-    md_file = tmp_path / "test.md"
-    md_file.write_text("# Test")
-
-    parent = MagicMock()
-    parent.path = tmp_path
-    parent.session = MagicMock()
-    parent.config = MagicMock()
-
-    result = pytest_collect_file(parent, md_file)
-    assert result is not None
-    assert isinstance(result, MarkdownFile)
-
-
-def test_pytest_collect_file_hook_rst(tmp_path):
-    """Test pytest_collect_file returns RSTFile for .rst files."""
-    from unittest.mock import MagicMock
-
-    rst_file = tmp_path / "test.rst"
-    rst_file.write_text("Test\n====")
-
-    parent = MagicMock()
-    parent.path = tmp_path
-    parent.session = MagicMock()
-    parent.config = MagicMock()
-
-    result = pytest_collect_file(parent, rst_file)
-    assert result is not None
-    assert isinstance(result, RSTFile)
-
-
-def test_pytest_collect_file_hook_other(tmp_path):
-    """Test pytest_collect_file returns None for other file types."""
-    from unittest.mock import MagicMock
-
-    txt_file = tmp_path / "test.txt"
-    txt_file.write_text("Some text")
-
-    parent = MagicMock()
-    result = pytest_collect_file(parent, txt_file)
-    assert result is None
-
-
-def test_pytest_collect_file_hook_markdown_extension(tmp_path):
-    """Test pytest_collect_file handles .markdown extension."""
-    from unittest.mock import MagicMock
-
-    md_file = tmp_path / "test.markdown"
-    md_file.write_text("# Test")
-
-    parent = MagicMock()
-    parent.path = tmp_path
-    parent.session = MagicMock()
-    parent.config = MagicMock()
-
-    result = pytest_collect_file(parent, md_file)
-    assert result is not None
-    assert isinstance(result, MarkdownFile)
 
 
 # ---------------------------------------------------------------------------
