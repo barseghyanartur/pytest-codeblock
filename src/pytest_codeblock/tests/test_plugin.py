@@ -714,8 +714,9 @@ b = 2
 
 x = 1
 """
+        # Content 'x = 1' is at column 0, not indented under the directive
         snippets = parse_rst(rst, tmp_path)
-        # Content not indented, should not collect
+        # Should not collect this as a valid snippet
         assert len(snippets) == 0
 
     def test_parse_literal_codeblock_eof(self, tmp_path):
@@ -737,6 +738,17 @@ Block::"""
 """
         snippets = parse_rst(rst, tmp_path)
         # Empty blocks are collected but have no snippets
+        assert len(snippets) == 0
+
+    def test_parse_rst_literal_block_at_eof(self, tmp_path):
+        """Test literal block at end of file."""
+        rst = """
+.. codeblock-name: test_eof
+
+Code block::"""
+        # No content after the :: - end of file
+        snippets = parse_rst(rst, tmp_path)
+        # Should handle gracefully
         assert len(snippets) == 0
 
 

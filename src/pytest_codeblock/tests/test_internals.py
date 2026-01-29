@@ -22,47 +22,6 @@ __license__ = "MIT"
 # Edge case tests for remaining uncovered paths
 # ---------------------------------------------------------------------------
 
-def test_parse_markdown_short_line_in_block():
-    """Test markdown code block with line shorter than indent."""
-    # Code block where some lines are shorter than the fence indentation
-    text = """
-    ```python name=test_short_line
-    x = 1
-y
-    z = 3
-    ```
-"""
-    snippets = parse_markdown(text)
-    assert len(snippets) == 1
-    # The short line 'y' should still be captured
-    assert "y" in snippets[0].code or "x = 1" in snippets[0].code
-
-
-def test_parse_rst_code_block_wrong_indent(tmp_path):
-    """Test RST code-block with content at wrong indent level."""
-    rst = """
-.. code-block:: python
-   :name: test_wrong_indent
-
-x = 1
-"""
-    # Content 'x = 1' is at column 0, not indented under the directive
-    snippets = parse_rst(rst, tmp_path)
-    # Should not collect this as a valid snippet
-    assert len(snippets) == 0
-
-
-def test_parse_rst_literal_block_at_eof(tmp_path):
-    """Test RST literal block at end of file."""
-    rst = """
-.. codeblock-name: test_eof
-
-Code block::"""
-    # No content after the :: - end of file
-    snippets = parse_rst(rst, tmp_path)
-    # Should handle gracefully
-    assert len(snippets) == 0
-
 
 def test_parse_rst_literal_block_empty_line_after(tmp_path):
     """Test RST literal block with just empty line after (edge case)."""
