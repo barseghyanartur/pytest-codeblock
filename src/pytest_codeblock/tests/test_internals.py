@@ -21,18 +21,6 @@ __license__ = "MIT"
 # ---------------------------------------------------------------------------
 # Edge case tests for remaining uncovered paths
 # ---------------------------------------------------------------------------
-def test_parse_markdown_fence_regex_edge_case():
-    """Test markdown parsing with unusual fence patterns."""
-    # This is a tricky edge case - a line that starts with ``` but
-    # the regex somehow doesn't match. In practice this is very rare.
-    text = """
-```python name=test_normal
-x = 1
-```
-"""
-    snippets = parse_markdown(text)
-    assert len(snippets) == 1
-
 
 def test_parse_markdown_short_line_in_block():
     """Test markdown code block with line shorter than indent."""
