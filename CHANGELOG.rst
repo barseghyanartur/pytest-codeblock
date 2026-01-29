@@ -21,7 +21,7 @@ are used for versioning (schema follows below):
 
 0.3.5
 -----
-2026-01-28
+2026-01-29
 
 - Add more tests. Improved test coverage.
 
