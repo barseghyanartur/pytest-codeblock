@@ -27,7 +27,7 @@ are used for versioning (schema follows below):
   and Markdown files.
 - Add customisation support for file extensions in both reStructuredText
   and Markdown files.
-- Stop testing against 3.10. Minimum supported version is now Python 3.10.
+- Stop testing against 3.9. Minimum supported version is now Python 3.10.
 
 0.3.5
 -----
