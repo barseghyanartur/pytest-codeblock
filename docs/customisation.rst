@@ -4,6 +4,8 @@ Customisation
 It's possible to customise which codeblock languages and file extensions
 are recognised by the plugin.
 
+----
+
 Languages
 ---------
 By default, the plugin recognises the following codeblock languages:
@@ -59,8 +61,15 @@ The following example adds `djc_py` as a custom codeblock language:
     [tool.pytest-codeblock]
     md_user_codeblocks = ["djc_py"]
 
+----
+
 Extensions
 ----------
+
+.. note::
+    
+    If you customise both reStructuredText and Markdown configurations,
+    make sure to avoid overlapping file extensions.
 
 reStructruredText
 ~~~~~~~~~~~~~~~~~
