@@ -21,7 +21,7 @@ pytest-codeblock
 .. _pytest-codeblock: https://github.com/barseghyanartur/pytest-codeblock/
 .. _Read the Docs: http://pytest-codeblock.readthedocs.io/
 .. _Examples: https://github.com/barseghyanartur/pytest-codeblock/tree/main/examples
-.. _Configuration docs: https://pytest-codeblock.readthedocs.io/en/latest/configuration.html
+.. _Customisation docs: https://pytest-codeblock.readthedocs.io/en/latest/customisation.html
 .. _Contributor guidelines: https://pytest-codeblock.readthedocs.io/en/latest/contributor_guidelines.html
 .. _reStructuredText docs: https://pytest-codeblock.readthedocs.io/en/latest/restructured_text.html
 .. _Markdown docs: https://pytest-codeblock.readthedocs.io/en/latest/markdown.html
@@ -128,7 +128,7 @@ See the following example of `pyproject.toml` configuration:
     md_user_codeblocks = ["c_py"]
     md_user_extensions = [".md.txt"]
 
-See `configuration docs`_ for more.
+See `customisation docs`_ for more.
 
 Usage
 =====
