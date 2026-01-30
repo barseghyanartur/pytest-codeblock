@@ -23,6 +23,10 @@ are used for versioning (schema follows below):
 ---
 2026-01-30
 
+- Add customisation support for codeblock languages in both reStructuredText
+  and Markdown files.
+- Add customisation support for file extensions in both reStructuredText
+  and Markdown files.
 - Stop testing against 3.10. Minimum supported version is now Python 3.10.
 
 0.3.5
