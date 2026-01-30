@@ -30,12 +30,21 @@ the `[tool.pytest-codeblock]` section of your `pyproject.toml`.
 
 If you only want to add custom codeblock languages, use `rst_user_codeblocks`.
 
-The following example adds `djc_py` as a custom codeblock language:
+The following example adds `c_py` as a custom codeblock language:
 
 .. code-block:: toml
 
     [tool.pytest-codeblock]
-    rst_user_codeblocks = ["djc_py"]
+    rst_user_codeblocks = ["c_py"]
+
+Now the following codeblock will be recognised and executed:
+
+.. code-block:: rst
+
+    .. code-block:: c_py
+       :name: test_c_py_example
+
+       print("This is a custom Python codeblock")
 
 Markdown
 ~~~~~~~~
@@ -54,12 +63,20 @@ the `[tool.pytest-codeblock]` section of your `pyproject.toml`.
 
 If you only want to add custom codeblock languages, use `md_user_codeblocks`.
 
-The following example adds `djc_py` as a custom codeblock language:
+The following example adds `c_py` as a custom codeblock language:
 
 .. code-block:: toml
 
     [tool.pytest-codeblock]
-    md_user_codeblocks = ["djc_py"]
+    md_user_codeblocks = ["c_py"]
+
+Now the following codeblock will be recognised and executed:
+
+.. code-block:: markdown
+
+    ```c_py name=test_c_py_example
+    print("This is a custom Python codeblock")
+    ```
 
 ----
 
@@ -91,12 +108,24 @@ the `[tool.pytest-codeblock]` section of your `pyproject.toml`.
 
 If you only want to add custom file extensions, use `rst_user_extensions`. 
 
-The following example adds `.rest` as a custom reStructuredText file extension:
+The following example adds `.rst.txt` as a custom reStructuredText file 
+extension:
 
 .. code-block:: toml
 
     [tool.pytest-codeblock]
-    rst_user_extensions = [".rest"]
+    rst_user_extensions = [".rst.txt"]
+
+Now the following file will be recognised and processed:
+
+.. code-block:: rst
+
+    *Filename: example.rst.txt*
+
+    .. code-block:: python
+       :name: test_custom_rst_extension_example
+
+       print("Custom .rst.txt extension example executed successfully!")
 
 Markdown
 ~~~~~~~~
@@ -118,10 +147,19 @@ the `[tool.pytest-codeblock]` section of your `pyproject.toml`.
 
 If you only want to add custom file extensions, use `md_user_extensions`.
 
-The following example adds `.mdown` as a custom Markdown file extension:
+The following example adds `.md.txt` as a custom Markdown file extension:
 
 .. code-block:: toml
 
     [tool.pytest-codeblock]
-    md_user_extensions = [".mdown"]
+    md_user_extensions = [".md.txt"]
 
+Now the following file will be recognised and processed:
+
+.. code-block:: markdown
+
+    *Filename: example.md.txt*
+
+    ```python name=test_custom_md_extension_example
+    print("Custom .md.txt extension example executed successfully!")
+    ```
