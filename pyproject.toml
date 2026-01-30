@@ -156,6 +156,10 @@ known-third-party = []
 ignore-path = [
     "docs/requirements.txt",
     "src/pytest-codeblock.egg-info/SOURCES.txt",
+    "examples/customisation_example/*.rst",
+    "examples/customisation_example/*.rst.txt",
+    "examples/customisation_example/*.md",
+    "examples/customisation_example/*.md.txt",
 ]
 
 [tool.pytest.ini_options]

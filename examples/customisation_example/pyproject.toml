@@ -1,0 +1,5 @@
+    [tool.pytest-codeblock]
+    rst_user_codeblocks = ["c_py"]
+    rst_user_extensions = [".rst.txt"]
+    md_user_codeblocks = ["c_py"]
+    md_user_extensions = [".md.txt"]
