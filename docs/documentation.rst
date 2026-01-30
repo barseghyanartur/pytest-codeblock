@@ -11,6 +11,7 @@ Contents:
    index
    restructured_text
    markdown
+   customisation
    security
    contributor_guidelines
    code_of_conduct

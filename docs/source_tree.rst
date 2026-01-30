@@ -18,6 +18,7 @@ the contents of each key file.
    │   ├── conf.py
    │   ├── conf.py.distrib
    │   ├── contributor_guidelines.rst
+   │   ├── customisation.rst
    │   ├── documentation.rst
    │   ├── index.rst
    │   ├── index.rst.distrib
@@ -31,6 +32,12 @@ the contents of each key file.
    │   ├── security.rst
    │   └── source_tree.rst
    ├── examples
+   │   ├── customisation_example
+   │   │   ├── pyproject.toml
+   │   │   ├── test.md
+   │   │   ├── test.md.txt
+   │   │   ├── test.rst
+   │   │   └── test.rst.txt
    │   ├── md_example
    │   │   ├── customisation.md
    │   │   └── README.md
@@ -55,13 +62,18 @@ the contents of each key file.
    │       ├── tests
    │       │   ├── __pycache__
    │       │   ├── __init__.py
+   │       │   ├── conftest.py
+   │       │   ├── test_customisation.py
+   │       │   ├── test_integration.py
    │       │   ├── test_pytest_codeblock.py
+   │       │   ├── tests.md
    │       │   └── tests.rst
    │       ├── __init__.py
    │       ├── collector.py
+   │       ├── config.py
    │       ├── constants.py
    │       ├── md.py
-   │       ├── rst.py
+   │       └── rst.py
 
 docs/_implement_pytest_hooks.rst
 --------------------------------
