@@ -19,6 +19,12 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.4
+---
+2026-01-30
+
+- Stop testing against 3.10. Minimum supported version is now Python 3.10.
+
 0.3.5
 -----
 2026-01-29
@@ -38,7 +44,6 @@ are used for versioning (schema follows below):
 
 - Minor code and documentation fixes.
 - Add a dedicated tests.md file for markdown specific testing.
-- Tested against Python 3.14.
 
 0.3.2
 -----

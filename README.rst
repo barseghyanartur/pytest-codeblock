@@ -14,6 +14,7 @@ pytest-codeblock
 .. _moto: https://github.com/getmoto/moto
 .. _openai: https://github.com/openai/openai-python
 .. _Ollama: https://github.com/ollama/ollama
+.. _tomli: https://pypi.org/project/tomli/
 
 .. Internal references
 
@@ -76,8 +77,9 @@ Features
 
 Prerequisites
 =============
-- Python 3.9+
-- `pytest`_ is the only required dependency
+- Python 3.10+
+- `pytest`_ is the only required dependency (on Python 3.11+; for Python 3.10
+  `tomli`_ is also required).
 
 Documentation
 =============

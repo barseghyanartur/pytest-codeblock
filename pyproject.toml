@@ -3,9 +3,10 @@ name = "pytest-codeblock"
 description = "Pytest plugin to collect and test code blocks in reStructuredText and Markdown files."
 readme = "README.rst"
 version = "0.3.5"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
     "pytest",
+    "tomli; python_version < '3.11'",
 ]
 authors = [
     { name = "Artur Barseghyan", email = "artur.barseghyan@gmail.com" },
@@ -19,7 +20,6 @@ classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
