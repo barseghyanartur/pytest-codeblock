@@ -32,6 +32,8 @@ x = 1
             assert snippets[0].name == "custom_lang"
             assert "x = 1" in snippets[0].code
 
+    # -------------------------------------------------------------------------
+
     def test_unknown_language_ignored(self):
         """Test that unknown language fence is ignored."""
         text = """
@@ -80,6 +82,8 @@ x = 1
 """
         snippets = parse_markdown(text)
         assert len(snippets) == 1
+
+    # -------------------------------------------------------------------------
 
     def test_default_md_extension(self):
         """Test that .md is always a supported extension."""
