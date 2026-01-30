@@ -8,6 +8,7 @@ from typing import Optional
 import pytest
 
 from .collector import CodeSnippet, group_snippets
+from .config import get_config
 from .constants import CODEBLOCK_MARK, DJANGO_DB_MARKS, TEST_PREFIX
 from .helpers import contains_top_level_await, wrap_async_code
 
@@ -34,6 +35,7 @@ def parse_markdown(text: str) -> list[CodeSnippet]:
 
     Captures each snippet's name, code, starting line, and any pytest marks.
     """
+    config = get_config()
     snippets: list[CodeSnippet] = []
     lines = text.splitlines()
     pending_name: Optional[str] = None
@@ -92,7 +94,7 @@ def parse_markdown(text: str) -> list[CodeSnippet]:
                 parts = info.split(None, 1)
                 lang = parts[0].lower() if parts else ""
                 extra = parts[1] if len(parts) > 1 else ""
-                if lang in ("python", "py", "python3"):
+                if lang in config.all_md_codeblocks:
                     in_block = True
                     block_indent = indent
                     start_line = idx + 1

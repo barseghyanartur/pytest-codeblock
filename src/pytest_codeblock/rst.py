@@ -9,6 +9,7 @@ from typing import Optional, Union
 import pytest
 
 from .collector import CodeSnippet, group_snippets
+from .config import get_config
 from .constants import CODEBLOCK_MARK, DJANGO_DB_MARKS, TEST_PREFIX
 from .helpers import contains_top_level_await, wrap_async_code
 
@@ -69,6 +70,7 @@ def parse_rst(text: str, base_dir: Path) -> list[CodeSnippet]:
       - .. codeblock-name: <name>
       - .. code-block:: python
     """
+    config = get_config()
     snippets: list[CodeSnippet] = []
     lines = text.splitlines()
     n = len(lines)
@@ -159,7 +161,7 @@ def parse_rst(text: str, base_dir: Path) -> list[CodeSnippet]:
         if m:
             base_indent = len(m.group(1))
             lang = m.group(2).lower()
-            if lang in ("python", "py", "python3"):
+            if lang in config.all_rst_codeblocks:
                 # Parse :name: option
                 name_val: Optional[str] = None
                 j = i + 1

@@ -10,6 +10,10 @@
 
 ----
 
+.. include:: customisation.rst
+
+----
+
 .. include:: package.rst
 
 ----
