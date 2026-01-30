@@ -24,7 +24,7 @@ the `[tool.pytest-codeblock]` section of your `pyproject.toml`.
 
 .. note::
 
-    Don't touch the defaults, unless you want to remove default languages.
+    Don't touch the defaults, unless you want to remove certain options.
 
 If you only want to add custom codeblock languages, use `rst_user_codeblocks`.
 
@@ -48,7 +48,7 @@ the `[tool.pytest-codeblock]` section of your `pyproject.toml`.
 
 .. note::
 
-    Don't touch the defaults, unless you want to remove default languages.
+    Don't touch the defaults, unless you want to remove certain options.
 
 If you only want to add custom codeblock languages, use `md_user_codeblocks`.
 
@@ -78,7 +78,7 @@ the `[tool.pytest-codeblock]` section of your `pyproject.toml`.
 
 .. note::
 
-    Don't touch the defaults, unless you want to remove default extensions.
+    Don't touch the defaults, unless you want to remove certain options.
 
 If you only want to add custom file extensions, use `rst_user_extensions`. 
 
@@ -105,7 +105,7 @@ the `[tool.pytest-codeblock]` section of your `pyproject.toml`.
 
 .. note::
 
-    Don't touch the defaults, unless you want to remove default extensions.
+    Don't touch the defaults, unless you want to remove certain options.
 
 If you only want to add custom file extensions, use `md_user_extensions`.
 
