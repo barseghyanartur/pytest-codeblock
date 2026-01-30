@@ -1,5 +1,5 @@
 # Update version ONLY here
-VERSION := 0.3.5
+VERSION := 0.4
 SHELL := /bin/bash
 # Makefile for project
 VENV := ~/.virtualenvs/pytest-codeblock/bin/activate
@@ -53,6 +53,10 @@ install:
 # Run tests with pytest
 test: clean
 	source $(VENV) && pytest -vrx -s
+	cd examples/customisation_example/ && source $(VENV) && pytest -vrx -s
+
+test-customisation: clean
+	cd examples/customisation_example/ && source $(VENV) && pytest -vrx -s
 
 # Run tests with pytest in CI environment
 test-ci: clean
@@ -61,12 +65,14 @@ test-ci: clean
 # Run tests with coverage
 test-cov: clean
 	source $(VENV) && coverage run --source=src/pytest_codeblock --omit="*/tests/*,*/conftest.py" -m pytest -vrx -s src/pytest_codeblock/tests/ -o "addopts=" -o "testpaths=src/pytest_codeblock/tests"
+	cd examples/customisation_example/ && source $(VENV) && coverage run --source=. -m pytest -vrx -s . -o "addopts=" -o "testpaths=tests"
 	source $(VENV) && coverage report --omit="*/tests/*,*/conftest.py,examples/*"
 	source $(VENV) && coverage html --omit="*/tests/*,*/conftest.py,examples/*"
 
 # Run tests with coverage in CI environment
 test-cov-ci: clean
 	coverage run --source=src/pytest_codeblock --omit="*/tests/*,*/conftest.py" -m pytest -vrx -s src/pytest_codeblock/tests/ -o "addopts=" -o "testpaths=src/pytest_codeblock/tests"
+	cd examples/customisation_example/ && coverage run --source=. -m pytest -vrx -s . -o "addopts=" -o "testpaths=tests"
 	coverage report --omit="*/tests/*,*/conftest.py,examples/*"
 	coverage html --omit="*/tests/*,*/conftest.py,examples/*"
 

@@ -14,12 +14,14 @@ pytest-codeblock
 .. _moto: https://github.com/getmoto/moto
 .. _openai: https://github.com/openai/openai-python
 .. _Ollama: https://github.com/ollama/ollama
+.. _tomli: https://pypi.org/project/tomli/
 
 .. Internal references
 
 .. _pytest-codeblock: https://github.com/barseghyanartur/pytest-codeblock/
 .. _Read the Docs: http://pytest-codeblock.readthedocs.io/
 .. _Examples: https://github.com/barseghyanartur/pytest-codeblock/tree/main/examples
+.. _Customisation docs: https://pytest-codeblock.readthedocs.io/en/latest/customisation.html
 .. _Contributor guidelines: https://pytest-codeblock.readthedocs.io/en/latest/contributor_guidelines.html
 .. _reStructuredText docs: https://pytest-codeblock.readthedocs.io/en/latest/restructured_text.html
 .. _Markdown docs: https://pytest-codeblock.readthedocs.io/en/latest/markdown.html
@@ -76,8 +78,9 @@ Features
 
 Prerequisites
 =============
-- Python 3.9+
-- `pytest`_ is the only required dependency
+- Python 3.10+
+- `pytest`_ is the only required dependency (on Python 3.11+; for Python 3.10
+  `tomli`_ is also required).
 
 Documentation
 =============
@@ -107,8 +110,25 @@ Or install with `uv`_:
 
 Configuration
 =============
-No configuration needed. All your `.rst` and `.md` files shall be picked
-automatically.
+For most use cases, no configuration needed. All your `.rst` and `.md` files
+shall be picked automatically.
+
+However, if you need to add another file extension or use or another language
+identifier for python in codeblock, you could configure that.
+
+See the following example of `pyproject.toml` configuration:
+
+*Filename: pyproject.toml*
+
+.. code-block:: toml
+
+    [tool.pytest-codeblock]
+    rst_user_codeblocks = ["c_py"]
+    rst_user_extensions = [".rst.txt"]
+    md_user_codeblocks = ["c_py"]
+    md_user_extensions = [".md.txt"]
+
+See `customisation docs`_ for more.
 
 Usage
 =====
