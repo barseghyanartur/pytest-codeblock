@@ -12,6 +12,7 @@ Contents:
    restructured_text
    markdown
    customisation
+   cheatsheet
    security
    contributor_guidelines
    code_of_conduct
