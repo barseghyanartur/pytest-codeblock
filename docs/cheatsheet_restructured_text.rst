@@ -1,4 +1,4 @@
-reStructuredText Cheatsheet
+reStructuredText cheatsheet
 ===========================
 This cheatsheet provides a quick reference to some of the most commonly used 
 features and commands.
