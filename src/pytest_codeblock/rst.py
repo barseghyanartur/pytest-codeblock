@@ -285,11 +285,32 @@ class RSTFile(pytest.File):
     def collect(self):
         text = self.path.read_text(encoding="utf-8")
         raw = parse_rst(text, self.path)
+        config = get_config()
 
-        # Only keep test_* snippets
-        tests = [
-            sn for sn in raw if sn.name and sn.name.startswith(TEST_PREFIX)
-        ]
+        # Include both named and nameless blocks, if config allows nameless
+        # blocks. Nameless blocks will be auto-named based on the module
+        # name and a counter, ensuring they get collected as tests.
+        if config.test_nameless_codeblocks:
+            tests = []
+            counter = 1
+            module_name = self.path.stem
+
+            for sn in raw:
+                if sn.name and sn.name.startswith(TEST_PREFIX):
+                    tests.append(sn)
+                elif not sn.name:
+                    auto_name = f"{TEST_PREFIX}{module_name}_{counter}"
+                    counter += 1
+                    sn.name = auto_name
+                    tests.append(sn)
+        # If config does not allow nameless blocks, only those with explicit
+        # names starting with TEST_PREFIX will be collected.
+        else:
+            # Only keep test_* snippets
+            tests = [
+                sn for sn in raw if sn.name and sn.name.startswith(TEST_PREFIX)
+            ]
+
         combined = group_snippets(tests)
 
         for sn in combined:

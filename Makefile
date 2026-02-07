@@ -1,5 +1,5 @@
 # Update version ONLY here
-VERSION := 0.4
+VERSION := 0.5
 SHELL := /bin/bash
 # Makefile for project
 VENV := ~/.virtualenvs/pytest-codeblock/bin/activate
@@ -54,9 +54,13 @@ install:
 test: clean
 	source $(VENV) && pytest -vrx -s
 	cd examples/customisation_example/ && source $(VENV) && pytest -vrx -s
+	cd examples/nameless_codeblocks_example/ && source $(VENV) && pytest -vrx -s
 
 test-customisation: clean
 	cd examples/customisation_example/ && source $(VENV) && pytest -vrx -s
+
+test-nameless-codeblocks: clean
+	cd examples/nameless_codeblocks_example/ && source $(VENV) && pytest -vvvrx -s
 
 # Run tests with pytest in CI environment
 test-ci: clean
@@ -66,6 +70,7 @@ test-ci: clean
 test-cov: clean
 	source $(VENV) && coverage run --source=src/pytest_codeblock --omit="*/tests/*,*/conftest.py" -m pytest -vrx -s src/pytest_codeblock/tests/ -o "addopts=" -o "testpaths=src/pytest_codeblock/tests"
 	cd examples/customisation_example/ && source $(VENV) && coverage run --source=. -m pytest -vrx -s . -o "addopts=" -o "testpaths=tests"
+	cd examples/nameless_codeblocks_example/ && source $(VENV) && coverage run --source=. -m pytest -vrx -s . -o "addopts=" -o "testpaths=tests"
 	source $(VENV) && coverage report --omit="*/tests/*,*/conftest.py,examples/*"
 	source $(VENV) && coverage html --omit="*/tests/*,*/conftest.py,examples/*"
 
@@ -73,6 +78,7 @@ test-cov: clean
 test-cov-ci: clean
 	coverage run --source=src/pytest_codeblock --omit="*/tests/*,*/conftest.py" -m pytest -vrx -s src/pytest_codeblock/tests/ -o "addopts=" -o "testpaths=src/pytest_codeblock/tests"
 	cd examples/customisation_example/ && coverage run --source=. -m pytest -vrx -s . -o "addopts=" -o "testpaths=tests"
+	cd examples/nameless_codeblocks_example/ && coverage run --source=. -m pytest -vrx -s . -o "addopts=" -o "testpaths=tests"
 	coverage report --omit="*/tests/*,*/conftest.py,examples/*"
 	coverage html --omit="*/tests/*,*/conftest.py,examples/*"
 
@@ -98,6 +104,8 @@ clean:
 	rm -rf dist/
 	rm -rf .cache/
 	rm -rf htmlcov/
+	rm -rf examples/customisation_example/htmlcov/
+	rm -rf src/pytest_codeblock/tests/htmlcov/
 	rm -rf builddocs/
 	rm -rf testdocs/
 	rm -rf .coverage

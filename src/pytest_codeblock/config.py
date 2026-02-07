@@ -24,6 +24,7 @@ DEFAULT_RST_CODEBLOCKS = ("py", "python", "python3")
 DEFAULT_MD_CODEBLOCKS = ("py", "python", "python3")
 DEFAULT_RST_EXTENSIONS = (".rst",)
 DEFAULT_MD_EXTENSIONS = (".md", ".markdown")
+DEFAULT_TEST_NAMELESS_CODEBLOCKS = False
 
 
 class Config:
@@ -39,6 +40,7 @@ class Config:
         rst_user_extensions: tuple[str, ...] = (),
         md_extensions: tuple[str, ...] = DEFAULT_MD_EXTENSIONS,
         md_user_extensions: tuple[str, ...] = (),
+        test_nameless_codeblocks: bool = DEFAULT_TEST_NAMELESS_CODEBLOCKS,
     ):
         self.rst_codeblocks = rst_codeblocks
         self.rst_user_codeblocks = rst_user_codeblocks
@@ -48,6 +50,7 @@ class Config:
         self.rst_user_extensions = rst_user_extensions
         self.md_extensions = md_extensions
         self.md_user_extensions = md_user_extensions
+        self.test_nameless_codeblocks = test_nameless_codeblocks
 
     @property
     def all_rst_codeblocks(self) -> tuple[str, ...]:
@@ -95,6 +98,24 @@ def _load_config_from_pyproject(path: Path) -> dict:
         return {}
 
 
+def _to_tuple(val, default: tuple[str, ...]) -> tuple[str, ...]:
+    if val is None:
+        return default
+    if isinstance(val, (list, tuple)):
+        return tuple(val)
+    return default
+
+
+def _to_bool(val, default: bool) -> bool:
+    if val is None:
+        return default
+    if isinstance(val, bool):
+        return val
+    if isinstance(val, str):
+        return val.lower() in ("true", "1", "yes")
+    return default
+
+
 def get_config(*, force_reload: bool = False) -> Config:
     """Get the configuration, loading from pyproject.toml if available."""
     global _cached_config
@@ -109,25 +130,26 @@ def get_config(*, force_reload: bool = False) -> Config:
 
     raw = _load_config_from_pyproject(pyproject_path)
 
-    def to_tuple(val, default: tuple[str, ...]) -> tuple[str, ...]:
-        if val is None:
-            return default
-        if isinstance(val, (list, tuple)):
-            return tuple(val)
-        return default
-
     _cached_config = Config(
-        rst_codeblocks=to_tuple(
+        rst_codeblocks=_to_tuple(
             raw.get("rst_codeblocks"), DEFAULT_RST_CODEBLOCKS
         ),
-        rst_user_codeblocks=to_tuple(raw.get("rst_user_codeblocks"), ()),
-        md_codeblocks=to_tuple(raw.get("md_codeblocks"), DEFAULT_MD_CODEBLOCKS),
-        md_user_codeblocks=to_tuple(raw.get("md_user_codeblocks"), ()),
-        rst_extensions=to_tuple(
+        rst_user_codeblocks=_to_tuple(raw.get("rst_user_codeblocks"), ()),
+        md_codeblocks=_to_tuple(
+            raw.get("md_codeblocks"), DEFAULT_MD_CODEBLOCKS
+        ),
+        md_user_codeblocks=_to_tuple(raw.get("md_user_codeblocks"), ()),
+        rst_extensions=_to_tuple(
             raw.get("rst_extensions"), DEFAULT_RST_EXTENSIONS
         ),
-        rst_user_extensions=to_tuple(raw.get("rst_user_extensions"), ()),
-        md_extensions=to_tuple(raw.get("md_extensions"), DEFAULT_MD_EXTENSIONS),
-        md_user_extensions=to_tuple(raw.get("md_user_extensions"), ()),
+        rst_user_extensions=_to_tuple(raw.get("rst_user_extensions"), ()),
+        md_extensions=_to_tuple(
+            raw.get("md_extensions"), DEFAULT_MD_EXTENSIONS
+        ),
+        md_user_extensions=_to_tuple(raw.get("md_user_extensions"), ()),
+        test_nameless_codeblocks=_to_bool(
+            raw.get("test_nameless_codeblocks"),
+            DEFAULT_TEST_NAMELESS_CODEBLOCKS,
+        ),
     )
     return _cached_config
