@@ -12,7 +12,8 @@ the contents of each key file.
    ├── docs
    │   ├── _implement_pytest_hooks.rst
    │   ├── changelog.rst
-   │   ├── cheatsheet.rst
+   │   ├── cheatsheet_markdown.rst
+   │   ├── cheatsheet_restructured_text.rst
    │   ├── code_of_conduct.rst
    │   ├── conf.py
    │   ├── conf.py.distrib
