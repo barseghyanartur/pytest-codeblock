@@ -120,6 +120,12 @@ Note the ``.. continue::`` directive.
 
 The above mentioned three snippets will run as a single test.
 
+.. note:: 
+    
+    Note, that nameless code block can't be served as a first block in a 
+    group, as there is no way to refer to it. Nameless code blocks can only be 
+    used as continuing blocks in a group.
+
 ----
 
 Async

@@ -131,6 +131,8 @@ pytest markers.
 See the dedicated `reStructuredText docs`_ and `Markdown docs`_ to learn more
 about `pytestmark` directive.
 
+Note, that nameless code blocks have limitations when it comes to grouping.
+
 ----
 
 By default, all code `.rst` and `.md` files shall be picked automatically.

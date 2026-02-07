@@ -60,7 +60,7 @@ test-customisation: clean
 	cd examples/customisation_example/ && source $(VENV) && pytest -vrx -s
 
 test-nameless-codeblocks: clean
-	cd examples/nameless_codeblocks_example/ && source $(VENV) && pytest -vrx -s
+	cd examples/nameless_codeblocks_example/ && source $(VENV) && pytest -vvvrx -s
 
 # Run tests with pytest in CI environment
 test-ci: clean
