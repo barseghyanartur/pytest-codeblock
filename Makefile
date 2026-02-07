@@ -98,6 +98,8 @@ clean:
 	rm -rf dist/
 	rm -rf .cache/
 	rm -rf htmlcov/
+	rm -rf examples/customisation_example/htmlcov/
+	rm -rf src/pytest_codeblock/tests/htmlcov/
 	rm -rf builddocs/
 	rm -rf testdocs/
 	rm -rf .coverage
