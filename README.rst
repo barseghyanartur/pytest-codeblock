@@ -66,9 +66,7 @@ Features
 
 - **reStructuredText and Markdown support**: Automatically find and test code
   blocks in `reStructuredText`_ (``.rst``) and `Markdown`_ (``.md``) files.
-  The only requirement here is that your code blocks shall
-  have a name starting with ``test_``. Async code snippets are supported as
-  well.
+  Async code snippets are supported as well.
 - **Grouping**: Split a single example across multiple code blocks;
   the plugin concatenates them into one test.
 - **Pytest markers support**: Add existing or custom `pytest`_ markers
@@ -110,8 +108,34 @@ Or install with `uv`_:
 
 Configuration
 =============
-For most use cases, no configuration needed. All your `.rst` and `.md` files
-shall be picked automatically.
+For most use cases, no configuration needed.
+
+By default, all code blocks with a name starting with ``test_`` will be
+collected and executed as tests. This allows you to have both test and non-test
+code blocks in your documentation, giving you flexibility in how you structure
+your examples.
+
+However, if you want to test all code blocks, you can
+set ``test_nameless_codeblocks`` to ``true`` in your `pyproject.toml`:
+
+*Filename: pyproject.toml*
+
+.. code-block:: toml
+
+    [tool.pytest-codeblock]
+    test_nameless_codeblocks = true
+
+If you still want to skip some code blocks, you can use built-in or custom
+pytest markers.
+
+See the dedicated `reStructuredText docs`_ and `Markdown docs`_ to learn more
+about `pytestmark` directive.
+
+Note, that nameless code blocks have limitations when it comes to grouping.
+
+----
+
+By default, all code `.rst` and `.md` files shall be picked automatically.
 
 However, if you need to add another file extension or use or another language
 identifier for python in codeblock, you could configure that.
