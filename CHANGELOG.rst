@@ -21,7 +21,7 @@ are used for versioning (schema follows below):
 
 0.5
 ---
-2026-02-07
+2026-02-08
 
 - Allow code blocks without names. By default, this option is disabled and
   code blocks without names are ignored. To enable it,
