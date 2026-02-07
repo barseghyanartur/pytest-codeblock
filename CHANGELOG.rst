@@ -19,6 +19,15 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.5
+---
+2026-02-07
+
+- Allow code blocks without names. By default, this option is disabled and
+  code blocks without names are ignored. To enable it,
+  set ``test_nameless_codeblocks`` to ``true`` in your pyproject.toml
+  configuration.
+
 0.4
 ---
 2026-01-30
