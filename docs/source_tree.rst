@@ -93,12 +93,19 @@ docs/changelog.rst
    :language: rst
    :caption: docs/changelog.rst
 
-docs/cheatsheet.rst
--------------------
+docs/cheatsheet_markdown.rst
+----------------------------
 
-.. literalinclude:: cheatsheet.rst
+.. literalinclude:: cheatsheet_markdown.rst
    :language: rst
-   :caption: docs/cheatsheet.rst
+   :caption: docs/cheatsheet_markdown.rst
+
+docs/cheatsheet_restructured_text.rst
+-------------------------------------
+
+.. literalinclude:: cheatsheet_restructured_text.rst
+   :language: rst
+   :caption: docs/cheatsheet_restructured_text.rst
 
 docs/code_of_conduct.rst
 ------------------------
