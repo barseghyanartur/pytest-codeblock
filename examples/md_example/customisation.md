@@ -30,7 +30,6 @@ assert "my-bucket" in [b["Name"] for b in s3.list_buckets()["Buckets"]]
 
 ## `openai` example
 
-<!-- pytestmark: xfail -->
 <!-- pytestmark: openai -->
 ```python name=test_tell_me_a_joke
 from openai import OpenAI

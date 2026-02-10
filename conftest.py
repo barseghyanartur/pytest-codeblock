@@ -1,6 +1,9 @@
+import json
 import os
+from pathlib import Path
 
 import pytest
+import respx
 from fake import FILE_REGISTRY
 from moto import mock_aws
 
@@ -30,13 +33,29 @@ def pytest_collection_modifyitems(config, items):
 # Setup before test runs
 def pytest_runtest_setup(item):
     if item.get_closest_marker("openai"):
-        # Send all OpenAI requests to locally running Ollama
-        os.environ.setdefault("OPENAI_API_KEY", "ollama")
-        # os.environ.setdefault("OPENAI_BASE_URL", "http://localhost:11434/v1")
+        os.environ.setdefault("OPENAI_API_KEY", "test-key")
+        cassette_path = (
+            Path(__file__).parent
+            / "examples"
+            / "cassettes"
+            / "openai_chat_completion.json"
+        )
+        with open(cassette_path) as f:
+            response_data = json.load(f)
+        mock = respx.mock()
+        mock.start()
+        mock.post("https://api.openai.com/v1/chat/completions").respond(
+            json=response_data,
+        )
+        item._openai_mock = mock
 
 
 # Teardown after the test ends
 def pytest_runtest_teardown(item, nextitem):
+    # Stop respx mock for openai tests
+    if hasattr(item, "_openai_mock"):
+        item._openai_mock.stop()
+        del item._openai_mock
     # Run file clean up on all tests marked as `fakepy`
     if item.get_closest_marker("fakepy"):
         FILE_REGISTRY.clean_up()
