@@ -78,7 +78,6 @@ Customisation examples.
 
 .. code-block:: rst
 
-    .. pytestmark: xfail
-    .. pytestmark: aws
+    .. pytestmark: openai
     .. literalinclude:: examples/python/tell_me_a_joke_example.py
         :name: test_li_tell_me_a_joke
