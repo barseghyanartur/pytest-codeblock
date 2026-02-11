@@ -10,11 +10,15 @@ In the example below:
 *Filename: conftest.py*
 
 .. code-block:: python
+    :name: test_conftest
 
+    import contextlib
+    import json
     import os
-    from contextlib import suppress
+    from pathlib import Path
 
     import pytest
+    import respx
 
     from fake import FILE_REGISTRY
     from moto import mock_aws
@@ -51,3 +55,28 @@ In the example below:
         # Run file clean up on all tests marked as `fakepy`
         if item.get_closest_marker("fakepy"):
             FILE_REGISTRY.clean_up()
+
+
+    @pytest.fixture
+    def openai_mock():
+        # Setup
+        os.environ.setdefault("OPENAI_API_KEY", "test-key")
+        cassette_path = (
+            Path(__file__).parent.parent
+            / "examples"
+            / "cassettes"
+            / "openai_chat_completion.json"
+        )
+        with open(cassette_path) as f:
+            response_data = json.load(f)
+
+        mock = respx.mock()
+        mock.start()
+        mock.post("https://api.openai.com/v1/chat/completions").respond(
+            json=response_data,
+        )
+        yield mock
+
+        # Teardown
+        with contextlib.suppress(Exception):
+            mock.stop()

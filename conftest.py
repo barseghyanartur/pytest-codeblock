@@ -1,9 +1,4 @@
-import json
-import os
-from pathlib import Path
-
 import pytest
-import respx
 from fake import FILE_REGISTRY
 from moto import mock_aws
 
@@ -20,7 +15,15 @@ __all__ = (
 
 
 # Modify test item during collection
-def pytest_collection_modifyitems(config, items):
+def pytest_collection_modifyitems(
+    config: pytest.Config,
+    items: list[pytest.Item],
+) -> None:
+    """Modify collected test items after collection is done.
+
+    :param config: The pytest configuration object.
+    :param items: A list of collected test items.
+    """
     for item in items:
         if item.get_closest_marker(CODEBLOCK_MARK):
             # Add `documentation` marker to `pytest-codeblock` tests
@@ -31,31 +34,19 @@ def pytest_collection_modifyitems(config, items):
 
 
 # Setup before test runs
-def pytest_runtest_setup(item):
-    if item.get_closest_marker("openai"):
-        os.environ.setdefault("OPENAI_API_KEY", "test-key")
-        cassette_path = (
-            Path(__file__).parent
-            / "examples"
-            / "cassettes"
-            / "openai_chat_completion.json"
-        )
-        with open(cassette_path) as f:
-            response_data = json.load(f)
-        mock = respx.mock()
-        mock.start()
-        mock.post("https://api.openai.com/v1/chat/completions").respond(
-            json=response_data,
-        )
-        item._openai_mock = mock
+def pytest_runtest_setup(item: pytest.Item) -> None:
+    """Set up test environment before each test runs.
+
+    :param item: The test item that is about to run.
+    """
 
 
 # Teardown after the test ends
-def pytest_runtest_teardown(item, nextitem):
-    # Stop respx mock for openai tests
-    if hasattr(item, "_openai_mock"):
-        item._openai_mock.stop()
-        del item._openai_mock
-    # Run file clean up on all tests marked as `fakepy`
+def pytest_runtest_teardown(item: pytest.Item, nextitem: pytest.Item) -> None:
+    """Tear down test environment after each test ends.
+
+    :param item: The test item that just finished running.
+    :param nextitem: The next test item that will run (or None if this is
+    """
     if item.get_closest_marker("fakepy"):
         FILE_REGISTRY.clean_up()

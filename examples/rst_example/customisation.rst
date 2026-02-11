@@ -39,8 +39,7 @@ Customisation examples.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .. code-block:: rst
 
-    .. pytestmark: xfail
-    .. pytestmark: openai
+    .. pytestfixture: openai_mock
     .. code-block:: python
         :name: test_tell_me_a_joke
 
@@ -78,6 +77,6 @@ Customisation examples.
 
 .. code-block:: rst
 
-    .. pytestmark: openai
+    .. pytestfixture: openai_mock
     .. literalinclude:: examples/python/tell_me_a_joke_example.py
         :name: test_li_tell_me_a_joke

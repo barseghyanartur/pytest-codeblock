@@ -146,6 +146,34 @@ In the example below, ``tmp_path`` fixture is requested for the code block.
 
 ----
 
+Let's consider a sample `openai`_ code to ask LLM to tell a joke.
+In the example below, ``openai_mock`` fixture is requested for 
+the code block.
+
+.. note:: Note the ``pytestfixture`` directive ``openai_mock`` fixture.
+
+*Filename: README.md*
+
+.. code-block:: markdown
+
+    <!-- pytestfixture: openai_mock -->
+    ```python name=test_tell_me_a_joke
+    from openai import OpenAI
+
+    client = OpenAI()
+    completion = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {"role": "developer", "content": "You are a famous comedian."},
+            {"role": "user", "content": "Tell me a joke."},
+        ],
+    )
+
+    assert isinstance(completion.choices[0].message.content, str)
+    ```
+
+----
+
 Multiple ``pytestfixture`` directives are supported. Add one on each line.
 
 .. note::
@@ -211,36 +239,6 @@ Sample `boto3`_ code to create a bucket on AWS S3.
     s3 = boto3.client("s3", region_name="us-east-1")
     s3.create_bucket(Bucket="my-bucket")
     assert "my-bucket" in [b["Name"] for b in s3.list_buckets()["Buckets"]]
-    ```
-
-Add ``openai`` marker
-^^^^^^^^^^^^^^^^^^^^^
-
-Sample `openai`_ code to ask LLM to tell a joke. Note, that next to a
-custom ``openai`` marker, ``xfail`` marker is used, which allows underlying
-code to fail, without marking entire test suite as failed.
-
-.. note:: Note the ``pytestmark`` directive ``xfail`` and ``openai`` markers.
-
-*Filename: README.md*
-
-.. code-block:: markdown
-
-    <!-- pytestmark: xfail -->
-    <!-- pytestmark: openai -->
-    ```python name=test_tell_me_a_joke
-    from openai import OpenAI
-
-    client = OpenAI()
-    completion = client.chat.completions.create(
-        model="gpt-4o",
-        messages=[
-            {"role": "developer", "content": "You are a famous comedian."},
-            {"role": "user", "content": "Tell me a joke."},
-        ],
-    )
-
-    assert isinstance(completion.choices[0].message.content, str)
     ```
 
 ----
