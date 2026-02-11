@@ -213,8 +213,8 @@ directive.
 
 ----
 
-In the example below, ``tmp_path`` fixture is requested for the ``literalinclude``
-directive.
+In the example below, ``tmp_path`` fixture is requested for 
+the ``literalinclude`` directive.
 
 *Filename: README.rst*
 
@@ -223,6 +223,45 @@ directive.
     .. pytestfixture: tmp_path
     .. literalinclude:: examples/python/tmp_path_example.py
         :name: test_li_tmp_path_example
+
+----
+
+Let's consider a sample `openai`_ code to ask LLM to tell a joke.
+In the example below, ``openai_mock`` fixture is requested for 
+the ``code-block`` directive.
+
+.. note:: Note the ``pytestfixture`` directive ``openai_mock``.
+
+*Filename: README.rst*
+
+.. code-block:: rst
+
+    .. pytestfixture: openai_mock
+    .. code-block:: python
+        :name: test_tell_me_a_joke
+
+        from openai import OpenAI
+
+        client = OpenAI()
+        completion = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[
+                {"role": "developer", "content": "You are a famous comedian."},
+                {"role": "user", "content": "Tell me a joke."},
+            ],
+        )
+
+        assert isinstance(completion.choices[0].message.content, str)
+
+Same could be applied to the ``literalinclude`` directive.
+
+*Filename: README.rst*
+
+.. code-block:: rst
+
+    .. pytestfixture: openai_mock
+    .. literalinclude:: examples/python/tell_me_a_joke_example.py
+        :name: test_li_tell_me_a_joke
 
 ----
 
@@ -309,39 +348,6 @@ Sample `boto3`_ code to create a bucket on AWS S3.
         s3 = boto3.client("s3", region_name="us-east-1")
         s3.create_bucket(Bucket="my-bucket")
         assert "my-bucket" in [b["Name"] for b in s3.list_buckets()["Buckets"]]
-
-----
-
-Add ``openai`` marker
-^^^^^^^^^^^^^^^^^^^^^
-
-Sample `openai`_ code to ask LLM to tell a joke. Note, that next to a
-custom ``openai`` marker, ``xfail`` marker is used, which allows underlying
-code to fail, without marking entire test suite as failed.
-
-.. note:: Note the ``pytestmark`` directive ``xfail`` and ``openai`` markers.
-
-*Filename: README.rst*
-
-.. code-block:: rst
-
-    .. pytestmark: xfail
-    .. pytestmark: openai
-    .. code-block:: python
-        :name: test_tell_me_a_joke
-
-        from openai import OpenAI
-
-        client = OpenAI()
-        completion = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {"role": "developer", "content": "You are a famous comedian."},
-                {"role": "user", "content": "Tell me a joke."},
-            ],
-        )
-
-        assert isinstance(completion.choices[0].message.content, str)
 
 ----
 

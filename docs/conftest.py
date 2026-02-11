@@ -2,7 +2,6 @@ import contextlib
 import json
 import os
 from pathlib import Path
-from types import SimpleNamespace
 
 import pytest
 import respx
@@ -11,28 +10,8 @@ __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2025-2026 Artur Barseghyan"
 __license__ = "MIT"
 __all__ = (
-    "http_request_factory",
-    "http_request",
     "openai_mock",
 )
-
-
-@pytest.fixture
-def http_request_factory():
-    """
-    Returns a function that creates a simple namespace object
-    with a 'GET' attribute set to the provided dictionary.
-    """
-    def _factory(get_data: dict):
-        # Creates an object like: object(GET={'key': 'value'})
-        return SimpleNamespace(GET=get_data)
-    return _factory
-
-
-@pytest.fixture
-def http_request(http_request_factory):
-    test_data = {"param1": "value1", "signature": "mock-sig"}
-    return http_request_factory(test_data)
 
 
 @pytest.fixture
@@ -40,7 +19,8 @@ def openai_mock():
     # Setup
     os.environ.setdefault("OPENAI_API_KEY", "test-key")
     cassette_path = (
-        Path(__file__).parent
+        Path(__file__).parent.parent
+        / "examples"
         / "cassettes"
         / "openai_chat_completion.json"
     )
@@ -57,3 +37,4 @@ def openai_mock():
     # Teardown
     with contextlib.suppress(Exception):
         mock.stop()
+
