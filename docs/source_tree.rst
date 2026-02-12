@@ -13,7 +13,6 @@ the contents of each key file.
    │   ├── cheatsheet_markdown.rst
    │   ├── cheatsheet_restructured_text.rst
    │   ├── conf.py
-   │   ├── conftest.py
    │   ├── contributor_guidelines.rst
    │   ├── customisation.rst
    │   ├── documentation.rst
@@ -56,13 +55,11 @@ the contents of each key file.
    │   │   ├── django_settings.py
    │   │   ├── pytest_fixtures.rst
    │   │   └── README.rst
-   │   ├── __init__.py
-   │   └── conftest.py
+   │   └── __init__.py
    ├── src
    │   └── pytest_codeblock
    │       ├── tests
    │       │   ├── __init__.py
-   │       │   ├── conftest.py
    │       │   ├── test_customisation.py
    │       │   ├── test_integration.py
    │       │   ├── test_nameless_codeblocks.py
@@ -130,13 +127,6 @@ docs/conf.py
 .. literalinclude:: conf.py
    :language: python
    :caption: docs/conf.py
-
-docs/conftest.py
-----------------
-
-.. literalinclude:: conftest.py
-   :language: python
-   :caption: docs/conftest.py
 
 docs/contributor_guidelines.rst
 -------------------------------
@@ -207,13 +197,6 @@ examples/cassettes/openai_chat_completion.json
 .. literalinclude:: ../examples/cassettes/openai_chat_completion.json
    :language: json
    :caption: examples/cassettes/openai_chat_completion.json
-
-examples/conftest.py
---------------------
-
-.. literalinclude:: ../examples/conftest.py
-   :language: python
-   :caption: examples/conftest.py
 
 examples/customisation_example/pyproject.toml
 ---------------------------------------------
@@ -438,13 +421,6 @@ src/pytest_codeblock/tests/__init__.py
 .. literalinclude:: ../src/pytest_codeblock/tests/__init__.py
    :language: python
    :caption: src/pytest_codeblock/tests/__init__.py
-
-src/pytest_codeblock/tests/conftest.py
---------------------------------------
-
-.. literalinclude:: ../src/pytest_codeblock/tests/conftest.py
-   :language: python
-   :caption: src/pytest_codeblock/tests/conftest.py
 
 src/pytest_codeblock/tests/test_customisation.py
 ------------------------------------------------
