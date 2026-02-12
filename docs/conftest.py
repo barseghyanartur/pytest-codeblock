@@ -37,4 +37,3 @@ def openai_mock():
     # Teardown
     with contextlib.suppress(Exception):
         mock.stop()
-

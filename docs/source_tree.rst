@@ -1,14 +1,13 @@
 Project source-tree
 ===================
 
-Below is the layout of our project (to 10 levels), followed by
+Below is the layout of the project (to 10 levels), followed by
 the contents of each key file.
 
-.. code-block:: bash
+.. code-block:: text
    :caption: Project directory layout
 
    pytest-codeblock/
-
    ├── docs
    │   ├── _implement_pytest_hooks.rst
    │   ├── changelog.rst
@@ -16,12 +15,11 @@ the contents of each key file.
    │   ├── cheatsheet_restructured_text.rst
    │   ├── code_of_conduct.rst
    │   ├── conf.py
-   │   ├── conf.py.distrib
+   │   ├── conftest.py
    │   ├── contributor_guidelines.rst
    │   ├── customisation.rst
    │   ├── documentation.rst
    │   ├── index.rst
-   │   ├── index.rst.distrib
    │   ├── llms.rst
    │   ├── make.bat
    │   ├── Makefile
@@ -32,6 +30,8 @@ the contents of each key file.
    │   ├── security.rst
    │   └── source_tree.rst
    ├── examples
+   │   ├── cassettes
+   │   │   └── openai_chat_completion.json
    │   ├── customisation_example
    │   │   ├── pyproject.toml
    │   │   ├── test.md
@@ -43,6 +43,10 @@ the contents of each key file.
    │   │   ├── customisation.md
    │   │   ├── pytest_fixtures.md
    │   │   └── README.md
+   │   ├── nameless_codeblocks_example
+   │   │   ├── pyproject.toml
+   │   │   ├── test.md
+   │   │   └── test.rst
    │   ├── python
    │   │   ├── __init__.py
    │   │   ├── basic_example.py
@@ -60,8 +64,6 @@ the contents of each key file.
    │   │   └── README.rst
    │   ├── __init__.py
    │   └── conftest.py
-   ├── scripts
-   │   └── generate_project_source_tree.py
    ├── src
    │   └── pytest_codeblock
    │       ├── tests
@@ -69,6 +71,7 @@ the contents of each key file.
    │       │   ├── conftest.py
    │       │   ├── test_customisation.py
    │       │   ├── test_integration.py
+   │       │   ├── test_nameless_codeblocks.py
    │       │   ├── test_pytest_codeblock.py
    │       │   ├── tests.md
    │       │   └── tests.rst
@@ -79,6 +82,81 @@ the contents of each key file.
    │       ├── helpers.py
    │       ├── md.py
    │       └── rst.py
+   ├── .pre-commit-config.yaml
+   ├── .pre-commit-hooks.yaml
+   ├── .readthedocs.yaml
+   ├── CHANGELOG.rst
+   ├── CODE_OF_CONDUCT.rst
+   ├── conftest.py
+   ├── CONTRIBUTING.rst
+   ├── LICENSE
+   ├── Makefile
+   ├── pyproject.toml
+   ├── README.rst
+   └── SECURITY.rst
+
+.pre-commit-config.yaml
+-----------------------
+
+.. literalinclude:: ../.pre-commit-config.yaml
+   :language: yaml
+   :caption: .pre-commit-config.yaml
+
+.pre-commit-hooks.yaml
+----------------------
+
+.. literalinclude:: ../.pre-commit-hooks.yaml
+   :language: yaml
+   :caption: .pre-commit-hooks.yaml
+
+.readthedocs.yaml
+-----------------
+
+.. literalinclude:: ../.readthedocs.yaml
+   :language: yaml
+   :caption: .readthedocs.yaml
+
+CHANGELOG.rst
+-------------
+
+.. literalinclude:: ../CHANGELOG.rst
+   :language: rst
+   :caption: CHANGELOG.rst
+
+CODE_OF_CONDUCT.rst
+-------------------
+
+.. literalinclude:: ../CODE_OF_CONDUCT.rst
+   :language: rst
+   :caption: CODE_OF_CONDUCT.rst
+
+CONTRIBUTING.rst
+----------------
+
+.. literalinclude:: ../CONTRIBUTING.rst
+   :language: rst
+   :caption: CONTRIBUTING.rst
+
+README.rst
+----------
+
+.. literalinclude:: ../README.rst
+   :language: rst
+   :caption: README.rst
+
+SECURITY.rst
+------------
+
+.. literalinclude:: ../SECURITY.rst
+   :language: rst
+   :caption: SECURITY.rst
+
+conftest.py
+-----------
+
+.. literalinclude:: ../conftest.py
+   :language: python
+   :caption: conftest.py
 
 docs/_implement_pytest_hooks.rst
 --------------------------------
@@ -121,6 +199,13 @@ docs/conf.py
 .. literalinclude:: conf.py
    :language: python
    :caption: docs/conf.py
+
+docs/conftest.py
+----------------
+
+.. literalinclude:: conftest.py
+   :language: python
+   :caption: docs/conftest.py
 
 docs/contributor_guidelines.rst
 -------------------------------
@@ -199,12 +284,26 @@ examples/__init__.py
    :language: python
    :caption: examples/__init__.py
 
+examples/cassettes/openai_chat_completion.json
+----------------------------------------------
+
+.. literalinclude:: ../examples/cassettes/openai_chat_completion.json
+   :language: json
+   :caption: examples/cassettes/openai_chat_completion.json
+
 examples/conftest.py
 --------------------
 
 .. literalinclude:: ../examples/conftest.py
    :language: python
    :caption: examples/conftest.py
+
+examples/customisation_example/pyproject.toml
+---------------------------------------------
+
+.. literalinclude:: ../examples/customisation_example/pyproject.toml
+   :language: toml
+   :caption: examples/customisation_example/pyproject.toml
 
 examples/customisation_example/test.md
 --------------------------------------
@@ -247,6 +346,27 @@ examples/md_example/pytest_fixtures.md
 .. literalinclude:: ../examples/md_example/pytest_fixtures.md
    :language: markdown
    :caption: examples/md_example/pytest_fixtures.md
+
+examples/nameless_codeblocks_example/pyproject.toml
+---------------------------------------------------
+
+.. literalinclude:: ../examples/nameless_codeblocks_example/pyproject.toml
+   :language: toml
+   :caption: examples/nameless_codeblocks_example/pyproject.toml
+
+examples/nameless_codeblocks_example/test.md
+--------------------------------------------
+
+.. literalinclude:: ../examples/nameless_codeblocks_example/test.md
+   :language: markdown
+   :caption: examples/nameless_codeblocks_example/test.md
+
+examples/nameless_codeblocks_example/test.rst
+---------------------------------------------
+
+.. literalinclude:: ../examples/nameless_codeblocks_example/test.rst
+   :language: rst
+   :caption: examples/nameless_codeblocks_example/test.rst
 
 examples/python/__init__.py
 ---------------------------
@@ -339,12 +459,12 @@ examples/rst_example/pytest_fixtures.rst
    :language: rst
    :caption: examples/rst_example/pytest_fixtures.rst
 
-scripts/generate_project_source_tree.py
----------------------------------------
+pyproject.toml
+--------------
 
-.. literalinclude:: ../scripts/generate_project_source_tree.py
-   :language: python
-   :caption: scripts/generate_project_source_tree.py
+.. literalinclude:: ../pyproject.toml
+   :language: toml
+   :caption: pyproject.toml
 
 src/pytest_codeblock/__init__.py
 --------------------------------
@@ -422,6 +542,13 @@ src/pytest_codeblock/tests/test_integration.py
 .. literalinclude:: ../src/pytest_codeblock/tests/test_integration.py
    :language: python
    :caption: src/pytest_codeblock/tests/test_integration.py
+
+src/pytest_codeblock/tests/test_nameless_codeblocks.py
+------------------------------------------------------
+
+.. literalinclude:: ../src/pytest_codeblock/tests/test_nameless_codeblocks.py
+   :language: python
+   :caption: src/pytest_codeblock/tests/test_nameless_codeblocks.py
 
 src/pytest_codeblock/tests/test_pytest_codeblock.py
 ---------------------------------------------------
