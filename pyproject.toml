@@ -2,7 +2,7 @@
 name = "pytest-codeblock"
 description = "Pytest plugin to collect and test code blocks in reStructuredText and Markdown files."
 readme = "README.rst"
-version = "0.5"
+version = "0.5.1"
 requires-python = ">=3.10"
 dependencies = [
     "pytest",
@@ -73,6 +73,7 @@ docs = [
     "sphinx-rtd-theme>=1.3.0",
     "sphinx-no-pragma",
     "sphinx-llms-txt-link",
+    "sphinx-source-tree",
 #    "standard-imghdr",
 ]
 build = [
