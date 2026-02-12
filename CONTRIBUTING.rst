@@ -67,12 +67,24 @@ TL;DR:
 
 .. code-block:: sh
 
-    python -m venv env
-    pip install -e .[all]
+    uv sync
+    uv syncpip install -e .[all]
 
 Documentation
 -------------
 Check the `documentation`_.
+
+For building documentation locally:
+
+.. code-block:: sh
+
+    make build-docs
+
+For running documentation locally on port 5001:
+
+.. code-block:: sh
+
+    make serve-docs
 
 Testing
 -------
@@ -93,7 +105,7 @@ command:
 
 .. code-block:: sh
 
-    make test-all
+    make test
 
 Pull requests
 -------------

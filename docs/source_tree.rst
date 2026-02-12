@@ -10,25 +10,18 @@ the contents of each key file.
    pytest-codeblock/
    ├── docs
    │   ├── _implement_pytest_hooks.rst
-   │   ├── changelog.rst
    │   ├── cheatsheet_markdown.rst
    │   ├── cheatsheet_restructured_text.rst
-   │   ├── code_of_conduct.rst
    │   ├── conf.py
-   │   ├── conftest.py
    │   ├── contributor_guidelines.rst
    │   ├── customisation.rst
    │   ├── documentation.rst
    │   ├── index.rst
    │   ├── llms.rst
-   │   ├── make.bat
-   │   ├── Makefile
    │   ├── markdown.rst
    │   ├── package.rst
    │   ├── requirements.txt
-   │   ├── restructured_text.rst
-   │   ├── security.rst
-   │   └── source_tree.rst
+   │   └── restructured_text.rst
    ├── examples
    │   ├── cassettes
    │   │   └── openai_chat_completion.json
@@ -62,13 +55,11 @@ the contents of each key file.
    │   │   ├── django_settings.py
    │   │   ├── pytest_fixtures.rst
    │   │   └── README.rst
-   │   ├── __init__.py
-   │   └── conftest.py
+   │   └── __init__.py
    ├── src
    │   └── pytest_codeblock
    │       ├── tests
    │       │   ├── __init__.py
-   │       │   ├── conftest.py
    │       │   ├── test_customisation.py
    │       │   ├── test_integration.py
    │       │   ├── test_nameless_codeblocks.py
@@ -82,53 +73,11 @@ the contents of each key file.
    │       ├── helpers.py
    │       ├── md.py
    │       └── rst.py
-   ├── .pre-commit-config.yaml
-   ├── .pre-commit-hooks.yaml
-   ├── .readthedocs.yaml
-   ├── CHANGELOG.rst
-   ├── CODE_OF_CONDUCT.rst
    ├── conftest.py
    ├── CONTRIBUTING.rst
-   ├── LICENSE
    ├── Makefile
    ├── pyproject.toml
-   ├── README.rst
-   └── SECURITY.rst
-
-.pre-commit-config.yaml
------------------------
-
-.. literalinclude:: ../.pre-commit-config.yaml
-   :language: yaml
-   :caption: .pre-commit-config.yaml
-
-.pre-commit-hooks.yaml
-----------------------
-
-.. literalinclude:: ../.pre-commit-hooks.yaml
-   :language: yaml
-   :caption: .pre-commit-hooks.yaml
-
-.readthedocs.yaml
------------------
-
-.. literalinclude:: ../.readthedocs.yaml
-   :language: yaml
-   :caption: .readthedocs.yaml
-
-CHANGELOG.rst
--------------
-
-.. literalinclude:: ../CHANGELOG.rst
-   :language: rst
-   :caption: CHANGELOG.rst
-
-CODE_OF_CONDUCT.rst
--------------------
-
-.. literalinclude:: ../CODE_OF_CONDUCT.rst
-   :language: rst
-   :caption: CODE_OF_CONDUCT.rst
+   └── README.rst
 
 CONTRIBUTING.rst
 ----------------
@@ -144,13 +93,6 @@ README.rst
    :language: rst
    :caption: README.rst
 
-SECURITY.rst
-------------
-
-.. literalinclude:: ../SECURITY.rst
-   :language: rst
-   :caption: SECURITY.rst
-
 conftest.py
 -----------
 
@@ -164,13 +106,6 @@ docs/_implement_pytest_hooks.rst
 .. literalinclude:: _implement_pytest_hooks.rst
    :language: rst
    :caption: docs/_implement_pytest_hooks.rst
-
-docs/changelog.rst
-------------------
-
-.. literalinclude:: changelog.rst
-   :language: rst
-   :caption: docs/changelog.rst
 
 docs/cheatsheet_markdown.rst
 ----------------------------
@@ -186,26 +121,12 @@ docs/cheatsheet_restructured_text.rst
    :language: rst
    :caption: docs/cheatsheet_restructured_text.rst
 
-docs/code_of_conduct.rst
-------------------------
-
-.. literalinclude:: code_of_conduct.rst
-   :language: rst
-   :caption: docs/code_of_conduct.rst
-
 docs/conf.py
 ------------
 
 .. literalinclude:: conf.py
    :language: python
    :caption: docs/conf.py
-
-docs/conftest.py
-----------------
-
-.. literalinclude:: conftest.py
-   :language: python
-   :caption: docs/conftest.py
 
 docs/contributor_guidelines.rst
 -------------------------------
@@ -263,20 +184,6 @@ docs/restructured_text.rst
    :language: rst
    :caption: docs/restructured_text.rst
 
-docs/security.rst
------------------
-
-.. literalinclude:: security.rst
-   :language: rst
-   :caption: docs/security.rst
-
-docs/source_tree.rst
---------------------
-
-.. literalinclude:: source_tree.rst
-   :language: rst
-   :caption: docs/source_tree.rst
-
 examples/__init__.py
 --------------------
 
@@ -290,13 +197,6 @@ examples/cassettes/openai_chat_completion.json
 .. literalinclude:: ../examples/cassettes/openai_chat_completion.json
    :language: json
    :caption: examples/cassettes/openai_chat_completion.json
-
-examples/conftest.py
---------------------
-
-.. literalinclude:: ../examples/conftest.py
-   :language: python
-   :caption: examples/conftest.py
 
 examples/customisation_example/pyproject.toml
 ---------------------------------------------
@@ -521,13 +421,6 @@ src/pytest_codeblock/tests/__init__.py
 .. literalinclude:: ../src/pytest_codeblock/tests/__init__.py
    :language: python
    :caption: src/pytest_codeblock/tests/__init__.py
-
-src/pytest_codeblock/tests/conftest.py
---------------------------------------
-
-.. literalinclude:: ../src/pytest_codeblock/tests/conftest.py
-   :language: python
-   :caption: src/pytest_codeblock/tests/conftest.py
 
 src/pytest_codeblock/tests/test_customisation.py
 ------------------------------------------------
