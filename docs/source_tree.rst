@@ -10,10 +10,8 @@ the contents of each key file.
    pytest-codeblock/
    ├── docs
    │   ├── _implement_pytest_hooks.rst
-   │   ├── changelog.rst
    │   ├── cheatsheet_markdown.rst
    │   ├── cheatsheet_restructured_text.rst
-   │   ├── code_of_conduct.rst
    │   ├── conf.py
    │   ├── conftest.py
    │   ├── contributor_guidelines.rst
@@ -21,14 +19,10 @@ the contents of each key file.
    │   ├── documentation.rst
    │   ├── index.rst
    │   ├── llms.rst
-   │   ├── make.bat
-   │   ├── Makefile
    │   ├── markdown.rst
    │   ├── package.rst
    │   ├── requirements.txt
-   │   ├── restructured_text.rst
-   │   ├── security.rst
-   │   └── source_tree.rst
+   │   └── restructured_text.rst
    ├── examples
    │   ├── cassettes
    │   │   └── openai_chat_completion.json
@@ -82,53 +76,11 @@ the contents of each key file.
    │       ├── helpers.py
    │       ├── md.py
    │       └── rst.py
-   ├── .pre-commit-config.yaml
-   ├── .pre-commit-hooks.yaml
-   ├── .readthedocs.yaml
-   ├── CHANGELOG.rst
-   ├── CODE_OF_CONDUCT.rst
    ├── conftest.py
    ├── CONTRIBUTING.rst
-   ├── LICENSE
    ├── Makefile
    ├── pyproject.toml
-   ├── README.rst
-   └── SECURITY.rst
-
-.pre-commit-config.yaml
------------------------
-
-.. literalinclude:: ../.pre-commit-config.yaml
-   :language: yaml
-   :caption: .pre-commit-config.yaml
-
-.pre-commit-hooks.yaml
-----------------------
-
-.. literalinclude:: ../.pre-commit-hooks.yaml
-   :language: yaml
-   :caption: .pre-commit-hooks.yaml
-
-.readthedocs.yaml
------------------
-
-.. literalinclude:: ../.readthedocs.yaml
-   :language: yaml
-   :caption: .readthedocs.yaml
-
-CHANGELOG.rst
--------------
-
-.. literalinclude:: ../CHANGELOG.rst
-   :language: rst
-   :caption: CHANGELOG.rst
-
-CODE_OF_CONDUCT.rst
--------------------
-
-.. literalinclude:: ../CODE_OF_CONDUCT.rst
-   :language: rst
-   :caption: CODE_OF_CONDUCT.rst
+   └── README.rst
 
 CONTRIBUTING.rst
 ----------------
@@ -144,13 +96,6 @@ README.rst
    :language: rst
    :caption: README.rst
 
-SECURITY.rst
-------------
-
-.. literalinclude:: ../SECURITY.rst
-   :language: rst
-   :caption: SECURITY.rst
-
 conftest.py
 -----------
 
@@ -165,13 +110,6 @@ docs/_implement_pytest_hooks.rst
    :language: rst
    :caption: docs/_implement_pytest_hooks.rst
 
-docs/changelog.rst
-------------------
-
-.. literalinclude:: changelog.rst
-   :language: rst
-   :caption: docs/changelog.rst
-
 docs/cheatsheet_markdown.rst
 ----------------------------
 
@@ -185,13 +123,6 @@ docs/cheatsheet_restructured_text.rst
 .. literalinclude:: cheatsheet_restructured_text.rst
    :language: rst
    :caption: docs/cheatsheet_restructured_text.rst
-
-docs/code_of_conduct.rst
-------------------------
-
-.. literalinclude:: code_of_conduct.rst
-   :language: rst
-   :caption: docs/code_of_conduct.rst
 
 docs/conf.py
 ------------
@@ -262,20 +193,6 @@ docs/restructured_text.rst
 .. literalinclude:: restructured_text.rst
    :language: rst
    :caption: docs/restructured_text.rst
-
-docs/security.rst
------------------
-
-.. literalinclude:: security.rst
-   :language: rst
-   :caption: docs/security.rst
-
-docs/source_tree.rst
---------------------
-
-.. literalinclude:: source_tree.rst
-   :language: rst
-   :caption: docs/source_tree.rst
 
 examples/__init__.py
 --------------------
