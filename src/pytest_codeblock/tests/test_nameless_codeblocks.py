@@ -16,6 +16,7 @@ import pytest
 
 from ..collector import group_snippets
 from ..config import Config
+from ..constants import CODEBLOCK_MARK
 from ..md import parse_markdown
 from ..rst import parse_rst
 
@@ -328,7 +329,7 @@ assert True
 
             assert len(raw) == 2
             for sn in raw:
-                assert "codeblock" in sn.marks
+                assert CODEBLOCK_MARK in sn.marks
 
     # -------------------------------------------------------------------------
 
@@ -591,7 +592,7 @@ class TestRSTNameless:
 
             assert len(raw) == 2
             for sn in raw:
-                assert "codeblock" in sn.marks
+                assert CODEBLOCK_MARK in sn.marks
 
     # -------------------------------------------------------------------------
 
