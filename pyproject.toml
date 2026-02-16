@@ -2,7 +2,7 @@
 name = "pytest-codeblock"
 description = "Pytest plugin to collect and test code blocks in reStructuredText and Markdown files."
 readme = "README.rst"
-version = "0.5.1"
+version = "0.5.2"
 requires-python = ">=3.10"
 dependencies = [
     "pytest",
