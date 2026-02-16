@@ -211,7 +211,7 @@ def parse_rst(text: str, base_dir: Path) -> list[CodeSnippet]:
                 sn_marks = pending_marks.copy()
                 sn_fixtures = pending_fixtures.copy()
                 pending_name = None
-                pending_marks.clear()
+                pending_marks = [CODEBLOCK_MARK] # clear pending marks
                 pending_fixtures.clear()
 
                 snippets.append(CodeSnippet(
@@ -241,7 +241,7 @@ def parse_rst(text: str, base_dir: Path) -> list[CodeSnippet]:
             sn_marks = pending_marks.copy()
             sn_fixtures = pending_fixtures.copy()
             pending_name = None
-            pending_marks.clear()
+            pending_marks = [CODEBLOCK_MARK] # clear pending marks
             pending_fixtures.clear()
             j = i + 1
             if j < n and not lines[j].strip():
