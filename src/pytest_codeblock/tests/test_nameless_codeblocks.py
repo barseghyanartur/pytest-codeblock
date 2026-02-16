@@ -16,6 +16,7 @@ import pytest
 
 from ..collector import group_snippets
 from ..config import Config
+from ..constants import CODEBLOCK_MARK
 from ..md import parse_markdown
 from ..rst import parse_rst
 
@@ -311,6 +312,27 @@ user = User.objects.first()
 
     # -------------------------------------------------------------------------
 
+    def test_codeblock_marks_on_all_blocks(self):
+        """Test that all blocks have default codeblock marks."""
+        text = """
+```python
+assert True
+```
+```python
+assert True
+```
+"""
+        mock_config = Config(test_nameless_codeblocks=True)
+
+        with patch("pytest_codeblock.md.get_config", return_value=mock_config):
+            raw = parse_markdown(text)
+
+            assert len(raw) == 2
+            for sn in raw:
+                assert CODEBLOCK_MARK in sn.marks
+
+    # -------------------------------------------------------------------------
+
     def test_auto_naming_preserves_fixtures(self):
         """Test that auto-naming preserves pytest fixtures."""
         text = """
@@ -548,6 +570,29 @@ class TestRSTNameless:
 
             assert len(tests) == 1
             assert "django_db" in tests[0].marks
+
+    # -------------------------------------------------------------------------
+
+    def test_codeblock_marks_on_all_blocks_rst(self, tmp_path):
+        """Test that all blocks in RST file have default codeblock mark."""
+        text = """
+.. code-block:: python
+    assert True
+
+.. code-block::python
+    assert True
+
+"""
+        mock_config = Config(test_nameless_codeblocks=True)
+
+        with patch(
+            "pytest_codeblock.rst.get_config", return_value=mock_config
+        ):
+            raw = parse_rst(text, tmp_path)
+
+            assert len(raw) == 2
+            for sn in raw:
+                assert CODEBLOCK_MARK in sn.marks
 
     # -------------------------------------------------------------------------
 

@@ -196,7 +196,7 @@ DJANGO_SETTINGS_MODULE = "django_settings"
 
 markers = [
     "slow: mark a test that takes a long time to run.",
-    "codeblock: pytest-codeblock markers",
+    # "codeblock: pytest-codeblock markers",
     "aws: mark test as a AWS test",
     "documentation: mark test as a documentation test",
     "fakepy: mark test as a fake.py test",
