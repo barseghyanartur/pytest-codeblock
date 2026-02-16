@@ -111,6 +111,10 @@ Pull requests
 -------------
 You can contribute to the project by making a `pull request`_.
 
+.. note::
+
+    Create a pull requests to the `dev` branch only! Never to `main` directly.
+
 For example:
 
 - To fix documentation typos.
