@@ -19,3 +19,4 @@ Contents:
    code_of_conduct
    changelog
    package
+   source_tree
