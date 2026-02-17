@@ -271,3 +271,55 @@ ignore = [
     "docs/make.bat",
     "docs/Makefile",
 ]
+
+[[tool.sphinx-source-tree.files]]
+output = "docs/source_tree_full.rst"
+title = "Full project source"
+
+[[tool.sphinx-source-tree.files]]
+output = "docs/source_tree.rst"
+title = "Project source"
+gnore = [
+    "__pycache__",
+    "*.pyc",
+    "*.pyo",
+    "*.py,cover",
+    ".git",
+    ".hg",
+    ".svn",
+    ".tox",
+    ".nox",
+    ".venv",
+    "venv",
+    "env",
+    "*.egg-info",
+    "dist",
+    "build",
+    "node_modules",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".coverage",
+    "htmlcov",
+    ".idea",
+    ".vscode",
+    ".DS_Store",
+    "Thumbs.db",
+    ".ruff_cache",
+    ".coverage.*",
+    ".secrets.baseline",
+    ".pre-commit-config.yaml",
+    ".pre-commit-hooks.yaml",
+    ".readthedocs.yaml",
+    "CHANGELOG.rst",
+    "CODE_OF_CONDUCT.rst",
+    "LICENSE",
+    "SECURITY.rst",
+    "docs/changelog.rst",
+    "docs/code_of_conduct.rst",
+    "docs/security.rst",
+    "docs/source_tree.rst",
+    "docs/make.bat",
+    "docs/Makefile",
+    "examples",
+    "docs",
+]
