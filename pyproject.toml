@@ -268,18 +268,19 @@ ignore = [
     "docs/code_of_conduct.rst",
     "docs/security.rst",
     "docs/source_tree.rst",
+    "docs/source_tree_full.rst",
     "docs/make.bat",
     "docs/Makefile",
 ]
 
 [[tool.sphinx-source-tree.files]]
 output = "docs/source_tree_full.rst"
-title = "Full project source"
+title = "Full project source-tree"
 
 [[tool.sphinx-source-tree.files]]
 output = "docs/source_tree.rst"
-title = "Project source"
-gnore = [
+title = "Project source-tree"
+ignore = [
     "__pycache__",
     "*.pyc",
     "*.pyo",
@@ -318,6 +319,7 @@ gnore = [
     "docs/code_of_conduct.rst",
     "docs/security.rst",
     "docs/source_tree.rst",
+    "docs/source_tree_full.rst",
     "docs/make.bat",
     "docs/Makefile",
     "examples",

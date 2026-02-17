@@ -14,4 +14,4 @@
 
 ----
 
-.. include:: source_tree.rst
+.. include:: source_tree_full.rst
