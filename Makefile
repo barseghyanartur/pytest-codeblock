@@ -1,8 +1,8 @@
 # Update version ONLY here
-VERSION := 0.5.2
+VERSION := 0.5.3
 SHELL := /bin/bash
 # Makefile for project
-VENV := ~/.virtualenvs/pytest-codeblock/bin/activate
+VENV := .venv/bin/activate
 UNAME_S := $(shell uname -s)
 
 # Build documentation using Sphinx and zip it
@@ -46,9 +46,12 @@ ruff:
 serve-docs:
 	source $(VENV) && cd builddocs && python -m http.server 5001
 
+create-venv:
+	uv venv
+
 # Install the project
-install:
-	source $(VENV) && pip install -e .[all]
+install: create-venv
+	source $(VENV) && uv pip install -e .[all]
 
 # Run tests with pytest
 test: clean
