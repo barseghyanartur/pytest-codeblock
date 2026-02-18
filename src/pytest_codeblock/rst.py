@@ -347,7 +347,7 @@ class RSTFile(pytest.File):
                         run_pytest_style_code(
                             code=code,
                             snippet_name=sn_name,
-                            fpath=fpath,
+                            path=fpath,
                         )
                         return
 
