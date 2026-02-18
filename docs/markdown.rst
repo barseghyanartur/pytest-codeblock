@@ -123,6 +123,42 @@ In the example below, ``django_db`` marker is added to the code block.
     user = User.objects.first()
     ```
 
+Running pytest-style tests within code blocks
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``pytestrun`` marker allows code blocks to be executed as standalone pytest
+suites. Unlike standard code blocks that are simply executed with ``exec()``,
+blocks with the ``pytestrun`` marker support full pytest functionality including
+test classes, fixtures, and setup/teardown within documentation snippets.
+
+.. note:: Note the ``pytestmark`` directive ``pytestrun`` marker.
+
+*Filename: README.md*
+
+.. code-block:: markdown
+
+    <!-- pytestmark: pytestrun -->
+    ```python name=test_pytestrun_example
+    import pytest
+
+    class TestSystemInfo:
+
+        @pytest.fixture
+        def system_name(self):
+            return "Linux"
+
+        @pytest.fixture
+        def version_number(self):
+            return 5
+
+        def test_combined_info(self, system_name, version_number):
+            info = f"{system_name} v{version_number}"
+            assert info == "Linux v5"
+
+        def test_name_only(self, system_name):
+            assert system_name.isalpha()
+    ```
+
 Requesting pytest fixtures for code blocks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
