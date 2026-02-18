@@ -56,14 +56,14 @@ install: create-venv
 # Run tests with pytest
 test: clean
 	source $(VENV) && pytest -vrx -s
-	cd examples/customisation_example/ && source $(VENV) && pytest -vrx -s
-	cd examples/nameless_codeblocks_example/ && source $(VENV) && pytest -vrx -s
+	source $(VENV) && cd examples/customisation_example/ && pytest -vrx -s
+	source $(VENV) && cd examples/nameless_codeblocks_example/ && pytest -vrx -s
 
 test-customisation: clean
-	cd examples/customisation_example/ && source $(VENV) && pytest -vrx -s
+	source $(VENV) && cd examples/customisation_example/ && pytest -vrx -s
 
 test-nameless-codeblocks: clean
-	cd examples/nameless_codeblocks_example/ && source $(VENV) && pytest -vvvrx -s
+	source $(VENV) && cd examples/nameless_codeblocks_example/ && pytest -vvvrx -s
 
 # Run tests with pytest in CI environment
 test-ci: clean
@@ -72,8 +72,8 @@ test-ci: clean
 # Run tests with coverage
 test-cov: clean
 	source $(VENV) && coverage run --source=src/pytest_codeblock --omit="*/tests/*,*/conftest.py" -m pytest -vrx -s src/pytest_codeblock/tests/ -o "addopts=" -o "testpaths=src/pytest_codeblock/tests"
-	cd examples/customisation_example/ && source $(VENV) && coverage run --source=. -m pytest -vrx -s . -o "addopts=" -o "testpaths=tests"
-	cd examples/nameless_codeblocks_example/ && source $(VENV) && coverage run --source=. -m pytest -vrx -s . -o "addopts=" -o "testpaths=tests"
+	source $(VENV) && cd examples/customisation_example/ && coverage run --source=. -m pytest -vrx -s . -o "addopts=" -o "testpaths=tests"
+	source $(VENV) && cd examples/nameless_codeblocks_example/ && coverage run --source=. -m pytest -vrx -s . -o "addopts=" -o "testpaths=tests"
 	source $(VENV) && coverage report --omit="*/tests/*,*/conftest.py,examples/*"
 	source $(VENV) && coverage html --omit="*/tests/*,*/conftest.py,examples/*"
 
