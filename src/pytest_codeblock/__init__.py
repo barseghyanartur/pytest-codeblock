@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from .config import get_config
-from .constants import CODEBLOCK_MARK
+from .constants import CODEBLOCK_MARK, PYTESTRUN_MARK
 from .md import MarkdownFile
 from .rst import RSTFile
 
@@ -41,4 +41,10 @@ def pytest_configure(config):
         config.addinivalue_line(
             "markers",
             f"{CODEBLOCK_MARK}: pytest-codeblock markers (auto-registered)",
+        )
+    # Only register if not already present
+    if PYTESTRUN_MARK not in marker_names:
+        config.addinivalue_line(
+            "markers",
+            f"{PYTESTRUN_MARK}: pytest-codeblock markers (auto-registered)",
         )

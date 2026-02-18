@@ -192,3 +192,31 @@ Something in between
 
     assert text_2
     print(text_2)
+
+----
+
+test_pytestrun_marker
+---------------------
+
+.. pytestmark: pytestrun
+.. code-block:: python
+    :name: test_pytestrun_marker
+
+    import pytest
+
+    class TestSystemInfo:
+
+        @pytest.fixture
+        def system_name(self):
+            return "Linux"
+
+        @pytest.fixture
+        def version_number(self):
+            return 5
+
+        def test_combined_info(self, system_name, version_number):
+            info = f"{system_name} v{version_number}"
+            assert info == "Linux v5"
+
+        def test_name_only(self, system_name):
+            assert system_name.isalpha()

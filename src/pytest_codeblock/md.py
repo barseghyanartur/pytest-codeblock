@@ -9,8 +9,14 @@ import pytest
 
 from .collector import CodeSnippet, group_snippets
 from .config import get_config
-from .constants import CODEBLOCK_MARK, DJANGO_DB_MARKS, TEST_PREFIX
+from .constants import (
+    CODEBLOCK_MARK,
+    DJANGO_DB_MARKS,
+    PYTESTRUN_MARK,
+    TEST_PREFIX,
+)
 from .helpers import contains_top_level_await, wrap_async_code
+from .pytestrun import run_pytest_style_code
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2025-2026 Artur Barseghyan"
@@ -25,14 +31,12 @@ def parse_markdown(text: str) -> list[CodeSnippet]:
     """
     Parse Markdown text and extract Python code snippets as CodeSnippet
     objects.
-
     Supports:
       - <!-- pytestmark: <mark> --> comments immediately before a code fence
       - <!-- codeblock-name: <name> --> comments for naming
       - <!-- continue: <name> --> comments for grouping with a named snippet
       - Fenced code blocks with ```python (and optional name=<name> in the
         info string)
-
     Captures each snippet's name, code, starting line, and any pytest marks.
     """
     config = get_config()
@@ -195,6 +199,7 @@ class MarkdownFile(pytest.File):
             # Bind the values we need so we don't close over `sn` itself
             _sn_name = sn.name
             _fpath = str(self.path)
+            _is_pytestrun = PYTESTRUN_MARK in sn.marks
 
             # Build list of fixture names requested by this snippet
             _fixture_names: list[str] = list(sn.fixtures)
@@ -213,14 +218,24 @@ class MarkdownFile(pytest.File):
                 sn_name=_sn_name,
                 fpath=_fpath,
                 fixture_names=_fixture_names,
+                is_pytestrun=_is_pytestrun,
             ):
                 # This inner function *actually* has a **fixtures signature,
                 # but we override __signature__ so pytest passes the right
                 # fixtures and names.
                 def test_block(**fixtures):
-                    # Auto-wrap async code
+                    if is_pytestrun:
+                        run_pytest_style_code(
+                            code=code,
+                            snippet_name=sn_name,
+                            path=fpath,
+                        )
+                        return
+
+                    # Normal (non-pytestrun) execution path
                     ex_code = code
                     if contains_top_level_await(code):
+                        # Auto-wrap async code
                         ex_code = wrap_async_code(code)
 
                     try:
