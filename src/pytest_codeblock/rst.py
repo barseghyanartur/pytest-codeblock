@@ -10,8 +10,14 @@ import pytest
 
 from .collector import CodeSnippet, group_snippets
 from .config import get_config
-from .constants import CODEBLOCK_MARK, DJANGO_DB_MARKS, TEST_PREFIX
+from .constants import (
+    CODEBLOCK_MARK,
+    DJANGO_DB_MARKS,
+    PYTESTRUN_MARK,
+    TEST_PREFIX,
+)
 from .helpers import contains_top_level_await, wrap_async_code
+from .pytestrun import run_pytest_style_code
 
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2025-2026 Artur Barseghyan"
@@ -129,10 +135,6 @@ def parse_rst(text: str, base_dir: Path) -> list[CodeSnippet]:
                     )
                     snippets.append(snippet)
 
-                    # TODO: Is this needed?
-                    # pending_marks.clear()
-                    # pending_fixtures.clear()
-
             i = j + 1
             continue
 
@@ -211,7 +213,7 @@ def parse_rst(text: str, base_dir: Path) -> list[CodeSnippet]:
                 sn_marks = pending_marks.copy()
                 sn_fixtures = pending_fixtures.copy()
                 pending_name = None
-                pending_marks = [CODEBLOCK_MARK] # clear pending marks
+                pending_marks = [CODEBLOCK_MARK]  # clear pending marks
                 pending_fixtures.clear()
 
                 snippets.append(CodeSnippet(
@@ -241,7 +243,7 @@ def parse_rst(text: str, base_dir: Path) -> list[CodeSnippet]:
             sn_marks = pending_marks.copy()
             sn_fixtures = pending_fixtures.copy()
             pending_name = None
-            pending_marks = [CODEBLOCK_MARK] # clear pending marks
+            pending_marks = [CODEBLOCK_MARK]  # clear pending marks
             pending_fixtures.clear()
             j = i + 1
             if j < n and not lines[j].strip():
@@ -317,6 +319,7 @@ class RSTFile(pytest.File):
             # Bind the values we need so we don't close over `sn` itself
             _sn_name = sn.name
             _fpath = str(self.path)
+            _is_pytestrun = PYTESTRUN_MARK in sn.marks
 
             # Build list of fixture names requested by this snippet
             _fixture_names: list[str] = list(sn.fixtures)
@@ -334,11 +337,21 @@ class RSTFile(pytest.File):
                 sn_name=_sn_name,
                 fpath=_fpath,
                 fixture_names=_fixture_names,
+                is_pytestrun=_is_pytestrun,
             ):
                 # This inner function *actually* has a **fixtures signature,
                 # but we override __signature__ so pytest passes the right
                 # fixtures and names.
                 def test_block(**fixtures):
+                    if is_pytestrun:
+                        run_pytest_style_code(
+                            code=code,
+                            snippet_name=sn_name,
+                            path=fpath,
+                        )
+                        return
+
+                    # Normal (non-pytestrun) execution path
                     ex_code = code
                     if contains_top_level_await(code):
                         ex_code = wrap_async_code(code)
