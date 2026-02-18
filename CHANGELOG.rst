@@ -19,6 +19,20 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.5.3
+-----
+2026-02-18
+
+- Add a new ``pytestrun`` marker, which allows code blocks in
+  reStructuredText and Markdown to be executed as standalone pytest suites.
+  Unlike standard code blocks that are simply executed with `exec()`,
+  blocks with ``pytestrun`` marker are written to a temporary file and run
+  via a subprocess using ``pytest``. This enables full support for test
+  classes, fixtures, and setup/teardown within documentation snippets.
+  The implementation also adds auto-registration for the ``pytestrun`` marker
+  and ensures the subprocess inherits the current ``PYTHONPATH`` for proper
+  module discovery.
+
 0.5.2
 -----
 2026-02-16

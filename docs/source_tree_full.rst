@@ -16,6 +16,7 @@ the contents of each key file.
    │   ├── contributor_guidelines.rst
    │   ├── customisation.rst
    │   ├── documentation.rst
+   │   ├── full-llms.txt
    │   ├── index.rst
    │   ├── llms.rst
    │   ├── markdown.rst
@@ -72,6 +73,7 @@ the contents of each key file.
    │       ├── constants.py
    │       ├── helpers.py
    │       ├── md.py
+   │       ├── pytestrun.py
    │       └── rst.py
    ├── conftest.py
    ├── CONTRIBUTING.rst
@@ -407,6 +409,13 @@ src/pytest_codeblock/md.py
 .. literalinclude:: ../src/pytest_codeblock/md.py
    :language: python
    :caption: src/pytest_codeblock/md.py
+
+src/pytest_codeblock/pytestrun.py
+---------------------------------
+
+.. literalinclude:: ../src/pytest_codeblock/pytestrun.py
+   :language: python
+   :caption: src/pytest_codeblock/pytestrun.py
 
 src/pytest_codeblock/rst.py
 ---------------------------

@@ -1,12 +1,12 @@
 from pathlib import Path
 
 from .config import get_config
-from .constants import CODEBLOCK_MARK
+from .constants import CODEBLOCK_MARK, PYTESTRUN_MARK
 from .md import MarkdownFile
 from .rst import RSTFile
 
 __title__ = "pytest-codeblock"
-__version__ = "0.5.2"
+__version__ = "0.5.3"
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2025-2026 Artur Barseghyan"
 __license__ = "MIT"
@@ -41,4 +41,10 @@ def pytest_configure(config):
         config.addinivalue_line(
             "markers",
             f"{CODEBLOCK_MARK}: pytest-codeblock markers (auto-registered)",
+        )
+    # Only register if not already present
+    if PYTESTRUN_MARK not in marker_names:
+        config.addinivalue_line(
+            "markers",
+            f"{PYTESTRUN_MARK}: pytest-codeblock markers (auto-registered)",
         )
