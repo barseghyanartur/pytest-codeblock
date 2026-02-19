@@ -209,3 +209,17 @@ class TestSystemInfo:
     def test_name_only(self, system_name):
         assert system_name.isalpha()
 ```
+
+----
+
+## test_pytestrun_marker_and_conftest_fixtures
+
+<!-- pytestmark: pytestrun -->
+```python name=test_pytestrun_marker_and_conftest_fixtures
+import pytest
+
+class TestSystemInfo:
+
+    def test_request(self, http_request):
+        assert isinstance(http_request.GET, dict)
+```
