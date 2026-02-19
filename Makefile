@@ -1,9 +1,13 @@
 # Update version ONLY here
-VERSION := 0.5.3
+VERSION := 0.5.4
 SHELL := /bin/bash
 # Makefile for project
 VENV := .venv/bin/activate
 UNAME_S := $(shell uname -s)
+
+# ----------------------------------------------------------------------------
+# Documentation
+# ----------------------------------------------------------------------------
 
 # Build documentation using Sphinx and zip it
 build-docs:
@@ -26,11 +30,23 @@ build-docs-pdf:
 auto-build-docs:
 	source $(VENV) && sphinx-autobuild docs docs/_build/html
 
+# Serve the built docs on port 5001
+serve-docs:
+	source $(VENV) && cd builddocs && python -m http.server 5001
+
+# ----------------------------------------------------------------------------
+# Pre-commit
+# ----------------------------------------------------------------------------
+
 pre-commit-install:
 	pre-commit install
 
 pre-commit: pre-commit-install
 	pre-commit run --all-files
+
+# ----------------------------------------------------------------------------
+# Linting
+# ----------------------------------------------------------------------------
 
 pyupgrade:
 	pre-commit run --all-files pyupgrade
@@ -42,9 +58,12 @@ doc8:
 ruff:
 	source $(VENV) && ruff check .
 
-# Serve the built docs on port 5001
-serve-docs:
-	source $(VENV) && cd builddocs && python -m http.server 5001
+mypy:
+	source $(VENV) && mypy src/pytest_codeblock/
+
+# ----------------------------------------------------------------------------
+# Installation
+# ----------------------------------------------------------------------------
 
 create-venv:
 	uv venv
@@ -53,29 +72,42 @@ create-venv:
 install: create-venv
 	source $(VENV) && uv pip install -e .[all]
 
-# Run tests with pytest
+# ----------------------------------------------------------------------------
+# Tests
+# ----------------------------------------------------------------------------
+
+# Run core tests
 test: clean
 	source $(VENV) && pytest -vrx -s
-	source $(VENV) && cd examples/customisation_example/ && pytest -vrx -s
-	source $(VENV) && cd examples/nameless_codeblocks_example/ && pytest -vrx -s
 
+# Run customisation tests
 test-customisation: clean
 	source $(VENV) && cd examples/customisation_example/ && pytest -vrx -s
 
+# Run nameless codeblock tests
 test-nameless-codeblocks: clean
 	source $(VENV) && cd examples/nameless_codeblocks_example/ && pytest -vvvrx -s
 
-# Run tests with pytest in CI environment
+# Run all tests
+test-all: test test-customisation test-nameless-codeblocks
+
+# Run tests (to be used on CI environment)
 test-ci: clean
 	pytest -vrx -s
 
-# Run tests with coverage
+# Run core tests with coverage
 test-cov: clean
 	source $(VENV) && coverage run --source=src/pytest_codeblock --omit="*/tests/*,*/conftest.py" -m pytest -vrx -s src/pytest_codeblock/tests/ -o "addopts=" -o "testpaths=src/pytest_codeblock/tests"
-	source $(VENV) && cd examples/customisation_example/ && coverage run --source=. -m pytest -vrx -s . -o "addopts=" -o "testpaths=tests"
-	source $(VENV) && cd examples/nameless_codeblocks_example/ && coverage run --source=. -m pytest -vrx -s . -o "addopts=" -o "testpaths=tests"
 	source $(VENV) && coverage report --omit="*/tests/*,*/conftest.py,examples/*"
 	source $(VENV) && coverage html --omit="*/tests/*,*/conftest.py,examples/*"
+
+test-customisation-cov:
+	source $(VENV) && cd examples/customisation_example/ && coverage run --source=. -m pytest -vrx -s . -o "addopts=" -o "testpaths=tests"
+
+test-nameless-codeblocks-cov:
+	source $(VENV) && cd examples/nameless_codeblocks_example/ && coverage run --source=. -m pytest -vrx -s . -o "addopts=" -o "testpaths=tests"
+
+test-all-cov: test-cov test-customisation-cov test-nameless-codeblocks-cov
 
 # Run tests with coverage in CI environment
 test-cov-ci: clean
@@ -85,14 +117,9 @@ test-cov-ci: clean
 	coverage report --omit="*/tests/*,*/conftest.py,examples/*"
 	coverage html --omit="*/tests/*,*/conftest.py,examples/*"
 
-shell:
-	source $(VENV) && ipython
-
-create-secrets:
-	source $(VENV) && detect-secrets scan > .secrets.baseline
-
-detect-secrets:
-	source $(VENV) && detect-secrets scan --baseline .secrets.baseline
+# ----------------------------------------------------------------------------
+# Development
+# ----------------------------------------------------------------------------
 
 # Clean up generated files
 clean:
@@ -119,6 +146,9 @@ clean:
 	rm -rf src/pytest_codeblock.egg-info/
 	rm -rf src/pytest-codeblock.egg-info/
 
+shell:
+	source $(VENV) && ipython
+
 compile-requirements:
 	source $(VENV) && uv pip compile --all-extras -o docs/requirements.txt pyproject.toml
 
@@ -135,6 +165,20 @@ update-version:
 		sed -i 's/__version__ = "[0-9.]\+"/__version__ = "$(VERSION)"/' src/pytest_codeblock/__init__.py; \
 	fi
 
+# ----------------------------------------------------------------------------
+# Security
+# ----------------------------------------------------------------------------
+
+create-secrets:
+	source $(VENV) && detect-secrets scan > .secrets.baseline
+
+detect-secrets:
+	source $(VENV) && detect-secrets scan --baseline .secrets.baseline
+
+# ----------------------------------------------------------------------------
+# Release
+# ----------------------------------------------------------------------------
+
 build:
 	source $(VENV) && python -m build .
 
@@ -147,8 +191,9 @@ release:
 test-release:
 	source $(VENV) && twine upload --repository testpypi dist/* --verbose
 
-mypy:
-	source $(VENV) && mypy src/pytest_codeblock/
+# ----------------------------------------------------------------------------
+# Other
+# ----------------------------------------------------------------------------
 
 %:
 	@:
