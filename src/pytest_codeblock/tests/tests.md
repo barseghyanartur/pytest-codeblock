@@ -325,3 +325,29 @@ class TestMultipleMethods:
     def test_sum(self, shared_list):
         assert sum(shared_list) == 6
 ```
+
+----
+
+## test_pytestrun_multiple_test_methods_multiple_markers
+
+<!-- pytestmark: pytestrun -->
+```python name=test_pytestrun_multiple_test_methods_multiple_markers
+import pytest
+
+class TestMultipleMethodsMultipleMarkers:
+
+    @pytest.fixture
+    def letter_a(self):
+        return "a"
+
+    def test_class_level_fixture(self, letter_a):
+        assert letter_a == "a"
+
+    def test_pytest_built_in_fixture(self, tmp_path):
+        d = tmp_path / "sub"
+        d.mkdir()  # Create the directory
+        assert d.is_dir()  # Verify it was created and is a directory
+
+    def test_pytest_user_defined_fixture(self, http_request):
+        assert isinstance(http_request.GET, dict)
+```
