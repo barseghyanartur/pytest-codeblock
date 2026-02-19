@@ -223,3 +223,105 @@ class TestSystemInfo:
     def test_request(self, http_request):
         assert isinstance(http_request.GET, dict)
 ```
+
+
+----
+
+## test_pytestrun_with_setup_teardown
+
+<!-- pytestmark: pytestrun -->
+```python name=test_pytestrun_with_setup_teardown
+import pytest
+
+class TestWithSetup:
+
+    def setup_method(self):
+        self.value = 10
+
+    def test_value_set(self):
+        assert self.value == 10
+
+    def test_value_modified(self):
+        self.value += 5
+        assert self.value == 15
+```
+
+----
+
+## test_pytestrun_with_parametrize
+
+<!-- pytestmark: pytestrun -->
+```python name=test_pytestrun_with_parametrize
+import pytest
+
+class TestParametrized:
+
+    @pytest.mark.parametrize("input,expected", [(1, 2), (3, 4)])
+    def test_increment(self, input, expected):
+        assert input + 1 == expected
+```
+
+----
+
+## test_pytestrun_nested_fixtures
+
+<!-- pytestmark: pytestrun -->
+```python name=test_pytestrun_nested_fixtures
+import pytest
+
+class TestNestedFixtures:
+
+    @pytest.fixture
+    def base_value(self):
+        return 100
+
+    @pytest.fixture
+    def derived_value(self, base_value):
+        return base_value * 2
+
+    def test_derived(self, derived_value):
+        assert derived_value == 200
+```
+
+----
+
+## test_pytestrun_with_conftest_and_class_fixtures
+
+<!-- pytestmark: pytestrun -->
+```python name=test_pytestrun_with_conftest_and_class_fixtures
+import pytest
+
+class TestMixedFixtures:
+
+    @pytest.fixture
+    def local_data(self):
+        return {"key": "value"}
+
+    def test_both_fixtures(self, http_request, local_data):
+        assert isinstance(http_request.GET, dict)
+        assert local_data["key"] == "value"
+```
+
+----
+
+## test_pytestrun_multiple_test_methods
+
+<!-- pytestmark: pytestrun -->
+```python name=test_pytestrun_multiple_test_methods
+import pytest
+
+class TestMultipleMethods:
+
+    @pytest.fixture
+    def shared_list(self):
+        return [1, 2, 3]
+
+    def test_length(self, shared_list):
+        assert len(shared_list) == 3
+
+    def test_first_element(self, shared_list):
+        assert shared_list[0] == 1
+
+    def test_sum(self, shared_list):
+        assert sum(shared_list) == 6
+```
