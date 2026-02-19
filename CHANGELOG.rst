@@ -38,7 +38,7 @@ are used for versioning (schema follows below):
 2026-02-16
 
 - Fix recently introduced bug when only first block in ``.rst`` file
-  had ```codeblock`` mark.
+  had ``codeblock`` mark.
 - Automatically register the ``codeblock`` marker to prevent pytest warnings
   or errors in strict configurations when the marker isn't manually defined.
 
