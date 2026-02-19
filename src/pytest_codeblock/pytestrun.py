@@ -24,12 +24,18 @@ def run_pytest_style_code(
     Write the code block to a temporary file and run it with pytest.
     Raises AssertionError on any test failures.
     """
-    tmpdir = tempfile.mkdtemp(prefix="pytest_codeblock_")
+    project_root = os.getcwd()
+    # Place the temp directory alongside the source file so that pytest walks
+    # up through its real directory hierarchy and discovers conftest.py files
+    # (including project-root ones that define fixtures).
+    source_dir = os.path.dirname(os.path.abspath(path))
+    pytest_cache_dir = os.path.join(source_dir, ".pytest_cache")
+    os.makedirs(pytest_cache_dir, exist_ok=True)
+    tmpdir = tempfile.mkdtemp(prefix="pytest_codeblock_", dir=pytest_cache_dir)
     tmpfile = os.path.join(tmpdir, f"{snippet_name}.py")
     try:
         with open(tmpfile, "w") as f:
             f.write(code)
-        project_root = os.getcwd()
         env = os.environ.copy()
         env["PYTHONPATH"] = os.pathsep.join(sys.path)
         result = subprocess.run(
