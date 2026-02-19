@@ -19,6 +19,14 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.5.4
+-----
+2026-02-19
+
+- Fixes in ``pytestrun`` marker functionality. Allow all custom ``pytest``
+  definitions (from conftest.py) inside code blocks with ``pytestrun``
+  marker.
+
 0.5.3
 -----
 2026-02-18
