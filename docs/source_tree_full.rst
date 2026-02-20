@@ -65,6 +65,7 @@ the contents of each key file.
    │       │   ├── test_integration.py
    │       │   ├── test_nameless_codeblocks.py
    │       │   ├── test_pytest_codeblock.py
+   │       │   ├── test_pytestrun_marker.py
    │       │   ├── tests.md
    │       │   └── tests.rst
    │       ├── __init__.py
@@ -458,6 +459,13 @@ src/pytest_codeblock/tests/test_pytest_codeblock.py
 .. literalinclude:: ../src/pytest_codeblock/tests/test_pytest_codeblock.py
    :language: python
    :caption: src/pytest_codeblock/tests/test_pytest_codeblock.py
+
+src/pytest_codeblock/tests/test_pytestrun_marker.py
+---------------------------------------------------
+
+.. literalinclude:: ../src/pytest_codeblock/tests/test_pytestrun_marker.py
+   :language: python
+   :caption: src/pytest_codeblock/tests/test_pytestrun_marker.py
 
 src/pytest_codeblock/tests/tests.md
 -----------------------------------
