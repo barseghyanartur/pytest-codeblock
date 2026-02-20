@@ -126,7 +126,6 @@ class TestRunPytestStyleCode:
             def test_simple():
                 assert 1 + 1 == 2
         """)
-        # Should complete without exception
         run_pytest_style_code(
             code=code,
             snippet_name="test_simple",
@@ -363,7 +362,7 @@ class TestGreeting:
 ```
 """,
         )
-        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
+        result = pytester_subprocess.runpytest("-v")
         result.assert_outcomes(passed=1)
         assert "test_pytestrun_class" in result.stdout.str()
 
@@ -379,7 +378,7 @@ def test_bad():
 ```
 """,
         )
-        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
+        result = pytester_subprocess.runpytest("-v")
         result.assert_outcomes(failed=1)
 
     def test_pytestrun_with_parametrize(self, pytester_subprocess):
@@ -397,7 +396,7 @@ def test_equal(x, y):
 ```
 """,
         )
-        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
+        result = pytester_subprocess.runpytest("-v")
         # The outer codeblock test itself should pass
         result.assert_outcomes(passed=1)
 
@@ -422,7 +421,7 @@ class TestLifecycle:
 ```
 """,
         )
-        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
+        result = pytester_subprocess.runpytest("-v")
         result.assert_outcomes(passed=1)
 
     def test_pytestrun_nested_fixtures(self, pytester_subprocess):
@@ -449,7 +448,7 @@ class TestNested:
 ```
 """,
         )
-        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
+        result = pytester_subprocess.runpytest("-v")
         result.assert_outcomes(passed=1)
 
     def test_pytestrun_multiple_classes(self, pytester_subprocess):
@@ -469,7 +468,7 @@ class TestB:
 ```
 """,
         )
-        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
+        result = pytester_subprocess.runpytest("-v")
         result.assert_outcomes(passed=1)
 
     def test_pytestrun_conftest_fixture(self, pytester_subprocess):
@@ -493,7 +492,7 @@ class TestConftest:
 ```
 """,
         )
-        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
+        result = pytester_subprocess.runpytest("-v")
         result.assert_outcomes(passed=1)
 
 
@@ -527,7 +526,7 @@ Test
            assert operand ** 2 == 49
 """,
         )
-        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
+        result = pytester_subprocess.runpytest("-v")
         result.assert_outcomes(passed=1)
         assert "test_pytestrun_rst_class" in result.stdout.str()
 
@@ -547,7 +546,7 @@ Fail
        assert "yes" == "no"
 """,
         )
-        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
+        result = pytester_subprocess.runpytest("-v")
         result.assert_outcomes(failed=1)
 
     def test_pytestrun_rst_parametrize(self, pytester_subprocess):
@@ -569,7 +568,7 @@ Param
        assert val > 0
 """,
         )
-        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
+        result = pytester_subprocess.runpytest("-v")
         result.assert_outcomes(passed=1)
 
     def test_pytestrun_rst_nested_fixtures(self, pytester_subprocess):
@@ -602,7 +601,7 @@ Nested
            assert tripled == 9
 """,
         )
-        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
+        result = pytester_subprocess.runpytest("-v")
         result.assert_outcomes(passed=1)
 
 
@@ -677,7 +676,7 @@ def test_sanity():
 ```
 """,
         )
-        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
+        result = pytester_subprocess.runpytest("-v")
         assert "test_pytestrun_name_visible" in result.stdout.str()
 
     def test_pytestrun_does_not_execute_non_test_code(self, tmp_path):

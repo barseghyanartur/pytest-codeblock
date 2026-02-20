@@ -4,6 +4,7 @@ When a code block is marked with `pytestrun`, its code is written to a
 temporary file and executed by pytest as a subprocess, so that fixtures,
 markers, setup/teardown, and assertions all work correctly.
 """
+import logging
 import os
 import subprocess
 import sys
@@ -13,6 +14,8 @@ __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2025-2026 Artur Barseghyan"
 __license__ = "MIT"
 __all__ = ("run_pytest_style_code",)
+
+logger = logging.getLogger(__name__)
 
 
 def run_pytest_style_code(
@@ -38,6 +41,7 @@ def run_pytest_style_code(
             f.write(code)
         env = os.environ.copy()
         env["PYTHONPATH"] = os.pathsep.join(sys.path)
+        logger.error(f"project_root: {project_root}")
         result = subprocess.run(
             [
                 sys.executable, "-m", "pytest", tmpfile,
