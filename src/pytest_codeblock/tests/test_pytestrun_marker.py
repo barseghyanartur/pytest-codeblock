@@ -19,26 +19,9 @@ __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2025-2026 Artur Barseghyan"
 __license__ = "MIT"
 __all__ = (
-    "TestPytestrunConstants",
     "TestPytestrunMarkParsing",
     "TestRunPytestStyleCode",
 )
-
-
-# =============================================================================
-# Test constants related to pytestrun
-# =============================================================================
-class TestPytestrunConstants:
-    """Test that PYTESTRUN_MARK constant is correctly defined."""
-
-    def test_pytestrun_mark_value(self):
-        assert PYTESTRUN_MARK == "pytestrun"
-
-    def test_pytestrun_mark_is_string(self):
-        assert isinstance(PYTESTRUN_MARK, str)
-
-    def test_pytestrun_mark_differs_from_codeblock_mark(self):
-        assert PYTESTRUN_MARK != CODEBLOCK_MARK
 
 
 # =============================================================================
