@@ -128,18 +128,18 @@ def parse_markdown(text: str) -> list[CodeSnippet]:
                 # end of block
                 in_block = False
                 code_text = "\n".join(code_buffer)
+                snippet_group = None
                 # continue overrides snippet_name for grouping
                 if pending_continue:
-                    final_name = pending_continue
+                    snippet_group = pending_continue
                     pending_continue = None
-                else:
-                    final_name = snippet_name
                 snippets.append(CodeSnippet(
-                    name=final_name,
+                    name=snippet_name,
                     code=code_text,
                     line=start_line,
                     marks=pending_marks.copy(),
                     fixtures=pending_fixtures.copy(),
+                    group=snippet_group,
                 ))
                 # reset pending marks after collecting
                 pending_marks = [CODEBLOCK_MARK]  # Reset to default
