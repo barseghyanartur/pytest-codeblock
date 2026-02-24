@@ -38,9 +38,9 @@ from ..rst import (
 )
 
 
-# =============================================================================
+# ============================================================================
 # Test constants.py
-# =============================================================================
+# ============================================================================
 class TestConstants:
     """Test constants module values."""
 
@@ -57,9 +57,9 @@ class TestConstants:
         assert TEST_PREFIX == "test_"
 
 
-# =============================================================================
+# ============================================================================
 # Test collector.py - CodeSnippet dataclass
-# =============================================================================
+# ============================================================================
 class TestCodeSnippet:
     """Test CodeSnippet dataclass."""
 
@@ -95,9 +95,9 @@ class TestCodeSnippet:
         assert "fixtures" in field_names
 
 
-# =============================================================================
+# ============================================================================
 # Test collector.py - group_snippets function
-# =============================================================================
+# ============================================================================
 class TestGroupSnippets:
     """Test group_snippets function."""
 
@@ -165,9 +165,9 @@ class TestGroupSnippets:
         assert "y=2" in combined[0].code
 
 
-# =============================================================================
+# ============================================================================
 # Test helpers.py - contains_top_level_await
-# =============================================================================
+# ============================================================================
 class TestContainsTopLevelAwait:
     """Test contains_top_level_await function."""
 
@@ -194,9 +194,9 @@ class TestContainsTopLevelAwait:
         assert contains_top_level_await("def broken(:") is False
 
 
-# =============================================================================
+# ============================================================================
 # Test helpers.py - wrap_async_code
-# =============================================================================
+# ============================================================================
 class TestWrapAsyncCode:
     """Test wrap_async_code function."""
 
@@ -222,9 +222,9 @@ class TestWrapAsyncCode:
         compile(wrapped, "<test>", "exec")
 
 
-# =============================================================================
+# ============================================================================
 # Test __init__.py - pytest_collect_file hook
-# =============================================================================
+# ============================================================================
 class TestPytestCollectFile:
     """Test pytest_collect_file hook function."""
 
@@ -292,9 +292,9 @@ class TestPytestCollectFile:
         assert isinstance(result, MarkdownFile)
 
 
-# =============================================================================
+# ============================================================================
 # Test md.py - parse_markdown function
-# =============================================================================
+# ============================================================================
 class TestParseMarkdown:
     """Test parse_markdown function."""
 
@@ -310,7 +310,7 @@ x = 1
         assert snippets[0].name == "test_simple"
         assert "x = 1" in snippets[0].code
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_with_pytestmark(self):
         """Test the <!-- pytestmark: mark --> directive."""
@@ -323,7 +323,7 @@ pass
         snippets = parse_markdown(text)
         assert "django_db" in snippets[0].marks
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_with_pytestfixture(self):
         """Test the <!-- pytestfixture: name --> directive."""
@@ -340,7 +340,7 @@ print("hello")
         assert "tmp_path" in snippets[0].fixtures
         assert "capsys" in snippets[0].fixtures
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_continue_directive(self):
         """Test the <!-- continue: name --> directive for grouping snippets."""
@@ -366,7 +366,7 @@ assert y == 2
         assert "x = 1" in test_snippets[0].code
         assert "y = x + 1" in test_snippets[0].code
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_incremental_continuation(self):
         """Named continuation blocks produce N cumulative tests."""
@@ -398,7 +398,7 @@ something = Exception("")
         assert 'something = "a"' in grouped[2].code
         assert 'something = Exception("")' in grouped[2].code
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_codeblock_name_directive(self):
         """Test the <!-- codeblock-name: name --> directive."""
@@ -414,7 +414,7 @@ assert z == 42
         assert len(snippets) == 1
         assert snippets[0].name == "test_named"
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_py_language(self):
         """Test markdown with 'py' as language identifier."""
@@ -427,7 +427,7 @@ x = 1
         assert len(snippets) == 1
         assert snippets[0].name == "test_py_lang"
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_python3_language(self):
         """Test markdown with 'python3' as language identifier."""
@@ -440,7 +440,7 @@ x = 1
         assert len(snippets) == 1
         assert snippets[0].name == "test_python3"
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_non_python_codeblock_ignored(self):
         """Test that non-Python code blocks are skipped."""
@@ -458,7 +458,7 @@ x = 1
         assert len(snippets) == 1
         assert snippets[0].name == "test_py"
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_name_colon_syntax(self):
         """Test name= vs name: syntax in fence info string."""
@@ -470,7 +470,7 @@ x = 1
         snippets = parse_markdown(text)
         assert snippets[0].name == "test_colon"
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_empty_codeblock(self):
         """Test parse empty code block."""
@@ -482,7 +482,7 @@ x = 1
         assert len(snippets) == 1
         assert snippets[0].code == ""
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_indented_fence(self):
         """Test fence with indentation."""
@@ -494,7 +494,7 @@ x = 1
         snippets = parse_markdown(text)
         assert len(snippets) == 1
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     # TODO: Remove?
     def test_parse_fence_regex_edge_case(self):
@@ -508,7 +508,7 @@ x = 1
         snippets = parse_markdown(text)
         assert len(snippets) == 1
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_markdown_mixed_indentation(self):
         """Test parsing codeblock with mixed indentation levels."""
@@ -524,7 +524,7 @@ x = 1
         # Code should be dedented based on fence indentation
         assert "x = 1" in snippets[0].code
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_short_line_in_block(self):
         """Test code block with line shorter than indent."""
@@ -541,9 +541,9 @@ y
         # The short line 'y' should still be captured
         assert "y" in snippets[0].code or "x = 1" in snippets[0].code
 
-# =============================================================================
+# ============================================================================
 # Test rst.py - resolve_literalinclude_path
-# =============================================================================
+# ============================================================================
 class TestResolveLiteralincludePath:
     """Test resolve_literalinclude_path function."""
 
@@ -584,9 +584,9 @@ class TestResolveLiteralincludePath:
         assert result is None
 
 
-# =============================================================================
+# ============================================================================
 # Test rst.py - get_literalinclude_content
-# =============================================================================
+# ============================================================================
 class TestGetLiteralincludeContent:
     """Test get_literalinclude_content function."""
 
@@ -605,9 +605,9 @@ class TestGetLiteralincludeContent:
             get_literalinclude_content(str(tmp_path / "missing.py"))
 
 
-# =============================================================================
+# ============================================================================
 # Test rst.py - parse_rst function
-# =============================================================================
+# ============================================================================
 class TestParseRst:
     """Test parse_rst function."""
 
@@ -623,7 +623,7 @@ class TestParseRst:
         assert len(snippets) == 1
         assert snippets[0].name == "test_rst"
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_code_directive(self, tmp_path):
         """Test .. code:: python (alternative to code-block)."""
@@ -637,7 +637,7 @@ class TestParseRst:
         assert len(snippets) == 1
         assert snippets[0].name == "test_code"
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_pytestmark(self, tmp_path):
         rst = """
@@ -651,7 +651,7 @@ class TestParseRst:
         snippets = parse_rst(rst, tmp_path)
         assert "django_db" in snippets[0].marks
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_pytestfixture(self, tmp_path):
         """Test the .. pytestfixture: directive."""
@@ -668,7 +668,7 @@ class TestParseRst:
         assert len(snippets) == 1
         assert "tmp_path" in snippets[0].fixtures
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_continue_directive(self, tmp_path):
         """Test the .. continue: directive for grouping RST snippets."""
@@ -695,7 +695,7 @@ Some text.
         assert "a = 10" in test_snippets[0].code
         assert "b = a + 5" in test_snippets[0].code
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_codeblock_name(self, tmp_path):
         rst = """
@@ -708,7 +708,7 @@ Some text.
         snippets = parse_rst(rst, tmp_path)
         assert snippets[0].name == "test_named"
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_literal_block(self, tmp_path):
         """Test parsing of literal blocks via :: syntax."""
@@ -726,7 +726,7 @@ assert result == 3
         assert snippets[0].name == "test_literal"
         assert "result = 1 + 2" in snippets[0].code
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_rst_continue_in_literal_block(self, tmp_path):
         """Test continue directive with literal block syntax."""
@@ -751,7 +751,7 @@ b = 2
         matching = [s for s in grouped if s.name == "test_lit_continue"]
         assert len(matching) >= 1
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_literalinclude(self, tmp_path):
         """Test literalinclude directive with test_ name."""
@@ -766,7 +766,7 @@ b = 2
         assert len(snippets) == 1
         assert "def hello():" in snippets[0].code
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_literalinclude_no_test_prefix(self, tmp_path):
         """Test literalinclude without test_ prefix is skipped."""
@@ -780,7 +780,7 @@ b = 2
         # Should be empty because name doesn't start with test_
         assert len(snippets) == 0
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_non_python_code_block(self, tmp_path):
         """Non-python code blocks are skipped."""
@@ -792,7 +792,7 @@ b = 2
         snippets = parse_rst(rst, tmp_path)
         assert len(snippets) == 0
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_wrong_indent(self, tmp_path):
         """Code at wrong indent level."""
@@ -807,7 +807,7 @@ x = 1
         # Should not collect this as a valid snippet
         assert len(snippets) == 0
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_literal_codeblock_eof(self, tmp_path):
         """Test literal block at end of file."""
@@ -820,7 +820,7 @@ Block::"""
         # Should handle gracefully
         assert len(snippets) == 0
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_empty_codeblock(self, tmp_path):
         """Test parsing an empty code block."""
@@ -833,7 +833,7 @@ Block::"""
         # Empty blocks are collected but have no snippets
         assert len(snippets) == 0
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_literal_block_empty_line_after(self, tmp_path):
         """Test literal block with just empty line after (edge case)."""
@@ -848,13 +848,13 @@ Block::
         assert len(snippets) == 0
 
 
-# =============================================================================
+# ============================================================================
 # Integration tests using pytester - exercises collectors and hook
-# =============================================================================
+# ============================================================================
 
-# -----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 # Test RSTFile.collect() method
-# -----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 
 class TestMarkdownCollector:
     """Integration tests for MarkdownFile collector."""
@@ -876,7 +876,7 @@ assert x == 1
         result.assert_outcomes(passed=1)
         assert "test_basic" in result.stdout.str()
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_collect_with_fixture(self, pytester_subprocess):
         """Test that fixtures are properly injected."""
@@ -892,7 +892,7 @@ assert tmp_path.exists()
         result = pytester_subprocess.runpytest("-v", "-p", "no:django")
         result.assert_outcomes(passed=1)
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_collect_async_code(self, pytester_subprocess):
         """Test that async code is automatically wrapped."""
@@ -908,7 +908,7 @@ await asyncio.sleep(0)
         result = pytester_subprocess.runpytest("-v", "-p", "no:django")
         result.assert_outcomes(passed=1)
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_syntax_error_reporting(self, pytester_subprocess):
         """Test that syntax errors in snippets are properly reported."""
@@ -928,7 +928,7 @@ def broken(:
             or "syntax" in result.stdout.str().lower()
         )
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_runtime_error_reporting(self, pytester_subprocess):
         """Test that runtime errors in snippets are properly reported."""
@@ -944,7 +944,7 @@ raise ValueError("intentional error")
         result.assert_outcomes(failed=1)
         assert "ValueError" in result.stdout.str()
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_incremental_continue_collects_separate_tests(
         self, pytester_subprocess
@@ -979,9 +979,9 @@ assert isinstance(something, Exception)
         assert "test_step_three" in stdout
 
 
-# -----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 # Test RSTFile.collect() method
-# -----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 
 class TestRSTCollector:
     """Integration tests for RSTFile collector."""
@@ -1005,7 +1005,7 @@ Test File
         result.assert_outcomes(passed=1)
         assert "test_rst_basic" in result.stdout.str()
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_collect_with_fixture(self, pytester_subprocess):
         """Test that RST fixtures are properly injected."""
@@ -1023,7 +1023,7 @@ Test File
         result = pytester_subprocess.runpytest("-v", "-p", "no:django")
         result.assert_outcomes(passed=1)
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_collect_async_code(self, pytester_subprocess):
         """Test that RST async code is automatically wrapped."""
@@ -1040,7 +1040,7 @@ Test File
         result = pytester_subprocess.runpytest("-v", "-p", "no:django")
         result.assert_outcomes(passed=1)
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_syntax_error_reporting(self, pytester_subprocess):
         """Test that syntax errors in RST snippets are reported."""
@@ -1058,9 +1058,9 @@ Test File
         result.assert_outcomes(failed=1)
 
 
-# ---------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 # Tests for pytest_collect_file hook dispatch
-# ---------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 
 
 class TestPytestCollectFileHook:
@@ -1081,7 +1081,7 @@ assert True
         )
         assert "test_md_hook" in result.stdout.str()
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_hook_dispatches_rst(self, pytester_subprocess):
         """Test that .rst files are dispatched to RSTFile."""
@@ -1099,7 +1099,7 @@ assert True
         )
         assert "test_rst_hook" in result.stdout.str()
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_hook_ignores_other_files(self, pytester_subprocess):
         """Test that non-.md/.rst files are ignored."""

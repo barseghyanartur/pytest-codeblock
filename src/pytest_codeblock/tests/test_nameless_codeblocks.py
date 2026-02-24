@@ -33,9 +33,9 @@ __all__ = (
 )
 
 
-# =============================================================================
+# ============================================================================
 # Test Configuration Loading
-# =============================================================================
+# ============================================================================
 class TestConfigLoading:
     """Test that test_nameless_codeblocks config loads correctly."""
 
@@ -72,9 +72,9 @@ class TestConfigLoading:
         assert config.test_nameless_codeblocks is False
 
 
-# =============================================================================
+# ============================================================================
 # Test Auto-naming Logic
-# =============================================================================
+# ============================================================================
 class TestAutoNaming:
     """Test the auto-naming scheme for nameless code blocks."""
 
@@ -107,9 +107,9 @@ class TestAutoNaming:
         assert module_name == "my.doc"
 
 
-# =============================================================================
+# ============================================================================
 # Test Markdown Collector with Nameless Blocks
-# =============================================================================
+# ============================================================================
 class TestMarkdownNameless:
     """Test MarkdownFile collector with test_nameless_codeblocks."""
 
@@ -132,7 +132,7 @@ y = 2
         assert "x = 1" in snippets[0].code
         assert "y = 2" in snippets[1].code
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_markdown_mixed_named_and_nameless(self):
         """Test parsing mix of named and nameless blocks."""
@@ -160,7 +160,7 @@ d = 4
         assert snippets[2].name == "test_two"
         assert snippets[3].name is None
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_collect_nameless_disabled_default(self):
         """Test that nameless blocks are ignored by default."""
@@ -208,7 +208,7 @@ y = 2
             assert len(tests) == 1
             assert tests[0].name == "test_explicit"
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_collect_nameless_enabled(self):
         """Test that nameless blocks are collected when enabled."""
@@ -251,7 +251,7 @@ z = 3
             assert tests[1].name == "test_test_1"
             assert tests[2].name == "test_test_2"
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_auto_naming_preserves_code(self):
         """Test that auto-naming doesn't modify the code content."""
@@ -281,7 +281,7 @@ assert original_code == "unchanged"
             assert "original_code" in tests[0].code
             assert "unchanged" in tests[0].code
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_auto_naming_preserves_marks(self):
         """Test that auto-naming preserves pytest marks."""
@@ -310,7 +310,7 @@ user = User.objects.first()
             assert len(tests) == 1
             assert "django_db" in tests[0].marks
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_codeblock_marks_on_all_blocks(self):
         """Test that all blocks have default codeblock marks."""
@@ -331,7 +331,7 @@ assert True
             for sn in raw:
                 assert CODEBLOCK_MARK in sn.marks
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_auto_naming_preserves_fixtures(self):
         """Test that auto-naming preserves pytest fixtures."""
@@ -363,9 +363,9 @@ d.mkdir()
             assert "capsys" in tests[0].fixtures
 
 
-# =============================================================================
+# ============================================================================
 # Test RST Collector with Nameless Blocks
-# =============================================================================
+# ============================================================================
 class TestRSTNameless:
     """Test RSTFile collector with test_nameless_codeblocks."""
 
@@ -388,7 +388,7 @@ class TestRSTNameless:
         assert "x = 1" in snippets[0].code
         assert "y = 2" in snippets[1].code
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_parse_rst_mixed_named_and_nameless(self, tmp_path):
         """Test parsing mix of named and nameless blocks."""
@@ -418,7 +418,7 @@ class TestRSTNameless:
         assert snippets[2].name == "test_two"
         assert snippets[3].name is None
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_collect_nameless_disabled_default(self, tmp_path):
         """Test that nameless blocks are ignored by default in RST."""
@@ -462,7 +462,7 @@ class TestRSTNameless:
             assert len(tests) == 1
             assert tests[0].name == "test_explicit"
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_collect_nameless_enabled(self, tmp_path):
         """Test that nameless blocks are collected when enabled in RST."""
@@ -507,7 +507,7 @@ class TestRSTNameless:
             assert tests[1].name == "test_test_1"
             assert tests[2].name == "test_test_2"
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_auto_naming_preserves_code_rst(self, tmp_path):
         """Test that auto-naming doesn't modify the code content in RST."""
@@ -539,7 +539,7 @@ class TestRSTNameless:
             assert "original_code" in tests[0].code
             assert "unchanged" in tests[0].code
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_auto_naming_preserves_marks_rst(self, tmp_path):
         """Test that auto-naming preserves pytest marks in RST."""
@@ -571,7 +571,7 @@ class TestRSTNameless:
             assert len(tests) == 1
             assert "django_db" in tests[0].marks
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_codeblock_marks_on_all_blocks_rst(self, tmp_path):
         """Test that all blocks in RST file have default codeblock mark."""
@@ -594,7 +594,7 @@ class TestRSTNameless:
             for sn in raw:
                 assert CODEBLOCK_MARK in sn.marks
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_auto_naming_preserves_fixtures_rst(self, tmp_path):
         """Test that auto-naming preserves pytest fixtures in RST."""
@@ -629,9 +629,9 @@ class TestRSTNameless:
             assert "capsys" in tests[0].fixtures
 
 
-# =============================================================================
+# ============================================================================
 # Test Integration Scenarios
-# =============================================================================
+# ============================================================================
 @pytest.mark.skip(
     reason="Skip due to pytest 9 py.path.local deprecation issue in hooks"
 )
@@ -670,7 +670,7 @@ assert z == 3
         assert "test_integration_1" in result.stdout.str()
         assert "test_integration_2" in result.stdout.str()
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_rst_nameless_integration(self, pytester):
         """Test nameless blocks work end-to-end in RST."""
@@ -706,7 +706,7 @@ Test File
         assert "test_integration_1" in result.stdout.str()
         assert "test_integration_2" in result.stdout.str()
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_nameless_disabled_integration(self, pytester):
         """Test that nameless blocks are ignored when disabled."""
@@ -730,7 +730,7 @@ assert y == 2
         assert "test_explicit" in result.stdout.str()
         assert "test_default_1" not in result.stdout.str()
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_multiple_files_separate_counters(self, pytester):
         """Test that each file has its own counter."""
@@ -768,9 +768,9 @@ b = 2
         assert "test_file2_2" in result.stdout.str()
 
 
-# =============================================================================
+# ============================================================================
 # Test Edge Cases
-# =============================================================================
+# ============================================================================
 class TestEdgeCases:
     """Test edge cases and corner scenarios."""
 
@@ -801,7 +801,7 @@ z = 3
         result = pytester.runpytest("-v", "-p", "no:django")
         result.assert_outcomes(passed=3)
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     @pytest.mark.skip(
         reason="Skip due to pytest 9 py.path.local deprecation issue in hooks"
@@ -830,7 +830,7 @@ y = 2
         # No auto-generated names
         assert "test_only_named_1" not in result.stdout.str()
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     @pytest.mark.skip(
         reason="Skip due to pytest 9 py.path.local deprecation issue in hooks"
@@ -857,7 +857,7 @@ assert x == 1
         # Should have at least the non-empty one
         assert result.ret == 0
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     @pytest.mark.skip(
         reason="Skip due to pytest 9 py.path.local deprecation issue in hooks"
@@ -887,7 +887,7 @@ y = 2
         result.assert_outcomes(passed=2)
         # Only Python blocks should be collected
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_nameless_with_continue_directive_md(self):
         """Test nameless blocks with continue directive in Markdown."""
@@ -916,7 +916,7 @@ assert y == 2
             assert "x = 1" in combined[0].code
             assert "y = x + 1" in combined[0].code
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_nameless_with_continue_directive_rst(self, tmp_path):
         """Test nameless blocks with continue directive in RST."""
@@ -949,7 +949,7 @@ assert y == 2
             assert "x = 1" in combined[0].code
             assert "y = x + 1" in combined[0].code
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_counter_only_increments_for_nameless(self):
         """Test that counter only increments for nameless blocks."""
@@ -1008,7 +1008,7 @@ f = 6
             assert tests[3].name == "test_test_2"
             assert tests[5].name == "test_test_3"
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def test_filename_with_special_characters(self):
         """Test auto-naming with special characters in filename."""
@@ -1018,7 +1018,7 @@ f = 6
         auto_name = f"test_{module_name}_1"
         assert auto_name == "test_my-test_file_1"
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     @pytest.mark.skip(
         reason="Skip due to pytest 9 py.path.local deprecation issue in hooks"
@@ -1041,7 +1041,7 @@ x = 1
         # No tests should be collected
         assert result.ret == 5  # Exit code 5 = no tests collected
 
-    # -------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     @pytest.mark.skip(
         reason="Skip due to pytest 9 py.path.local deprecation issue in hooks"
