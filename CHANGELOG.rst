@@ -23,7 +23,7 @@ are used for versioning (schema follows below):
 -----
 2026-02-24
 
-- Revised grouping. Grouped snippets are not executed incrementally. This
+- Revised grouping. Grouped snippets are now executed incrementally. This
   allows catching errors it previous ones, if some definitions have
   overlapping names. This is especially useful in combination
   with `pytestrun` marker, where definition of classes with the same name
