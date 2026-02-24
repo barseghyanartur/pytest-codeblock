@@ -103,7 +103,7 @@ def parse_markdown(text: str) -> list[CodeSnippet]:
                     block_indent = indent
                     start_line = idx + 1
                     code_buffer = []
-                    # determine name from info string or pending comment
+                    # Determine name from info string or pending comment
                     snippet_name = None
                     for token in extra.split():
                         if (
@@ -118,18 +118,17 @@ def parse_markdown(text: str) -> list[CodeSnippet]:
                             break
                     if snippet_name is None:
                         snippet_name = pending_name
-                    # reset pending_name; marks stay until block closes
+                    # Reset pending_name; marks stay until block closes
                     pending_name = None
-                continue
 
         else:
-            # inside a fenced code block
+            # Inside a fenced code block
             if line.lstrip().startswith(fence):
-                # end of block
+                # End of block
                 in_block = False
                 code_text = "\n".join(code_buffer)
                 snippet_group = None
-                # continue overrides snippet_name for grouping
+                # Continue overrides snippet_name for grouping
                 if pending_continue:
                     snippet_group = pending_continue
                     pending_continue = None
@@ -141,12 +140,12 @@ def parse_markdown(text: str) -> list[CodeSnippet]:
                     fixtures=pending_fixtures.copy(),
                     group=snippet_group,
                 ))
-                # reset pending marks after collecting
+                # Reset pending marks after collecting
                 pending_marks = [CODEBLOCK_MARK]  # Reset to default
                 snippet_name = None
                 pending_fixtures.clear()  # Clear pending fixtures
             else:
-                # collect code lines (dedent by block_indent)
+                # Collect code lines (dedent by block_indent)
                 if line.strip() == "":
                     code_buffer.append("")
                 else:
@@ -154,7 +153,6 @@ def parse_markdown(text: str) -> list[CodeSnippet]:
                         code_buffer.append(line[block_indent:])
                     else:
                         code_buffer.append(line.lstrip())
-            continue
 
     return snippets
 
@@ -278,7 +276,7 @@ class MarkdownFile(pytest.File):
                 name=sn.name,
                 callobj=callobj,
             )
-            # apply any marks (e.g. django_db)
+            # Apply any marks (e.g. django_db)
             for m in sn.marks:
                 fn.add_marker(getattr(pytest.mark, m))
             yield fn
