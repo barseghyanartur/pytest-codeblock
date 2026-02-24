@@ -28,10 +28,10 @@ def group_snippets(snippets: list[CodeSnippet]) -> list[CodeSnippet]:
     """
     Combine snippets that share a group key, using one of two modes:
 
-    - **Merge mode** (default): snippets sharing the same name (no ``group``
+    - Merge mode (default): snippets sharing the same name (no ``group``
       set, or nameless/same-name continuations) are concatenated into a single
-      test, accumulating marks and fixtures. This is the original behaviour.
-    - **Incremental mode**: when every continuation snippet (``group`` set) in
+      test, accumulating marks and fixtures. This is the default behaviour.
+    - Incremental mode: when every continuation snippet (``group`` set) in
       a group also carries its own distinct name, emit one test per snippet.
       Each test's code is the cumulative concatenation of all preceding
       snippets plus itself, so each step is exercised in isolation.
@@ -84,7 +84,7 @@ def group_snippets(snippets: list[CodeSnippet]) -> list[CodeSnippet]:
                     fixtures=list(acc_fixtures),
                 ))
         else:
-            # Merge mode (original behaviour).
+            # Merge mode (default behaviour).
             first = members[0]
             merged_marks = list(first.marks)
             merged_fixtures = list(first.fixtures)
