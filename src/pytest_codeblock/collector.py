@@ -38,7 +38,7 @@ def group_snippets(snippets: list[CodeSnippet]) -> list[CodeSnippet]:
 
     Unnamed snippets receive unique auto-keys so they are never merged.
     """
-    # Pass 1: bucket each snippet by its group key, preserving insertion order.
+    # Pass 1: bucket each snippet by its group key, preserving insertion order
     buckets: dict[str, list[CodeSnippet]] = {}
     order: list[str] = []
     anon_count = 0
@@ -57,13 +57,13 @@ def group_snippets(snippets: list[CodeSnippet]) -> list[CodeSnippet]:
             order.append(key)
         buckets[key].append(sn)
 
-    # Pass 2: emit merged or incremental snippets per bucket.
+    # Pass 2: emit merged or incremental snippets per bucket
     combined: list[CodeSnippet] = []
 
     for key in order:
         members = buckets[key]
         continuations = [sn for sn in members if sn.group]
-        # Incremental only when every continuation has a distinct own name.
+        # Incremental only when every continuation has a distinct own name
         incremental = continuations and all(
             sn.name and sn.name != key for sn in continuations
         )
@@ -84,7 +84,7 @@ def group_snippets(snippets: list[CodeSnippet]) -> list[CodeSnippet]:
                     fixtures=list(acc_fixtures),
                 ))
         else:
-            # Merge mode (default behaviour).
+            # Merge mode (default behaviour)
             first = members[0]
             merged_marks = list(first.marks)
             merged_fixtures = list(first.fixtures)
