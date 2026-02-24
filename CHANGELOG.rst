@@ -19,6 +19,17 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.5.6
+-----
+2026-02-24
+
+- Revised grouping. Grouped snippets are not executed incrementally. This
+  allows catching errors it previous ones, if some definitions have
+  overlapping names. This is especially useful in combination
+  with `pytestrun` marker, where definition of classes with the same name
+  between grouped snippets, would avoid execution of tests in the preceeding
+  ones.
+
 0.5.5
 -----
 2026-02-20
