@@ -6,7 +6,7 @@ from .md import MarkdownFile
 from .rst import RSTFile
 
 __title__ = "pytest-codeblock"
-__version__ = "0.5.5"
+__version__ = "0.5.6"
 __author__ = "Artur Barseghyan <artur.barseghyan@gmail.com>"
 __copyright__ = "2025-2026 Artur Barseghyan"
 __license__ = "MIT"

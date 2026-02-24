@@ -204,12 +204,12 @@ def parse_rst(text: str, base_dir: Path) -> list[CodeSnippet]:
                         k += 1
                     else:
                         break
+                sn_group = None
                 # Decide snippet name: continue overrides name_val/pending_name
                 if pending_continue:
-                    sn_name = pending_continue
+                    sn_group = pending_continue
                     pending_continue = None
-                else:
-                    sn_name = name_val or pending_name
+                sn_name = name_val or pending_name
                 sn_marks = pending_marks.copy()
                 sn_fixtures = pending_fixtures.copy()
                 pending_name = None
@@ -222,6 +222,7 @@ def parse_rst(text: str, base_dir: Path) -> list[CodeSnippet]:
                     line=j + 1,
                     marks=sn_marks,
                     fixtures=sn_fixtures,
+                    group=sn_group,
                 ))
 
                 i = k
@@ -235,11 +236,11 @@ def parse_rst(text: str, base_dir: Path) -> list[CodeSnippet]:
         # --------------------------------------------------------------------
         if line.rstrip().endswith("::") and pending_name:
             # Similar override logic
+            sn_group = None
             if pending_continue:
-                sn_name = pending_continue
+                sn_group = pending_continue
                 pending_continue = None
-            else:
-                sn_name = pending_name
+            sn_name = pending_name
             sn_marks = pending_marks.copy()
             sn_fixtures = pending_fixtures.copy()
             pending_name = None
@@ -273,6 +274,7 @@ def parse_rst(text: str, base_dir: Path) -> list[CodeSnippet]:
                 line=j + 1,
                 marks=sn_marks,
                 fixtures=sn_fixtures,
+                group=sn_group,
             ))
             i = k
             continue

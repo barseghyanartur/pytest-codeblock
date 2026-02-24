@@ -36,6 +36,21 @@ def test_group_snippets_merges_named():
     assert "m" in cs.marks
 
 
+def test_group_snippets_incremental():
+    # Continuation snippets with distinct own names produce N cumulative tests.
+    sn1 = CodeSnippet(name="test_root", code="a=1", line=1)
+    sn2 = CodeSnippet(name="test_step2", code="b=2", line=5, group="test_root")
+    sn3 = CodeSnippet(name="test_step3", code="c=3", line=9, group="test_root")
+    combined = group_snippets([sn1, sn2, sn3])
+    assert len(combined) == 3
+    assert combined[0].name == "test_root"
+    assert combined[1].name == "test_step2"
+    assert combined[2].name == "test_step3"
+    assert combined[0].code == "a=1"
+    assert combined[1].code == "a=1\nb=2"
+    assert combined[2].code == "a=1\nb=2\nc=3"
+
+
 def test_group_snippets_different_names():
     # Snippets with different names are not grouped
     sn1 = CodeSnippet(name="foo", code="x=1", line=1)
