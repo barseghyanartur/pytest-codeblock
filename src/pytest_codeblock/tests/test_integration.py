@@ -368,6 +368,38 @@ assert y == 2
 
     # -------------------------------------------------------------------------
 
+    def test_parse_incremental_continuation(self):
+        """Named continuation blocks produce N cumulative tests."""
+        text = """
+```python name=test_something
+something = 1
+```
+
+<!-- continue: test_something -->
+```python name=test_something_2
+something = "a"
+```
+
+<!-- continue: test_something -->
+```python name=test_something_3
+something = Exception("")
+```
+"""
+        snippets = parse_markdown(text)
+        grouped = group_snippets(snippets)
+        assert len(grouped) == 3
+        assert grouped[0].name == "test_something"
+        assert grouped[0].code.strip() == "something = 1"
+        assert grouped[1].name == "test_something_2"
+        assert "something = 1" in grouped[1].code
+        assert 'something = "a"' in grouped[1].code
+        assert grouped[2].name == "test_something_3"
+        assert "something = 1" in grouped[2].code
+        assert 'something = "a"' in grouped[2].code
+        assert 'something = Exception("")' in grouped[2].code
+
+    # -------------------------------------------------------------------------
+
     def test_parse_codeblock_name_directive(self):
         """Test the <!-- codeblock-name: name --> directive."""
         text = """
@@ -844,6 +876,8 @@ assert x == 1
         result.assert_outcomes(passed=1)
         assert "test_basic" in result.stdout.str()
 
+    # -------------------------------------------------------------------------
+
     def test_collect_with_fixture(self, pytester_subprocess):
         """Test that fixtures are properly injected."""
         pytester_subprocess.makefile(
@@ -858,6 +892,8 @@ assert tmp_path.exists()
         result = pytester_subprocess.runpytest("-v", "-p", "no:django")
         result.assert_outcomes(passed=1)
 
+    # -------------------------------------------------------------------------
+
     def test_collect_async_code(self, pytester_subprocess):
         """Test that async code is automatically wrapped."""
         pytester_subprocess.makefile(
@@ -871,6 +907,8 @@ await asyncio.sleep(0)
         )
         result = pytester_subprocess.runpytest("-v", "-p", "no:django")
         result.assert_outcomes(passed=1)
+
+    # -------------------------------------------------------------------------
 
     def test_syntax_error_reporting(self, pytester_subprocess):
         """Test that syntax errors in snippets are properly reported."""
@@ -890,6 +928,8 @@ def broken(:
             or "syntax" in result.stdout.str().lower()
         )
 
+    # -------------------------------------------------------------------------
+
     def test_runtime_error_reporting(self, pytester_subprocess):
         """Test that runtime errors in snippets are properly reported."""
         pytester_subprocess.makefile(
@@ -903,6 +943,40 @@ raise ValueError("intentional error")
         result = pytester_subprocess.runpytest("-v", "-p", "no:django")
         result.assert_outcomes(failed=1)
         assert "ValueError" in result.stdout.str()
+
+    # -------------------------------------------------------------------------
+
+    def test_incremental_continue_collects_separate_tests(
+        self, pytester_subprocess
+    ):
+        """Each named continuation block becomes its own cumulative test."""
+        pytester_subprocess.makefile(
+            ".md",
+            test_incremental="""
+```python name=test_step_one
+something = 1
+assert something == 1
+```
+
+<!-- continue: test_step_one -->
+```python name=test_step_two
+something = "a"
+assert something == "a"
+```
+
+<!-- continue: test_step_one -->
+```python name=test_step_three
+something = Exception("")
+assert isinstance(something, Exception)
+```
+""",
+        )
+        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
+        result.assert_outcomes(passed=3)
+        stdout = result.stdout.str()
+        assert "test_step_one" in stdout
+        assert "test_step_two" in stdout
+        assert "test_step_three" in stdout
 
 
 # -----------------------------------------------------------------------------
@@ -931,6 +1005,8 @@ Test File
         result.assert_outcomes(passed=1)
         assert "test_rst_basic" in result.stdout.str()
 
+    # -------------------------------------------------------------------------
+
     def test_collect_with_fixture(self, pytester_subprocess):
         """Test that RST fixtures are properly injected."""
         pytester_subprocess.makefile(
@@ -947,6 +1023,8 @@ Test File
         result = pytester_subprocess.runpytest("-v", "-p", "no:django")
         result.assert_outcomes(passed=1)
 
+    # -------------------------------------------------------------------------
+
     def test_collect_async_code(self, pytester_subprocess):
         """Test that RST async code is automatically wrapped."""
         pytester_subprocess.makefile(
@@ -961,6 +1039,8 @@ Test File
         )
         result = pytester_subprocess.runpytest("-v", "-p", "no:django")
         result.assert_outcomes(passed=1)
+
+    # -------------------------------------------------------------------------
 
     def test_syntax_error_reporting(self, pytester_subprocess):
         """Test that syntax errors in RST snippets are reported."""
@@ -1001,6 +1081,8 @@ assert True
         )
         assert "test_md_hook" in result.stdout.str()
 
+    # -------------------------------------------------------------------------
+
     def test_hook_dispatches_rst(self, pytester_subprocess):
         """Test that .rst files are dispatched to RSTFile."""
         pytester_subprocess.makefile(
@@ -1016,6 +1098,8 @@ assert True
             "-v", "--collect-only", "-p", "no:django"
         )
         assert "test_rst_hook" in result.stdout.str()
+
+    # -------------------------------------------------------------------------
 
     def test_hook_ignores_other_files(self, pytester_subprocess):
         """Test that non-.md/.rst files are ignored."""

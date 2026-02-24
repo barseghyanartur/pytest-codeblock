@@ -24,9 +24,9 @@ __all__ = (
 )
 
 
-# =============================================================================
+# ============================================================================
 # Test that pytestrun mark is parsed correctly from MD and RST sources
-# =============================================================================
+# ============================================================================
 class TestPytestrunMarkParsing:
     """Test that the pytestrun mark is captured during parsing."""
 
@@ -93,9 +93,9 @@ class TestPytestrunMarkParsing:
         assert PYTESTRUN_MARK not in snippets[0].marks
 
 
-# =============================================================================
+# ============================================================================
 # Test run_pytest_style_code directly
-# =============================================================================
+# ============================================================================
 class TestRunPytestStyleCode:
     """Unit tests for run_pytest_style_code helper."""
 
@@ -295,7 +295,7 @@ class TestRunPytestStyleCode:
             )
 
     def test_empty_code_raises_no_tests_collected(self, tmp_path):
-        """An empty block (no test functions) should fail with non-zero exit."""
+        """Empty block (no test functions) should fail with non-zero exit."""
         code = "# no tests here\nx = 1\n"
         with pytest.raises(AssertionError):
             run_pytest_style_code(

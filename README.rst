@@ -83,8 +83,8 @@ Prerequisites
 Documentation
 =============
 - Documentation is available on `Read the Docs`_.
-- For `reStructuredText`_, see a dedicated `reStructuredText docs`_.
-- For `Markdown`_, see a dedicated `Markdown docs`_.
+- For `reStructuredText`, see a dedicated `reStructuredText docs`_.
+- For `Markdown`, see a dedicated `Markdown docs`_.
 - Both `reStructuredText docs`_ and `Markdown docs`_ have extensive
   documentation on `pytest`_ markers and corresponding ``conftest.py`` hooks.
 - For guidelines on contributing check the `Contributor guidelines`_.

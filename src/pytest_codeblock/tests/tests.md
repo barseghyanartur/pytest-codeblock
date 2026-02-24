@@ -351,3 +351,78 @@ class TestMultipleMethodsMultipleMarkers:
     def test_pytest_user_defined_fixture(self, http_request):
         assert isinstance(http_request.GET, dict)
 ```
+
+----
+
+## test_updated_grouping
+
+```python name=test_updated_grouping
+names = ["Jude"]
+assert len(names) == 1
+print(names)
+```
+
+Something in between
+
+<!-- continue: test_updated_grouping -->
+```python name=test_updated_grouping_part_2
+assert names
+print(names)
+names.append("Lora")
+assert len(names) == 2
+```
+
+Something in between
+
+<!-- continue: test_updated_grouping -->
+```python name=test_updated_grouping_part_3
+assert names
+print(names)
+names.append("Alice")
+assert len(names) == 3
+```
+
+----
+
+## test_updated_grouping_pytestrun_marker
+
+<!-- pytestmark: pytestrun -->
+```python name=test_updated_grouping_pytestrun_marker
+import pytest
+
+class TestSample:
+
+    @pytest.fixture
+    def system_name(self):
+        return "Linux"
+
+    @pytest.fixture
+    def version_number(self):
+        return 5
+
+    def test_combined_info(self, system_name, version_number):
+        info = f"{system_name} v{version_number}"
+        assert info == "Linux v5"
+        print(info)
+```
+
+Some text in between
+
+<!-- continue: test_updated_grouping_pytestrun_marker -->
+<!-- pytestmark: pytestrun -->
+```python name=test_updated_grouping_pytestrun_marker_part_2
+class TestSample:
+
+    @pytest.fixture
+    def system_name(self):
+        return "macOS"
+
+    @pytest.fixture
+    def version_number(self):
+        return 17
+
+    def test_combined_info(self, system_name, version_number):
+        info = f"{system_name} v{version_number}"
+        assert info == "macOS v17"
+        print(info)
+```
