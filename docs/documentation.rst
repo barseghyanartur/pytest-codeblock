@@ -9,6 +9,7 @@ Contents:
    :maxdepth: 2
 
    index
+   quick_start_ref
    restructured_text
    markdown
    customisation
