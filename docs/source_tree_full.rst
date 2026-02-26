@@ -21,6 +21,7 @@ the contents of each key file.
    │   ├── llms.rst
    │   ├── markdown.rst
    │   ├── package.rst
+   │   ├── quick_start_ref.rst
    │   ├── requirements.txt
    │   └── restructured_text.rst
    ├── examples
@@ -179,6 +180,13 @@ docs/package.rst
 .. literalinclude:: package.rst
    :language: rst
    :caption: docs/package.rst
+
+docs/quick_start_ref.rst
+------------------------
+
+.. literalinclude:: quick_start_ref.rst
+   :language: rst
+   :caption: docs/quick_start_ref.rst
 
 docs/restructured_text.rst
 --------------------------
