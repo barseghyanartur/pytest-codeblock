@@ -2,6 +2,10 @@
 
 ----
 
+.. include:: quick_start_ref.rst
+
+----
+
 .. include:: restructured_text.rst
 
 ----

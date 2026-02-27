@@ -15,6 +15,7 @@ pytest-codeblock
 .. _openai: https://github.com/openai/openai-python
 .. _Ollama: https://github.com/ollama/ollama
 .. _tomli: https://pypi.org/project/tomli/
+.. _doc8: https://doc8.readthedocs.io/
 
 .. Internal references
 
@@ -156,6 +157,11 @@ See `customisation docs`_ for more.
 
 Usage
 =====
+.. note::
+
+    It's highly recommended to use `doc8`_ for catching possible markup errors,
+    that otherwise would be difficult to spot.
+
 reStructruredText usage
 -----------------------
 Any code directive, such as ``.. code-block:: python``, ``.. code:: python``,
