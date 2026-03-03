@@ -9,7 +9,6 @@ the contents of each key file.
 
    pytest-codeblock/
    ├── docs
-   │   ├── _implement_pytest_hooks.rst
    │   ├── cheatsheet_markdown.rst
    │   ├── cheatsheet_restructured_text.rst
    │   ├── conf.py
@@ -83,13 +82,6 @@ the contents of each key file.
    ├── pyproject.toml
    └── README.rst
 
-CONTRIBUTING.rst
-----------------
-
-.. literalinclude:: ../CONTRIBUTING.rst
-   :language: rst
-   :caption: CONTRIBUTING.rst
-
 README.rst
 ----------
 
@@ -97,19 +89,40 @@ README.rst
    :language: rst
    :caption: README.rst
 
-conftest.py
------------
+CONTRIBUTING.rst
+----------------
 
-.. literalinclude:: ../conftest.py
-   :language: python
-   :caption: conftest.py
-
-docs/_implement_pytest_hooks.rst
---------------------------------
-
-.. literalinclude:: _implement_pytest_hooks.rst
+.. literalinclude:: ../CONTRIBUTING.rst
    :language: rst
-   :caption: docs/_implement_pytest_hooks.rst
+   :caption: CONTRIBUTING.rst
+
+docs/quick_start_ref.rst
+------------------------
+
+.. literalinclude:: quick_start_ref.rst
+   :language: rst
+   :caption: docs/quick_start_ref.rst
+
+docs/restructured_text.rst
+--------------------------
+
+.. literalinclude:: restructured_text.rst
+   :language: rst
+   :caption: docs/restructured_text.rst
+
+docs/markdown.rst
+-----------------
+
+.. literalinclude:: markdown.rst
+   :language: rst
+   :caption: docs/markdown.rst
+
+docs/cheatsheet_restructured_text.rst
+-------------------------------------
+
+.. literalinclude:: cheatsheet_restructured_text.rst
+   :language: rst
+   :caption: docs/cheatsheet_restructured_text.rst
 
 docs/cheatsheet_markdown.rst
 ----------------------------
@@ -118,12 +131,19 @@ docs/cheatsheet_markdown.rst
    :language: rst
    :caption: docs/cheatsheet_markdown.rst
 
-docs/cheatsheet_restructured_text.rst
--------------------------------------
+docs/customisation.rst
+----------------------
 
-.. literalinclude:: cheatsheet_restructured_text.rst
+.. literalinclude:: customisation.rst
    :language: rst
-   :caption: docs/cheatsheet_restructured_text.rst
+   :caption: docs/customisation.rst
+
+conftest.py
+-----------
+
+.. literalinclude:: ../conftest.py
+   :language: python
+   :caption: conftest.py
 
 docs/conf.py
 ------------
@@ -138,13 +158,6 @@ docs/contributor_guidelines.rst
 .. literalinclude:: contributor_guidelines.rst
    :language: rst
    :caption: docs/contributor_guidelines.rst
-
-docs/customisation.rst
-----------------------
-
-.. literalinclude:: customisation.rst
-   :language: rst
-   :caption: docs/customisation.rst
 
 docs/documentation.rst
 ----------------------
@@ -167,33 +180,12 @@ docs/llms.rst
    :language: rst
    :caption: docs/llms.rst
 
-docs/markdown.rst
------------------
-
-.. literalinclude:: markdown.rst
-   :language: rst
-   :caption: docs/markdown.rst
-
 docs/package.rst
 ----------------
 
 .. literalinclude:: package.rst
    :language: rst
    :caption: docs/package.rst
-
-docs/quick_start_ref.rst
-------------------------
-
-.. literalinclude:: quick_start_ref.rst
-   :language: rst
-   :caption: docs/quick_start_ref.rst
-
-docs/restructured_text.rst
---------------------------
-
-.. literalinclude:: restructured_text.rst
-   :language: rst
-   :caption: docs/restructured_text.rst
 
 examples/__init__.py
 --------------------

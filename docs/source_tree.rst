@@ -8,6 +8,21 @@ the contents of each key file.
    :caption: Project directory layout
 
    pytest-codeblock/
+   ├── docs
+   │   ├── cheatsheet_markdown.rst
+   │   ├── cheatsheet_restructured_text.rst
+   │   ├── conf.py
+   │   ├── contributor_guidelines.rst
+   │   ├── customisation.rst
+   │   ├── documentation.rst
+   │   ├── full-llms.txt
+   │   ├── index.rst
+   │   ├── llms.rst
+   │   ├── markdown.rst
+   │   ├── package.rst
+   │   ├── quick_start_ref.rst
+   │   ├── requirements.txt
+   │   └── restructured_text.rst
    ├── src
    │   └── pytest_codeblock
    │       ├── tests
@@ -33,13 +48,6 @@ the contents of each key file.
    ├── pyproject.toml
    └── README.rst
 
-CONTRIBUTING.rst
-----------------
-
-.. literalinclude:: ../CONTRIBUTING.rst
-   :language: rst
-   :caption: CONTRIBUTING.rst
-
 README.rst
 ----------
 
@@ -47,12 +55,103 @@ README.rst
    :language: rst
    :caption: README.rst
 
+CONTRIBUTING.rst
+----------------
+
+.. literalinclude:: ../CONTRIBUTING.rst
+   :language: rst
+   :caption: CONTRIBUTING.rst
+
+docs/quick_start_ref.rst
+------------------------
+
+.. literalinclude:: quick_start_ref.rst
+   :language: rst
+   :caption: docs/quick_start_ref.rst
+
+docs/restructured_text.rst
+--------------------------
+
+.. literalinclude:: restructured_text.rst
+   :language: rst
+   :caption: docs/restructured_text.rst
+
+docs/markdown.rst
+-----------------
+
+.. literalinclude:: markdown.rst
+   :language: rst
+   :caption: docs/markdown.rst
+
+docs/cheatsheet_restructured_text.rst
+-------------------------------------
+
+.. literalinclude:: cheatsheet_restructured_text.rst
+   :language: rst
+   :caption: docs/cheatsheet_restructured_text.rst
+
+docs/cheatsheet_markdown.rst
+----------------------------
+
+.. literalinclude:: cheatsheet_markdown.rst
+   :language: rst
+   :caption: docs/cheatsheet_markdown.rst
+
+docs/customisation.rst
+----------------------
+
+.. literalinclude:: customisation.rst
+   :language: rst
+   :caption: docs/customisation.rst
+
 conftest.py
 -----------
 
 .. literalinclude:: ../conftest.py
    :language: python
    :caption: conftest.py
+
+docs/conf.py
+------------
+
+.. literalinclude:: conf.py
+   :language: python
+   :caption: docs/conf.py
+
+docs/contributor_guidelines.rst
+-------------------------------
+
+.. literalinclude:: contributor_guidelines.rst
+   :language: rst
+   :caption: docs/contributor_guidelines.rst
+
+docs/documentation.rst
+----------------------
+
+.. literalinclude:: documentation.rst
+   :language: rst
+   :caption: docs/documentation.rst
+
+docs/index.rst
+--------------
+
+.. literalinclude:: index.rst
+   :language: rst
+   :caption: docs/index.rst
+
+docs/llms.rst
+-------------
+
+.. literalinclude:: llms.rst
+   :language: rst
+   :caption: docs/llms.rst
+
+docs/package.rst
+----------------
+
+.. literalinclude:: package.rst
+   :language: rst
+   :caption: docs/package.rst
 
 pyproject.toml
 --------------
