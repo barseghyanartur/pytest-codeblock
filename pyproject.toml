@@ -264,6 +264,7 @@ ignore = [
     "CODE_OF_CONDUCT.rst",
     "LICENSE",
     "SECURITY.rst",
+    "docs/_implement_pytest_hooks.rst",
     "docs/changelog.rst",
     "docs/code_of_conduct.rst",
     "docs/security.rst",
@@ -271,6 +272,16 @@ ignore = [
     "docs/source_tree_full.rst",
     "docs/make.bat",
     "docs/Makefile",
+]
+order = [
+    "README.rst",
+    "CONTRIBUTING.rst",
+    "docs/quick_start_ref.rst",
+    "docs/restructured_text.rst",
+    "docs/markdown.rst",
+    "docs/cheatsheet_restructured_text.rst",
+    "docs/cheatsheet_markdown.rst",
+    "docs/customisation.rst",
 ]
 
 [[tool.sphinx-source-tree.files]]
@@ -315,6 +326,7 @@ ignore = [
     "CODE_OF_CONDUCT.rst",
     "LICENSE",
     "SECURITY.rst",
+    "docs/_implement_pytest_hooks.rst",
     "docs/changelog.rst",
     "docs/code_of_conduct.rst",
     "docs/security.rst",
@@ -323,5 +335,4 @@ ignore = [
     "docs/make.bat",
     "docs/Makefile",
     "examples",
-    "docs",
 ]
