@@ -134,6 +134,8 @@ def parse_rst(text: str, base_dir: Path) -> list[CodeSnippet]:
                         fixtures=pending_fixtures.copy(),
                     )
                     snippets.append(snippet)
+                    pending_marks = [CODEBLOCK_MARK]
+                    pending_fixtures.clear()
 
             i = j + 1
             continue
