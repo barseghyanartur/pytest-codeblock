@@ -2,7 +2,7 @@
 name = "pytest-codeblock"
 description = "Pytest plugin to collect and test code blocks in reStructuredText and Markdown files."
 readme = "README.rst"
-version = "0.5.6"
+version = "0.5.7"
 requires-python = ">=3.10"
 dependencies = [
     "pytest",
@@ -267,6 +267,11 @@ ignore = [
     "docs/_implement_pytest_hooks.rst",
     "docs/changelog.rst",
     "docs/code_of_conduct.rst",
+    "docs/documentation.rst",
+    "docs/full-llms.rst",
+    "docs/index.rst",
+    "docs/llms.rst",
+    "docs/package.rst",
     "docs/security.rst",
     "docs/source_tree.rst",
     "docs/source_tree_full.rst",
@@ -329,6 +334,11 @@ ignore = [
     "docs/_implement_pytest_hooks.rst",
     "docs/changelog.rst",
     "docs/code_of_conduct.rst",
+    "docs/documentation.rst",
+    "docs/full-llms.rst",
+    "docs/index.rst",
+    "docs/llms.rst",
+    "docs/package.rst",
     "docs/security.rst",
     "docs/source_tree.rst",
     "docs/source_tree_full.rst",
