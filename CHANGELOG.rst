@@ -19,6 +19,13 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.5.7
+-----
+2026-03-07
+
+- Fixes in reStructuredText parser for literalinclude directive.
+- Update pre-commit config.
+
 0.5.6
 -----
 2026-02-24

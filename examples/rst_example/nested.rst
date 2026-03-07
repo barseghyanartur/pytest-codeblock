@@ -1,5 +1,5 @@
-Requesting pytest-fixtures
-==========================
+More pytest-fixtures, including nested ones
+===========================================
 .. External references
 .. _pytest-fixtures: https://docs.pytest.org/en/6.2.x/fixture.html
 
@@ -52,3 +52,19 @@ Then again:
     .. pytestfixture: http_request
     .. literalinclude:: examples/python/tmp_path_example.py
         :name: test_path_example_2
+
+`pytest-fixtures`_ example for nested `.. literalinclude::` directive
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. pytestfixture: tmp_path
+.. pytestfixture: http_request
+.. literalinclude:: examples/python/tmp_path_example.py
+    :name: test_path_example_3
+
+Then again:
+
+.. code-block:: rst
+
+    .. pytestfixture: tmp_path
+    .. pytestfixture: http_request
+    .. literalinclude:: examples/python/tmp_path_example.py
+        :name: test_path_example_4
