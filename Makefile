@@ -70,7 +70,7 @@ create-venv:
 
 # Install the project
 install: create-venv
-	source $(VENV) && uv pip install -e .[all]
+	source $(VENV) && uv sync --all-extras
 
 # ----------------------------------------------------------------------------
 # Tests
@@ -89,7 +89,10 @@ test-nameless-codeblocks: clean
 	source $(VENV) && cd examples/nameless_codeblocks_example/ && pytest -vvvrx -s
 
 # Run all tests
-test-all: test test-customisation test-nameless-codeblocks
+test-all:
+	uv run pytest -vrx -s; \
+	uv run pytest -c examples/customisation_example/pyproject.toml -vrx -s examples/customisation_example/; \
+	uv run pytest -c examples/nameless_codeblocks_example/pyproject.toml -vvvrx -s examples/nameless_codeblocks_example/
 
 # Run tests (to be used on CI environment)
 test-ci: clean
@@ -139,6 +142,7 @@ clean:
 	rm -rf builddocs/
 	rm -rf testdocs/
 	rm -rf .coverage
+	rm -rf .coverage*
 	rm -rf .pytest_cache/
 	rm -rf .mypy_cache/
 	rm -rf .ruff_cache/

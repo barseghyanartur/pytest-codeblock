@@ -12,7 +12,6 @@ the contents of each key file.
    │   ├── cheatsheet_markdown.rst
    │   ├── cheatsheet_restructured_text.rst
    │   ├── conf.py
-   │   ├── contributor_guidelines.rst
    │   ├── customisation.rst
    │   ├── markdown.rst
    │   ├── quick_start_ref.rst
@@ -78,13 +77,6 @@ the contents of each key file.
    ├── pyproject.toml
    └── README.rst
 
-CONTRIBUTING.rst
-----------------
-
-.. literalinclude:: ../CONTRIBUTING.rst
-   :language: rst
-   :caption: CONTRIBUTING.rst
-
 README.rst
 ----------
 
@@ -92,54 +84,12 @@ README.rst
    :language: rst
    :caption: README.rst
 
-conftest.py
------------
+CONTRIBUTING.rst
+----------------
 
-.. literalinclude:: ../conftest.py
-   :language: python
-   :caption: conftest.py
-
-docs/cheatsheet_markdown.rst
-----------------------------
-
-.. literalinclude:: cheatsheet_markdown.rst
+.. literalinclude:: ../CONTRIBUTING.rst
    :language: rst
-   :caption: docs/cheatsheet_markdown.rst
-
-docs/cheatsheet_restructured_text.rst
--------------------------------------
-
-.. literalinclude:: cheatsheet_restructured_text.rst
-   :language: rst
-   :caption: docs/cheatsheet_restructured_text.rst
-
-docs/conf.py
-------------
-
-.. literalinclude:: conf.py
-   :language: python
-   :caption: docs/conf.py
-
-docs/contributor_guidelines.rst
--------------------------------
-
-.. literalinclude:: contributor_guidelines.rst
-   :language: rst
-   :caption: docs/contributor_guidelines.rst
-
-docs/customisation.rst
-----------------------
-
-.. literalinclude:: customisation.rst
-   :language: rst
-   :caption: docs/customisation.rst
-
-docs/markdown.rst
------------------
-
-.. literalinclude:: markdown.rst
-   :language: rst
-   :caption: docs/markdown.rst
+   :caption: CONTRIBUTING.rst
 
 docs/quick_start_ref.rst
 ------------------------
@@ -154,6 +104,48 @@ docs/restructured_text.rst
 .. literalinclude:: restructured_text.rst
    :language: rst
    :caption: docs/restructured_text.rst
+
+docs/markdown.rst
+-----------------
+
+.. literalinclude:: markdown.rst
+   :language: rst
+   :caption: docs/markdown.rst
+
+docs/cheatsheet_restructured_text.rst
+-------------------------------------
+
+.. literalinclude:: cheatsheet_restructured_text.rst
+   :language: rst
+   :caption: docs/cheatsheet_restructured_text.rst
+
+docs/cheatsheet_markdown.rst
+----------------------------
+
+.. literalinclude:: cheatsheet_markdown.rst
+   :language: rst
+   :caption: docs/cheatsheet_markdown.rst
+
+docs/customisation.rst
+----------------------
+
+.. literalinclude:: customisation.rst
+   :language: rst
+   :caption: docs/customisation.rst
+
+conftest.py
+-----------
+
+.. literalinclude:: ../conftest.py
+   :language: python
+   :caption: conftest.py
+
+docs/conf.py
+------------
+
+.. literalinclude:: conf.py
+   :language: python
+   :caption: docs/conf.py
 
 examples/__init__.py
 --------------------
