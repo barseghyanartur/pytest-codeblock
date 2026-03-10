@@ -77,7 +77,7 @@ For running documentation locally on port 5001:
 
     make serve-docs
 
-Requirements are compiled using `uv`_ (for to be used by ReadTheDocs).
+Requirements are compiled using `uv`_ (to be used by ReadTheDocs).
 
 .. code-block:: sh
 
