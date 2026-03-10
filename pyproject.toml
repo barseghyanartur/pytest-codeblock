@@ -253,6 +253,7 @@ ignore = [
     ".idea",
     ".vscode",
     ".DS_Store",
+    ".claude",
     "Thumbs.db",
     ".ruff_cache",
     ".coverage.*",
@@ -267,6 +268,7 @@ ignore = [
     "docs/_implement_pytest_hooks.rst",
     "docs/changelog.rst",
     "docs/code_of_conduct.rst",
+    "docs/contributor_guidelines.rst",
     "docs/documentation.rst",
     "docs/full-llms.rst",
     "docs/index.rst",
@@ -277,6 +279,7 @@ ignore = [
     "docs/source_tree_full.rst",
     "docs/make.bat",
     "docs/Makefile",
+    "src/pytest_codeblock/tests/pytest_codeblock_*.py",
 ]
 order = [
     "README.rst",
@@ -320,6 +323,7 @@ ignore = [
     ".idea",
     ".vscode",
     ".DS_Store",
+    ".claude",
     "Thumbs.db",
     ".ruff_cache",
     ".coverage.*",
@@ -334,6 +338,7 @@ ignore = [
     "docs/_implement_pytest_hooks.rst",
     "docs/changelog.rst",
     "docs/code_of_conduct.rst",
+    "docs/contributor_guidelines.rst",
     "docs/documentation.rst",
     "docs/full-llms.rst",
     "docs/index.rst",
@@ -345,4 +350,5 @@ ignore = [
     "docs/make.bat",
     "docs/Makefile",
     "examples",
+    "src/pytest_codeblock/tests/pytest_codeblock_*.py",
 ]

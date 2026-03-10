@@ -51,14 +51,6 @@ Still, if you want to run checks manually:
     make doc8
     make ruff
 
-Requirements
-------------
-Requirements are compiled using `uv`_.
-
-.. code-block:: sh
-
-    make compile-requirements
-
 Virtual environment
 -------------------
 You are advised to work in virtual environment.
@@ -67,8 +59,7 @@ TL;DR:
 
 .. code-block:: sh
 
-    uv sync
-    uv syncpip install -e .[all]
+    uv sync --all-extras
 
 Documentation
 -------------
@@ -85,6 +76,12 @@ For running documentation locally on port 5001:
 .. code-block:: sh
 
     make serve-docs
+
+Requirements are compiled using `uv`_ (to be used by ReadTheDocs).
+
+.. code-block:: sh
+
+    make compile-requirements
 
 Testing
 -------
