@@ -19,6 +19,14 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.5.8
+-----
+2026-04-07
+
+- Fixes in Markdown and reStructuredText file collectors that would cause
+  errors when resolving module-scoped fixtures (e.g., in `pytest-recording` or
+  `langchain-tests`) by ensuring proper registration with the fixture manager.
+
 0.5.7
 -----
 2026-03-07
