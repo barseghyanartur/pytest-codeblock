@@ -23,11 +23,18 @@ When `sync-documentation` is invoked:
 
 Scan source code to identify:
 
-- **pytest hooks**: `pytest_collect_file`, `pytest_configure` in `src/pytest_codeblock/__init__.py`
-- **CodeSnippet**: dataclass in `src/pytest_codeblock/collector.py`
+- **pytest hooks**: `pytest_collect_file`, `pytest_configure` in `src/pytest_codeblock/__init__.py` (collection phase)
+- **CodeSnippet**: dataclass in `src/pytest_codeblock/collector.py` (data structure for parsed snippets)
+- **RST parser**: `src/pytest_codeblock/rst.py` (parsing phase - extracts code blocks from .rst files)
+- **Markdown parser**: `src/pytest_codeblock/md.py` (parsing phase - extracts code blocks from .md files)
 - **Configuration options**: in `src/pytest_codeblock/config.py`
 - **Markers**: in `src/pytest_codeblock/constants.py`
 - **Public API**: Exports from `__all__` in `src/pytest_codeblock/__init__.py`
+
+Note: Parsing modules (`rst.py`, `md.py`) handle extraction of code blocks from
+documentation files, while pytest hooks in `__init__.py` handle collection into
+pytest. When collector or fixture behavior changes, verify the parsing logic in
+`rst.py` and `md.py` still produces expected `CodeSnippet` results.
 
 ### Step 2: Scan Documentation Files
 
