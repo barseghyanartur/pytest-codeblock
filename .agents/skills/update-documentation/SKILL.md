@@ -1,6 +1,6 @@
 ---
 name: update-documentation
-description: Sync safezip project documentation with source code. Scans code and docs, finds misalignments, and auto-fixes them. Pure agent-based - no Python scripts involved.
+description: Sync pytest-codeblock project documentation with source code. Scans code and docs, finds misalignments, and auto-fixes them. Pure agent-based - no Python scripts involved.
 ---
 
 # Update Documentation Skill
@@ -8,7 +8,7 @@ description: Sync safezip project documentation with source code. Scans code and
 **Operation mode**: Pure agent-based documentation synchronization.
 
 When the user asks to `sync-documentation`, the agent:
-1. Scans source code to extract ground truth (public API, CLI commands, exceptions)
+1. Scans source code to extract ground truth (pytest hooks, markers, configuration)
 2. Scans all documentation files
 3. Identifies misalignments between code and docs
 4. **Auto-fixes documentation** to match code (reports what was changed)
@@ -23,33 +23,34 @@ When `sync-documentation` is invoked:
 
 Scan source code to identify:
 
-- **Public API**: Exports from `__all__` in `src/safezip/__init__.py`
-- **CLI commands**: Subcommands defined in `src/safezip/cli/_main.py`
-  (`extract`, `list`)
-- **Exceptions**: Exception classes in `src/safezip/_exceptions.py`
-- **Classes**: `SafeZipFile` class in `src/safezip/_core.py`
+- **pytest hooks**: `pytest_collect_file`, `pytest_configure` in `src/pytest_codeblock/__init__.py`
+- **CodeSnippet**: dataclass in `src/pytest_codeblock/collector.py`
+- **Configuration options**: in `src/pytest_codeblock/config.py`
+- **Markers**: in `src/pytest_codeblock/constants.py`
+- **Public API**: Exports from `__all__` in `src/pytest_codeblock/__init__.py`
 
 ### Step 2: Scan Documentation Files
 
 Read and analyze:
 
-- `README.rst` - Public API, CLI usage, quick start
+- `README.rst` - Public API, quick start, usage examples
 - `AGENTS.md` - Architecture, code patterns, examples
-- `ARCHITECTURE.rst` - Three-phase model, security principles
 - `CONTRIBUTING.rst` - Contribution workflow
 - `SECURITY.rst` - Security policy and reporting
 - `docs/*.rst` - Extended documentation
+- `src/pytest_codeblock/tests/tests.rst` - Documentation tests
+- `src/pytest_codeblock/tests/tests.md` - Documentation tests
 
 ### Step 3: Identify Misalignments
 
 Compare code ground truth against documentation:
 
-- Missing exception types in tables
-- Undocumented CLI commands or options
+- Missing pytest hooks or markers
+- Undocumented configuration options
 - Missing API exports
 - Broken file path references
-- Outdated default limits
-- Missing code examples
+- Outdated code examples
+- Missing grouping logic documentation
 
 ### Step 4: Auto-Fix Documentation
 
@@ -59,7 +60,7 @@ Compare code ground truth against documentation:
 - Update code examples
 - Fix file references
 - Add missing sections
-- Update default limits
+- Update configuration documentation
 
 **SKILL.md is NOT modified** - it remains the source of truth for the skill behavior.
 
@@ -79,10 +80,11 @@ After fixing, report:
 | ---- | -------- | ------- |
 | `README.rst` | End users | Public API, quick start, usage examples |
 | `AGENTS.md` | AI agents | Mission, architecture, agent workflow, code patterns |
-| `ARCHITECTURE.rst` | Developers | Three-phase model, security principles, default limits |
 | `CONTRIBUTING.rst` | Contributors | Contribution workflow, testing, release process |
 | `SECURITY.rst` | Security researchers | Security policy, reporting vulnerabilities |
 | `docs/*.rst` | Users/developers | Extended documentation, API reference |
+| `src/pytest_codeblock/tests/tests.rst` | Tests | Documentation tests (RST) |
+| `src/pytest_codeblock/tests/tests.md` | Tests | Documentation tests (MD) |
 
 ## When to Update Each File
 
@@ -90,58 +92,37 @@ After fixing, report:
 
 Update when:
 
-- Public API changes (new functions, parameters, exceptions)
-- New CLI commands or options
-- New output formats or behavior
-- Default limits change
+- Public API changes (new pytest hooks, parameters)
+- New configuration options
+- New file formats supported
 - Installation/requirement changes
+- New features added
 
 Structure to maintain:
 
 - Features list (add new capabilities)
-- Quick start examples
 - Installation section
-- Custom limits examples
-- Environment variable overrides
-- Default limits table
+- Configuration section
+- Usage examples (RST and Markdown)
 
 ### AGENTS.md
 
 Update when:
 
-- New parser added (not applicable - safezip has no parsers)
-- Resolution pipeline changes
-- New exception types
+- New parsing module added
+- Collection/execution pipeline changes
+- New markers or configuration options
 - Testing workflow changes
-- Default limits change
-- New phases added
+- Architecture changes
 
 Key sections:
 
-- Project mission (never deviate: zero deps, secure defaults, three-phase model)
+- Project mission (never deviate: minimal deps, RST/MD support, code blocks as tests)
 - Architecture table (if phases/files change)
-- Security principles
+- Development principles
 - Known intentional behaviors
 - Agent workflow section
 - Testing rules
-
-### ARCHITECTURE.rst
-
-Update when:
-
-- Three-phase model changes
-- New phases added
-- Default limits change
-- Security principles change
-- Directory structure changes
-
-Key sections:
-
-- Three-phase model details (Guard, Sandbox, Streamer)
-- Security principles
-- Default limits table
-- Environment variable overrides
-- Testing workflow
 
 ### CONTRIBUTING.rst
 
@@ -172,45 +153,41 @@ Key sections:
 - Security policy
 - Supported versions
 - Reporting procedure
-- Current vulnerabilities
 
 ---
 
 ## Feature-Specific Documentation Checklist
 
-### Adding a New Exception
+### Adding a New Marker
 
-1. **README.rst**: Add to exception handling examples
-2. **AGENTS.md**: Add to exception table in "Exception handling" section
-3. **ARCHITECTURE.rst**: Add to phases table if applicable
-4. **CONTRIBUTING.rst**: Update if testing process changed
+1. **README.rst**: Add to markers section if user-facing
+2. **AGENTS.md**: Add to constants/markers documentation
+3. **src/pytest_codeblock/constants.py**: Document the new marker
 
-### Adding New CLI Commands
+### Adding New Configuration Options
 
-1. **README.rst**: Add to CLI usage section with examples
-2. **AGENTS.md**: Update CLI examples if relevant to agent workflow
-3. **ARCHITECTURE.rst**: Add to CLI reference table
+1. **README.rst**: Add to configuration section
+2. **AGENTS.md**: Add to configuration documentation
+3. **src/pytest_codeblock/config.py**: Document the new option
 
-### Adding New API Features (new functions, parameters)
+### Adding New Parsing Support (RST/MD)
 
-1. **README.rst**:
-    - Add new function to quick start or new section
-    - Add example code block
-    - Update features list
-2. **AGENTS.md**: Add new code example in "Using safezip" section
-3. **ARCHITECTURE.rst**: Update if it affects the three-phase model
+1. **README.rst**: Add file format to features, add usage example
+2. **AGENTS.md**: Update architecture table
+3. **docs/restructured_text.rst** or **docs/markdown.rst**: Add detailed docs
+4. **src/pytest_codeblock/tests/tests.rst** or **tests.md**: Add tests
 
-### Adding New CLI Options
+### Adding New Execution Features
 
-1. **README.rst**: Add to relevant command examples
-2. **AGENTS.md**: Update CLI examples if relevant to agent workflow
+1. **README.rst**: Add usage example
+2. **AGENTS.md**: Update execution phase description
+3. **docs/*.rst**: Update relevant documentation
 
-### Changing Default Limits
+### Changing Default Behavior
 
-1. **README.rst**: Update default limits table
-2. **AGENTS.md**: Update default limits table
-3. **ARCHITECTURE.rst**: Update default limits table
-4. **All files**: Update environment variable documentation
+1. **README.rst**: Update configuration defaults
+2. **AGENTS.md**: Update configuration precedence
+3. **All files**: Update any affected examples
 
 ---
 
@@ -239,7 +216,7 @@ When adding examples:
 
 ### RST Formatting
 
-- Line length: 88 characters
+- Line length: 80 characters
 - Use `.. code-block:: python` with `:name: test_<name>` for Python
 - Use `.. code-block:: sh` for shell commands
 - Use `.. note::` for callouts
@@ -250,11 +227,10 @@ All code examples in AGENTS.md (and other Markdown files) should be runnable
 tests. Use the `name=` attribute to prefix the block name with `test_`:
 
 ````markdown
-<!-- pytestfixture: file_zip -->
 ```python name=test_feature_name
-from safezip import safe_extract, SafezipError
+from pytest_codeblock import pytest_collect_file
 
-result = safe_extract("path/to/file.zip", "/tmp/extract/")
+# Test code here
 ```
 ````
 
@@ -262,19 +238,18 @@ All code examples in README.rst (and other reStructuredText files) should be
 runnable tests. Use the `:name:` attribute to prefix the block name with `test_`:
 
 ```rst
-.. pytestfixture: file_zip
 .. code-block:: python
-    :name: test_feature_name
+   :name: test_feature_name
 
-   from safezip import safe_extract, SafezipError
+   from pytest_codeblock import pytest_collect_file
 
-   result = safe_extract("path/to/file.zip", "/tmp/extract/")
+   # Test code here
 ```
 
 ### Cross-References
 
-- Link to related docs: ``See `ARCHITECTURE.rst`_``
-- Reference other sections: ``See `Default limits`_``
+- Link to related docs: ``See `CONTRIBUTING.rst`_``
+- Reference other sections: ``See `Configuration`_``
 
 ## Validation Checklist
 
@@ -282,10 +257,9 @@ Before finishing documentation updates:
 
 - [ ] README.rst examples match actual API
 - [ ] AGENTS.md code blocks have proper `name=` attributes
-- [ ] ARCHITECTURE.rst tables include all current exceptions
 - [ ] CONTRIBUTING.rst reflects current contribution process
 - [ ] SECURITY.rst is up to date
-- [ ] All RST files pass linting
+- [ ] All RST files pass doc8 linting
 - [ ] Cross-references between docs are valid
 - [ ] File paths in docs match actual paths
 
