@@ -4,6 +4,7 @@ import re
 import textwrap
 import traceback
 import types
+from collections.abc import Generator
 from typing import Optional
 
 import pytest
@@ -164,13 +165,13 @@ class MarkdownFile(pytest.Module):
     snippets.
     """
 
-    def _getobj(self):
+    def _getobj(self) -> types.ModuleType:
         m = types.ModuleType(self.path.stem)
         m.__file__ = str(self.path)
         m.__test__ = False  # prevent PyCollector from auto-collecting
         return m
 
-    def collect(self):
+    def collect(self) -> Generator[pytest.Function, None, None]:
         # Register with fixture manager so module-scoped fixtures can find
         # a pytest.Module parent node (fixes scope resolution when plugins
         # like pytest-recording/langchain-tests define module-scoped fixtures).

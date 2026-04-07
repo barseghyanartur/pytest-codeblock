@@ -188,6 +188,7 @@ Key sections:
 1. **README.rst**: Update configuration defaults
 2. **AGENTS.md**: Update configuration precedence
 3. **All files**: Update any affected examples
+4. **Changelog/docs**: Add migration notes and deprecation path
 
 ---
 
@@ -262,6 +263,7 @@ Before finishing documentation updates:
 - [ ] All RST files pass doc8 linting
 - [ ] Cross-references between docs are valid
 - [ ] File paths in docs match actual paths
+- [ ] Executable code blocks in RST/MD are run and passing in pytest
 
 ## What NOT to Document
 
