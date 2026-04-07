@@ -315,7 +315,7 @@ Explicitly ignored:
 
 ### Pull requests
 
-Target the `main` branch. Open PRs against `main` for review.
+Target the `dev` branch. Open PRs against `dev` for review.
 
 ---
 

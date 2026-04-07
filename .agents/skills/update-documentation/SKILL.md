@@ -175,7 +175,7 @@ Key sections:
 1. **README.rst**: Add file format to features, add usage example
 2. **AGENTS.md**: Update architecture table
 3. **docs/restructured_text.rst** or **docs/markdown.rst**: Add detailed docs
-4. **src/pytest_codeblock/tests/tests.rst** or **tests.md**: Add tests
+4. **src/pytest_codeblock/tests/tests.rst** or **src/pytest_codeblock/tests/tests.md**: Add tests
 
 ### Adding New Execution Features
 
