@@ -3,6 +3,8 @@ import inspect
 import re
 import textwrap
 import traceback
+import types
+from collections.abc import Generator
 from pathlib import Path
 from typing import Optional, Union
 
@@ -286,9 +288,20 @@ def parse_rst(text: str, base_dir: Path) -> list[CodeSnippet]:
     return snippets
 
 
-class RSTFile(pytest.File):
+class RSTFile(pytest.Module):
     """Collect RST code-block tests as real test functions."""
-    def collect(self):
+
+    def _getobj(self) -> types.ModuleType:
+        m = types.ModuleType(self.path.stem)
+        m.__file__ = str(self.path)
+        m.__test__ = False  # prevent PyCollector from auto-collecting
+        return m
+
+    def collect(self) -> Generator[pytest.Function, None, None]:
+        # Register this node with the fixture manager so that module-scoped
+        # fixtures (e.g. vcr_cassette_dir from pytest-recording/langchain-tests)
+        # can resolve their scope by walking up to a pytest.Module parent.
+        self.session._fixturemanager.parsefactories(self)
         text = self.path.read_text(encoding="utf-8")
         raw = parse_rst(text, self.path)
         config = get_config()

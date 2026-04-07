@@ -2,7 +2,7 @@
 name = "pytest-codeblock"
 description = "Pytest plugin to collect and test code blocks in reStructuredText and Markdown files."
 readme = "README.rst"
-version = "0.5.7"
+version = "0.5.8"
 requires-python = ">=3.10"
 dependencies = [
     "pytest",
@@ -66,6 +66,7 @@ test = [
     "pytest-cov",
     "pytest-django",
     "respx",
+    "langchain-tests", # Module-scoped fixtures for testing scope resolution
 ]
 docs = [
     "sphinx",
