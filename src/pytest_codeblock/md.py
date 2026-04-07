@@ -3,6 +3,7 @@ import inspect
 import re
 import textwrap
 import traceback
+import types
 from typing import Optional
 
 import pytest
@@ -157,12 +158,23 @@ def parse_markdown(text: str) -> list[CodeSnippet]:
     return snippets
 
 
-class MarkdownFile(pytest.File):
+class MarkdownFile(pytest.Module):
     """
     Collector for Markdown files, extracting only `test_`-prefixed code
     snippets.
     """
+
+    def _getobj(self):
+        m = types.ModuleType(self.path.stem)
+        m.__file__ = str(self.path)
+        m.__test__ = False  # prevent PyCollector from auto-collecting
+        return m
+
     def collect(self):
+        # Register with fixture manager so module-scoped fixtures can find
+        # a pytest.Module parent node (fixes scope resolution when plugins
+        # like pytest-recording/langchain-tests define module-scoped fixtures).
+        self.session._fixturemanager.parsefactories(self)
         text = self.path.read_text(encoding="utf-8")
         raw = parse_markdown(text)
         config = get_config()

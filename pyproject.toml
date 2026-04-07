@@ -66,6 +66,7 @@ test = [
     "pytest-cov",
     "pytest-django",
     "respx",
+    "langchain-tests", # Module-scoped fixtures for testing scope resolution
 ]
 docs = [
     "sphinx",
