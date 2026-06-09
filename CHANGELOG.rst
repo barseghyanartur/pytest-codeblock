@@ -19,6 +19,13 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.5.9
+-----
+2026-06-09
+
+- Removed `fake.py` as optional test dependency and include it in the package
+  itself for convenience.
+
 0.5.8
 -----
 2026-04-07
