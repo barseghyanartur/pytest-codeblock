@@ -2,7 +2,7 @@
 name = "pytest-codeblock"
 description = "Pytest plugin to collect and test code blocks in reStructuredText and Markdown files."
 readme = "README.rst"
-version = "0.5.8"
+version = "0.5.9"
 requires-python = ">=3.10"
 dependencies = [
     "pytest",
@@ -59,7 +59,6 @@ dev = [
 ]
 test = [
     "django",
-    "fake.py",
     "moto[s3]",
     "openai",
     "pytest",
@@ -224,7 +223,7 @@ ignore_missing_imports = true
 
 [tool.pydoclint]
 style = "sphinx"
-exclude = "\\.git|\\.tox|tests/data|\\.venv"
+exclude = "\\.git|\\.tox|tests/data|\\.venv|fake"
 require-return-section-when-returning-nothing = false
 allow-init-docstring = true
 arg-type-hints-in-docstring = false
