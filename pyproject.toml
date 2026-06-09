@@ -150,6 +150,7 @@ target-version = "py39"
 
 [tool.ruff.lint.per-file-ignores]
 "conftest.py" = ["PERF203"]
+"src/fake.py" = ["INP001"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["pytest_codeblock"]
