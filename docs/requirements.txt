@@ -184,7 +184,7 @@ pygments==2.19.2
     #   sphinx
 pyproject-hooks==1.2.0
     # via build
-pytest==9.0.2
+pytest==9.0.3
     # via
     #   pytest-codeblock (pyproject.toml)
     #   pytest-cov
