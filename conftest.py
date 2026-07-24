@@ -129,9 +129,6 @@ from django.db import models
 
 @pytest.fixture
 def pytester_subprocess(pytester):
-    """
-    Wrapper that forces subprocess mode to avoid deprecation warning conflicts
-    when the plugin uses the old `path` argument signature.
-    """
+    """Run pytester in a fresh process with isolated plugin configuration."""
     pytester.runpytest = pytester.runpytest_subprocess
     return pytester
