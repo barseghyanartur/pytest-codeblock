@@ -228,6 +228,19 @@ class TestWrapAsyncCode:
 class TestPytestCollectFile:
     """Test pytest_collect_file hook function."""
 
+    def test_collect_file_accepts_file_path(self, tmp_path):
+        """Test the pathlib hook argument used by pytest 9.1."""
+        md_file = tmp_path / "test.md"
+        md_file.write_text("# Test")
+
+        parent = MagicMock()
+        parent.path = tmp_path
+        parent.session = MagicMock()
+        parent.config = MagicMock()
+
+        result = pytest_collect_file(parent=parent, file_path=md_file)
+        assert isinstance(result, MarkdownFile)
+
     def test_collect_markdown_file(self, tmp_path):
         """Test .md file returns MarkdownFile."""
         md_file = tmp_path / "test.md"

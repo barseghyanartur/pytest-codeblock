@@ -12,8 +12,6 @@ Tests cover:
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-import pytest
-
 from ..collector import group_snippets
 from ..config import Config
 from ..constants import CODEBLOCK_MARK
@@ -632,20 +630,17 @@ class TestRSTNameless:
 # ============================================================================
 # Test Integration Scenarios
 # ============================================================================
-@pytest.mark.skip(
-    reason="Skip due to pytest 9 py.path.local deprecation issue in hooks"
-)
 class TestIntegration:
     """Integration tests using pytester."""
 
-    def test_markdown_nameless_integration(self, pytester):
+    def test_markdown_nameless_integration(self, pytester_subprocess):
         """Test nameless blocks work end-to-end in Markdown."""
-        pytester.makepyprojecttoml("""
+        pytester_subprocess.makepyprojecttoml("""
 [tool.pytest-codeblock]
 test_nameless_codeblocks = true
 """)
 
-        pytester.makefile(".md", test_integration="""
+        pytester_subprocess.makefile(".md", test_integration="""
 # Test File
 
 ```python name=test_explicit
@@ -664,7 +659,7 @@ assert z == 3
 ```
 """)
 
-        result = pytester.runpytest("-v", "-p", "no:django")
+        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
         result.assert_outcomes(passed=3)
         assert "test_explicit" in result.stdout.str()
         assert "test_integration_1" in result.stdout.str()
@@ -672,14 +667,14 @@ assert z == 3
 
     # ------------------------------------------------------------------------
 
-    def test_rst_nameless_integration(self, pytester):
+    def test_rst_nameless_integration(self, pytester_subprocess):
         """Test nameless blocks work end-to-end in RST."""
-        pytester.makepyprojecttoml("""
+        pytester_subprocess.makepyprojecttoml("""
 [tool.pytest-codeblock]
 test_nameless_codeblocks = true
 """)
 
-        pytester.makefile(".rst", test_integration="""
+        pytester_subprocess.makefile(".rst", test_integration="""
 Test File
 =========
 
@@ -700,7 +695,7 @@ Test File
    assert z == 3
 """)
 
-        result = pytester.runpytest("-v", "-p", "no:django")
+        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
         result.assert_outcomes(passed=3)
         assert "test_explicit" in result.stdout.str()
         assert "test_integration_1" in result.stdout.str()
@@ -708,10 +703,10 @@ Test File
 
     # ------------------------------------------------------------------------
 
-    def test_nameless_disabled_integration(self, pytester):
+    def test_nameless_disabled_integration(self, pytester_subprocess):
         """Test that nameless blocks are ignored when disabled."""
         # Don't set test_nameless_codeblocks (default False)
-        pytester.makefile(".md", test_default="""
+        pytester_subprocess.makefile(".md", test_default="""
 # Test File
 
 ```python name=test_explicit
@@ -725,21 +720,21 @@ assert y == 2
 ```
 """)
 
-        result = pytester.runpytest("-v", "-p", "no:django")
+        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
         result.assert_outcomes(passed=1)
         assert "test_explicit" in result.stdout.str()
         assert "test_default_1" not in result.stdout.str()
 
     # ------------------------------------------------------------------------
 
-    def test_multiple_files_separate_counters(self, pytester):
+    def test_multiple_files_separate_counters(self, pytester_subprocess):
         """Test that each file has its own counter."""
-        pytester.makepyprojecttoml("""
+        pytester_subprocess.makepyprojecttoml("""
 [tool.pytest-codeblock]
 test_nameless_codeblocks = true
 """)
 
-        pytester.makefile(".md", file1="""
+        pytester_subprocess.makefile(".md", file1="""
 ```python
 x = 1
 ```
@@ -749,7 +744,7 @@ y = 2
 ```
 """)
 
-        pytester.makefile(".md", file2="""
+        pytester_subprocess.makefile(".md", file2="""
 ```python
 a = 1
 ```
@@ -759,7 +754,7 @@ b = 2
 ```
 """)
 
-        result = pytester.runpytest("-v", "-p", "no:django")
+        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
         result.assert_outcomes(passed=4)
         # Each file should have _1 and _2
         assert "test_file1_1" in result.stdout.str()
@@ -774,17 +769,14 @@ b = 2
 class TestEdgeCases:
     """Test edge cases and corner scenarios."""
 
-    @pytest.mark.skip(
-        reason="Skip due to pytest 9 py.path.local deprecation issue in hooks"
-    )
-    def test_only_nameless_blocks(self, pytester):
+    def test_only_nameless_blocks(self, pytester_subprocess):
         """Test file with only nameless blocks."""
-        pytester.makepyprojecttoml("""
+        pytester_subprocess.makepyprojecttoml("""
 [tool.pytest-codeblock]
 test_nameless_codeblocks = true
 """)
 
-        pytester.makefile(".md", only_nameless="""
+        pytester_subprocess.makefile(".md", only_nameless="""
 ```python
 x = 1
 ```
@@ -798,22 +790,19 @@ z = 3
 ```
 """)
 
-        result = pytester.runpytest("-v", "-p", "no:django")
+        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
         result.assert_outcomes(passed=3)
 
     # ------------------------------------------------------------------------
 
-    @pytest.mark.skip(
-        reason="Skip due to pytest 9 py.path.local deprecation issue in hooks"
-    )
-    def test_only_named_blocks(self, pytester):
+    def test_only_named_blocks(self, pytester_subprocess):
         """Test file with only named blocks."""
-        pytester.makepyprojecttoml("""
+        pytester_subprocess.makepyprojecttoml("""
 [tool.pytest-codeblock]
 test_nameless_codeblocks = true
 """)
 
-        pytester.makefile(".md", only_named="""
+        pytester_subprocess.makefile(".md", only_named="""
 ```python name=test_one
 x = 1
 ```
@@ -823,7 +812,7 @@ y = 2
 ```
 """)
 
-        result = pytester.runpytest("-v", "-p", "no:django")
+        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
         result.assert_outcomes(passed=2)
         assert "test_one" in result.stdout.str()
         assert "test_two" in result.stdout.str()
@@ -832,17 +821,14 @@ y = 2
 
     # ------------------------------------------------------------------------
 
-    @pytest.mark.skip(
-        reason="Skip due to pytest 9 py.path.local deprecation issue in hooks"
-    )
-    def test_empty_code_blocks(self, pytester):
+    def test_empty_code_blocks(self, pytester_subprocess):
         """Test that empty nameless blocks are handled."""
-        pytester.makepyprojecttoml("""
+        pytester_subprocess.makepyprojecttoml("""
 [tool.pytest-codeblock]
 test_nameless_codeblocks = true
 """)
 
-        pytester.makefile(".md", empty="""
+        pytester_subprocess.makefile(".md", empty="""
 ```python
 ```
 
@@ -853,23 +839,20 @@ assert x == 1
 """)
 
         # Empty blocks might not be collected by parser
-        result = pytester.runpytest("-v", "-p", "no:django")
+        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
         # Should have at least the non-empty one
         assert result.ret == 0
 
     # ------------------------------------------------------------------------
 
-    @pytest.mark.skip(
-        reason="Skip due to pytest 9 py.path.local deprecation issue in hooks"
-    )
-    def test_non_python_blocks_ignored(self, pytester):
+    def test_non_python_blocks_ignored(self, pytester_subprocess):
         """Test that non-Python blocks are still ignored."""
-        pytester.makepyprojecttoml("""
+        pytester_subprocess.makepyprojecttoml("""
 [tool.pytest-codeblock]
 test_nameless_codeblocks = true
 """)
 
-        pytester.makefile(".md", mixed_lang="""
+        pytester_subprocess.makefile(".md", mixed_lang="""
 ```python
 x = 1
 ```
@@ -883,7 +866,7 @@ y = 2
 ```
 """)
 
-        result = pytester.runpytest("-v", "-p", "no:django")
+        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
         result.assert_outcomes(passed=2)
         # Only Python blocks should be collected
 
@@ -1020,54 +1003,48 @@ f = 6
 
     # ------------------------------------------------------------------------
 
-    @pytest.mark.skip(
-        reason="Skip due to pytest 9 py.path.local deprecation issue in hooks"
-    )
-    def test_both_formats_disabled(self, pytester):
+    def test_both_formats_disabled(self, pytester_subprocess):
         """Test both MD and RST with feature disabled."""
-        pytester.makefile(".md", test_md="""
+        pytester_subprocess.makefile(".md", test_md="""
 ```python
 x = 1
 ```
 """)
 
-        pytester.makefile(".rst", test_rst="""
+        pytester_subprocess.makefile(".rst", test_rst="""
 .. code-block:: python
 
    y = 2
 """)
 
-        result = pytester.runpytest("-v", "-p", "no:django")
+        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
         # No tests should be collected
         assert result.ret == 5  # Exit code 5 = no tests collected
 
     # ------------------------------------------------------------------------
 
-    @pytest.mark.skip(
-        reason="Skip due to pytest 9 py.path.local deprecation issue in hooks"
-    )
-    def test_both_formats_enabled(self, pytester):
+    def test_both_formats_enabled(self, pytester_subprocess):
         """Test both MD and RST with feature enabled."""
-        pytester.makepyprojecttoml("""
+        pytester_subprocess.makepyprojecttoml("""
 [tool.pytest-codeblock]
 test_nameless_codeblocks = true
 """)
 
-        pytester.makefile(".md", test_md="""
+        pytester_subprocess.makefile(".md", test_md="""
 ```python
 x = 1
 assert x == 1
 ```
 """)
 
-        pytester.makefile(".rst", test_rst="""
+        pytester_subprocess.makefile(".rst", test_rst="""
 .. code-block:: python
 
    y = 2
    assert y == 2
 """)
 
-        result = pytester.runpytest("-v", "-p", "no:django")
+        result = pytester_subprocess.runpytest("-v", "-p", "no:django")
         result.assert_outcomes(passed=2)
         assert "test_md_1" in result.stdout.str()
         assert "test_rst_1" in result.stdout.str()

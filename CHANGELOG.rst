@@ -19,6 +19,12 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+Unreleased
+----------
+
+- Restore compatibility with pytest 9.1 by using the pathlib ``file_path``
+  argument in the ``pytest_collect_file`` hook.
+
 0.5.9
 -----
 2026-06-09

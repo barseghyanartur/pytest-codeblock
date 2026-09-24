@@ -16,17 +16,16 @@ __all__ = (
 )
 
 
-def pytest_collect_file(parent, path):
+def pytest_collect_file(parent, file_path):
     """Collect .md and .rst files for codeblock tests."""
     config = get_config()
-    # Determine file extension (works for py.path or pathlib.Path)
-    file_name = str(path).lower()
+    file_name = str(file_path).lower()
     if any(file_name.endswith(ext) for ext in config.all_md_extensions):
         # Use the MarkdownFile collector for Markdown files
-        return MarkdownFile.from_parent(parent=parent, path=Path(path))
+        return MarkdownFile.from_parent(parent=parent, path=Path(file_path))
     if any(file_name.endswith(ext) for ext in config.all_rst_extensions):
         # Use the RSTFile collector for reStructuredText files
-        return RSTFile.from_parent(parent=parent, path=Path(path))
+        return RSTFile.from_parent(parent=parent, path=Path(file_path))
     return None
 
 
