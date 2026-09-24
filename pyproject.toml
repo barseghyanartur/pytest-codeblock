@@ -2,7 +2,7 @@
 name = "pytest-codeblock"
 description = "Pytest plugin to collect and test code blocks in reStructuredText and Markdown files."
 readme = "README.rst"
-version = "0.5.9"
+version = "0.5.10"
 requires-python = ">=3.10"
 dependencies = [
     "pytest",
@@ -60,7 +60,7 @@ dev = [
 test = [
     "django",
     "moto[s3]",
-    "openai",
+    "openai<3",  # respx-based mocking in conftest.py doesn't intercept openai's v3 client
     "pytest",
     "pytest-cov",
     "pytest-django",
