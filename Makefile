@@ -79,11 +79,11 @@ test: clean
 
 # Run customisation tests
 test-customisation: clean
-	uv run --extra all pytest -c examples/customisation_example/pyproject.toml -vrx -s examples/customisation_example/
+	cd examples/customisation_example/ && uv run --project $(ROOT) --extra all pytest -vrx -s .
 
 # Run nameless codeblock tests
 test-nameless-codeblocks: clean
-	uv run --extra all pytest -c examples/nameless_codeblocks_example/pyproject.toml -vvvrx -s examples/nameless_codeblocks_example/
+	cd examples/nameless_codeblocks_example/ && uv run --project $(ROOT) --extra all pytest -vvvrx -s .
 
 # Run all tests
 test-all:
