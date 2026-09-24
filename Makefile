@@ -2,7 +2,7 @@
 VERSION := 0.5.9
 SHELL := /bin/bash
 # Makefile for project
-VENV := .venv/bin/activate
+ROOT := $(CURDIR)
 UNAME_S := $(shell uname -s)
 
 # ----------------------------------------------------------------------------
@@ -11,13 +11,13 @@ UNAME_S := $(shell uname -s)
 
 # Build documentation using Sphinx and zip it
 build-docs:
-	source $(VENV) && sphinx-source-tree
-	source $(VENV) && sphinx-build -n -b text docs builddocs
-	source $(VENV) && sphinx-build -n -a -b html docs builddocs
+	uv run --extra all sphinx-source-tree
+	uv run --extra all sphinx-build -n -b text docs builddocs
+	uv run --extra all sphinx-build -n -a -b html docs builddocs
 	cd builddocs && zip -r ../builddocs.zip . -x ".*" && cd ..
 
 rebuild-docs:
-	source $(VENV) && sphinx-apidoc . --full -o docs -H 'pytest-codeblock' -A 'Artur Barseghyan <artur.barseghyan@gmail.com>' -f -d 20
+	uv run --extra all sphinx-apidoc . --full -o docs -H 'pytest-codeblock' -A 'Artur Barseghyan <artur.barseghyan@gmail.com>' -f -d 20
 	cp docs/conf.py.distrib docs/conf.py
 	cp docs/index.rst.distrib docs/index.rst
 
@@ -28,11 +28,11 @@ build-docs-pdf:
 	$(MAKE) -C docs/ latexpdf
 
 auto-build-docs:
-	source $(VENV) && sphinx-autobuild docs docs/_build/html
+	uv run --extra all sphinx-autobuild docs docs/_build/html
 
 # Serve the built docs on port 5001
 serve-docs:
-	source $(VENV) && cd builddocs && python -m http.server 5001
+	cd builddocs && python3 -m http.server 5001
 
 # ----------------------------------------------------------------------------
 # Pre-commit
@@ -52,25 +52,22 @@ pyupgrade:
 	pre-commit run --all-files pyupgrade
 
 doc8:
-	source $(VENV) && doc8
+	uv run --extra all doc8
 
 # Run ruff on the codebase
 ruff:
-	source $(VENV) && ruff check .
+	uv run --extra all ruff check .
 
 mypy:
-	source $(VENV) && mypy src/pytest_codeblock/
+	uv run --extra all mypy src/pytest_codeblock/
 
 # ----------------------------------------------------------------------------
 # Installation
 # ----------------------------------------------------------------------------
 
-create-venv:
-	uv venv
-
-# Install the project
-install: create-venv
-	source $(VENV) && uv sync --all-extras
+# Install the project (uv sync creates/updates .venv as needed)
+install:
+	uv sync --all-extras
 
 # ----------------------------------------------------------------------------
 # Tests
@@ -78,21 +75,21 @@ install: create-venv
 
 # Run core tests
 test: clean
-	source $(VENV) && pytest -vrx -s
+	uv run --extra all pytest -vrx -s
 
 # Run customisation tests
 test-customisation: clean
-	source $(VENV) && cd examples/customisation_example/ && pytest -vrx -s
+	uv run --extra all pytest -c examples/customisation_example/pyproject.toml -vrx -s examples/customisation_example/
 
 # Run nameless codeblock tests
 test-nameless-codeblocks: clean
-	source $(VENV) && cd examples/nameless_codeblocks_example/ && pytest -vvvrx -s
+	uv run --extra all pytest -c examples/nameless_codeblocks_example/pyproject.toml -vvvrx -s examples/nameless_codeblocks_example/
 
 # Run all tests
 test-all:
-	uv run pytest -vrx -s; \
-	uv run pytest -c examples/customisation_example/pyproject.toml -vrx -s examples/customisation_example/; \
-	uv run pytest -c examples/nameless_codeblocks_example/pyproject.toml -vvvrx -s examples/nameless_codeblocks_example/
+	uv run --extra all pytest -vrx -s; \
+	uv run --extra all pytest -c examples/customisation_example/pyproject.toml -vrx -s examples/customisation_example/; \
+	uv run --extra all pytest -c examples/nameless_codeblocks_example/pyproject.toml -vvvrx -s examples/nameless_codeblocks_example/
 
 # Run tests (to be used on CI environment)
 test-ci: clean
@@ -100,15 +97,18 @@ test-ci: clean
 
 # Run core tests with coverage
 test-cov: clean
-	source $(VENV) && coverage run --source=src/pytest_codeblock --omit="*/tests/*,*/conftest.py" -m pytest -vrx -s src/pytest_codeblock/tests/ -o "addopts=" -o "testpaths=src/pytest_codeblock/tests"
-	source $(VENV) && coverage report --omit="*/tests/*,*/conftest.py,examples/*"
-	source $(VENV) && coverage html --omit="*/tests/*,*/conftest.py,examples/*"
+	uv run --extra all coverage run --source=src/pytest_codeblock --omit="*/tests/*,*/conftest.py" -m pytest -vrx -s src/pytest_codeblock/tests/ -o "addopts=" -o "testpaths=src/pytest_codeblock/tests"
+	uv run --extra all coverage report --omit="*/tests/*,*/conftest.py,examples/*"
+	uv run --extra all coverage html --omit="*/tests/*,*/conftest.py,examples/*"
 
+# Note: examples/*_example/ are separate uv projects (their own pyproject.toml/.venv),
+# so we pin --project to the root while cwd is the example dir, keeping coverage's
+# cwd-relative --source=. correct without picking up the example's own (unrelated) venv.
 test-customisation-cov:
-	source $(VENV) && cd examples/customisation_example/ && coverage run --source=. -m pytest -vrx -s . -o "addopts=" -o "testpaths=tests"
+	cd examples/customisation_example/ && uv run --project $(ROOT) --extra all coverage run --source=. -m pytest -vrx -s . -o "addopts=" -o "testpaths=tests"
 
 test-nameless-codeblocks-cov:
-	source $(VENV) && cd examples/nameless_codeblocks_example/ && coverage run --source=. -m pytest -vrx -s . -o "addopts=" -o "testpaths=tests"
+	cd examples/nameless_codeblocks_example/ && uv run --project $(ROOT) --extra all coverage run --source=. -m pytest -vrx -s . -o "addopts=" -o "testpaths=tests"
 
 test-all-cov: test-cov test-customisation-cov test-nameless-codeblocks-cov
 
@@ -119,6 +119,28 @@ test-cov-ci: clean
 	cd examples/nameless_codeblocks_example/ && coverage run --source=. -m pytest -vrx -s . -o "addopts=" -o "testpaths=tests"
 	coverage report --omit="*/tests/*,*/conftest.py,examples/*"
 	coverage html --omit="*/tests/*,*/conftest.py,examples/*"
+
+# ----------------------------------------------------------------------------
+# Tox
+# ----------------------------------------------------------------------------
+# tox itself and its tox-uv plugin are run ephemerally via `uvx` — no persistent
+# install step needed, and it works on a clean checkout with no prior `make install`.
+
+# List available tox environments
+tox-list:
+	uvx --with tox-uv tox list
+
+# Run all tox environments
+tox:
+	uvx --with tox-uv tox
+
+# Run specific tox environment (e.g., make tox-e ENV=py312-pytest91)
+tox-e:
+	uvx --with tox-uv tox -e $(ENV)
+
+# Run tox with coverage
+tox-cov:
+	uvx --with tox-uv tox -e py312-pytest91 -- --cov=pytest_codeblock --cov-report=html --cov-report=term
 
 # ----------------------------------------------------------------------------
 # Development
@@ -151,16 +173,16 @@ clean:
 	rm -rf src/pytest-codeblock.egg-info/
 
 shell:
-	source $(VENV) && ipython
+	uv run --extra all ipython
 
 list-requirements:
-	source $(VENV) && uv pip list
+	uv pip list
 
 compile-requirements:
-	source $(VENV) && uv pip compile --all-extras -o docs/requirements.txt pyproject.toml
+	uv pip compile --all-extras -o docs/requirements.txt pyproject.toml
 
 compile-requirements-upgrade:
-	source $(VENV) && uv pip compile --all-extras -o docs/requirements.txt pyproject.toml --upgrade
+	uv pip compile --all-extras -o docs/requirements.txt pyproject.toml --upgrade
 
 update-version:
 	@echo "Updating version in pyproject.toml and __init__.py"
@@ -177,26 +199,26 @@ update-version:
 # ----------------------------------------------------------------------------
 
 create-secrets:
-	source $(VENV) && detect-secrets scan > .secrets.baseline
+	uv run --extra all detect-secrets scan > .secrets.baseline
 
 detect-secrets:
-	source $(VENV) && detect-secrets scan --baseline .secrets.baseline
+	uv run --extra all detect-secrets scan --baseline .secrets.baseline
 
 # ----------------------------------------------------------------------------
 # Release
 # ----------------------------------------------------------------------------
 
 build:
-	source $(VENV) && python -m build .
+	uv run --extra all python -m build .
 
 check-build:
-	source $(VENV) && twine check dist/*
+	uv run --extra all twine check dist/*
 
 release:
-	source $(VENV) && twine upload dist/* --verbose
+	uv run --extra all twine upload dist/* --verbose
 
 test-release:
-	source $(VENV) && twine upload --repository testpypi dist/* --verbose
+	uv run --extra all twine upload --repository testpypi dist/* --verbose
 
 # ----------------------------------------------------------------------------
 # Other

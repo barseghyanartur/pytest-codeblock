@@ -60,7 +60,7 @@ dev = [
 test = [
     "django",
     "moto[s3]",
-    "openai",
+    "openai<3",  # respx-based mocking in conftest.py doesn't intercept openai's v3 client
     "pytest",
     "pytest-cov",
     "pytest-django",
