@@ -153,6 +153,9 @@ clean:
 shell:
 	source $(VENV) && ipython
 
+list-requirements:
+	source $(VENV) && uv pip list
+
 compile-requirements:
 	source $(VENV) && uv pip compile --all-extras -o docs/requirements.txt pyproject.toml
 
