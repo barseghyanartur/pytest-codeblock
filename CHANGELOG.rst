@@ -19,6 +19,15 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.5.10
+------
+2026-09-25
+
+- Restore compatibility with pytest 9.1 by using the pathlib ``file_path``
+  argument in the ``pytest_collect_file`` hook.
+- Test against pytest 9.0.x and 9.1.x in GitHub CI.
+- Add tox for testing against multiple Python and pytest versions locally.
+
 0.5.9
 -----
 2026-06-09

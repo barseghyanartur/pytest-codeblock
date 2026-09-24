@@ -40,11 +40,11 @@ jobs:
   # *************************************
   test:
     needs: pre-commit
-    name: test ${{ matrix.python-version }} - ${{ matrix.os }}
+    name: test ${{ matrix.python-version }} - pytest${{ matrix.pytest-version }} - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
-      max-parallel: 5
+      max-parallel: 10
       matrix:
         os:
           - ubuntu-22.04
@@ -57,6 +57,9 @@ jobs:
           - "3.11"
           - "3.10"
 #          - "3.9"
+        pytest-version:
+          - "9.1"
+          - "9.0"
     env:
       PYO3_USE_ABI3_FORWARD_COMPATIBILITY: "1"
     steps:
@@ -73,6 +76,9 @@ jobs:
       - name: Install package
         run: |
           pip install -e .[all]
+      - name: Install pytest version
+        run: |
+          pip install "pytest>=${{ matrix.pytest-version }}.0,<${{ matrix.pytest-version }}.999"
       - name: Run test suite
         run: make test-cov-ci
         env:
