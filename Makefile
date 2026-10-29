@@ -1,5 +1,5 @@
 # Update version ONLY here
-VERSION := 0.5.10
+VERSION := 0.5.11
 SHELL := /bin/bash
 # Makefile for project
 ROOT := $(CURDIR)
