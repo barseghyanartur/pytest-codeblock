@@ -5,6 +5,7 @@ pytest-codeblock
 .. External references
 .. _reStructuredText: https://docutils.sourceforge.io/rst.html
 .. _Markdown: https://daringfireball.net/projects/markdown/
+.. _MDX: https://mdxjs.com/docs/what-is-mdx/
 .. _pytest: https://docs.pytest.org
 .. _Django: https://www.djangoproject.com
 .. _pip: https://pypi.org/project/pip/
@@ -66,8 +67,8 @@ Features
 ========
 
 - **reStructuredText and Markdown support**: Automatically find and test code
-  blocks in `reStructuredText`_ (``.rst``) and `Markdown`_ (``.md``,
-  ``.mdx``) files.
+  blocks in `reStructuredText`_ (``.rst``), `Markdown`_ (``.md``) and
+  `MDX`_ (``.mdx``) files.
   Async code snippets are supported as well.
 - **Grouping**: Split a single example across multiple code blocks;
   the plugin concatenates them into one test.
@@ -159,7 +160,7 @@ See `customisation docs`_ for more.
 
 ----
 
-In `.mdx` files, write directives as JSX comments, because MDX does not
+In `.mdx` files, write directives as JSX comments, because `MDX`_ does not
 allow HTML comments:
 
 .. code-block:: markdown
