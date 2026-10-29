@@ -91,10 +91,12 @@ test-mdx: clean
 
 # Run all tests
 test-all:
-	uv run --extra all pytest -vrx -s; \
-	uv run --extra all pytest -c examples/customisation_example/pyproject.toml -vrx -s examples/customisation_example/; \
-	uv run --extra all pytest -c examples/nameless_codeblocks_example/pyproject.toml -vvvrx -s examples/nameless_codeblocks_example/; \
-	uv run --extra all pytest -c examples/mdx_example/pyproject.toml -vrx -s examples/mdx_example/
+	status=0; \
+	uv run --extra all pytest -vrx -s; status=$$((status | $$?)); \
+	uv run --extra all pytest -c examples/customisation_example/pyproject.toml -vrx -s examples/customisation_example/; status=$$((status | $$?)); \
+	uv run --extra all pytest -c examples/nameless_codeblocks_example/pyproject.toml -vvvrx -s examples/nameless_codeblocks_example/; status=$$((status | $$?)); \
+	uv run --extra all pytest -c examples/mdx_example/pyproject.toml -vrx -s examples/mdx_example/; status=$$((status | $$?)); \
+	exit $$status
 
 # Run tests (to be used on CI environment)
 test-ci: clean
