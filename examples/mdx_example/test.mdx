@@ -1,0 +1,87 @@
+import { Callout } from './callout'
+
+export const meta = { title: 'test.mdx' }
+
+# test.mdx
+
+<Callout type="info">
+  Python code blocks in this file are tested with pytest-codeblock.
+</Callout>
+
+## test_mdx_python_hello
+```python name=test_mdx_python_hello
+import math
+
+result = math.pow(3, 2)
+assert result == 9
+print(f"Hello test.mdx: {result}")
+```
+
+## test_mdx_py_hello
+```py name=test_mdx_py_hello
+result = 2 ** 2
+assert result == 4
+```
+
+## test_mdx_python3_hello
+```python3 name=test_mdx_python3_hello
+result = 2 ** 3
+assert result == 8
+```
+
+## test_mdx_xfail
+
+{/* pytestmark: xfail */}
+```python name=test_mdx_xfail
+assert False
+```
+
+## test_mdx_tmp_path
+
+{/* pytestfixture: tmp_path */}
+```python name=test_mdx_tmp_path
+# Use the tmp_path fixture in your test
+file_path = tmp_path / "example.txt"
+file_path.write_text("Hello, World!")
+assert file_path.read_text() == "Hello, World!"
+```
+
+## test_mdx_continue
+```python name=test_mdx_continue
+x = 1
+```
+
+Some text.
+
+{/* continue: test_mdx_continue */}
+```python
+y = x + 1  # Uses x from the first snippet
+assert y == 2
+```
+
+## test_mdx_same_name
+
+Blocks with the same name are grouped as well.
+
+```python name=test_mdx_same_name
+a = 1
+```
+
+```python name=test_mdx_same_name
+assert a == 1
+```
+
+## Not collected
+
+Non-Python code blocks are ignored.
+
+```javascript
+throw new Error("This is not collected")
+```
+
+Nameless code blocks are ignored, unless `test_nameless_codeblocks` is
+enabled.
+
+```python
+raise AssertionError("This is not collected")
+```

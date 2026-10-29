@@ -19,6 +19,16 @@ are used for versioning (schema follows below):
   0.3.4 to 0.4).
 - All backwards incompatible changes are mentioned in this document.
 
+0.5.11
+------
+2026-10-29
+
+- Collect `.mdx` files by default. To opt out, set
+  ``md_extensions = [".md", ".markdown"]`` in ``[tool.pytest-codeblock]``.
+- Accept directives (``pytestmark``, ``pytestfixture``, ``continue``,
+  ``codeblock-name``) as JSX comments, e.g. ``{/* pytestmark: xfail */}``,
+  in addition to HTML comments. MDX does not allow HTML comments.
+
 0.5.10
 ------
 2026-09-25

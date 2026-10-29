@@ -85,11 +85,16 @@ test-customisation: clean
 test-nameless-codeblocks: clean
 	cd examples/nameless_codeblocks_example/ && uv run --project $(ROOT) --extra all pytest -vvvrx -s .
 
+# Run MDX tests
+test-mdx: clean
+	cd examples/mdx_example/ && uv run --project $(ROOT) --extra all pytest -vrx -s .
+
 # Run all tests
 test-all:
 	uv run --extra all pytest -vrx -s; \
 	uv run --extra all pytest -c examples/customisation_example/pyproject.toml -vrx -s examples/customisation_example/; \
-	uv run --extra all pytest -c examples/nameless_codeblocks_example/pyproject.toml -vvvrx -s examples/nameless_codeblocks_example/
+	uv run --extra all pytest -c examples/nameless_codeblocks_example/pyproject.toml -vvvrx -s examples/nameless_codeblocks_example/; \
+	uv run --extra all pytest -c examples/mdx_example/pyproject.toml -vrx -s examples/mdx_example/
 
 # Run tests (to be used on CI environment)
 test-ci: clean
@@ -110,13 +115,17 @@ test-customisation-cov:
 test-nameless-codeblocks-cov:
 	cd examples/nameless_codeblocks_example/ && uv run --project $(ROOT) --extra all coverage run --source=. -m pytest -vrx -s . -o "addopts=" -o "testpaths=tests"
 
-test-all-cov: test-cov test-customisation-cov test-nameless-codeblocks-cov
+test-mdx-cov:
+	cd examples/mdx_example/ && uv run --project $(ROOT) --extra all coverage run --source=. -m pytest -vrx -s . -o "addopts=" -o "testpaths=tests"
+
+test-all-cov: test-cov test-customisation-cov test-nameless-codeblocks-cov test-mdx-cov
 
 # Run tests with coverage in CI environment
 test-cov-ci: clean
 	coverage run --source=src/pytest_codeblock --omit="*/tests/*,*/conftest.py" -m pytest -vrx -s src/pytest_codeblock/tests/ -o "addopts=" -o "testpaths=src/pytest_codeblock/tests"
 	cd examples/customisation_example/ && coverage run --source=. -m pytest -vrx -s . -o "addopts=" -o "testpaths=tests"
 	cd examples/nameless_codeblocks_example/ && coverage run --source=. -m pytest -vrx -s . -o "addopts=" -o "testpaths=tests"
+	cd examples/mdx_example/ && coverage run --source=. -m pytest -vrx -s . -o "addopts=" -o "testpaths=tests"
 	coverage report --omit="*/tests/*,*/conftest.py,examples/*"
 	coverage html --omit="*/tests/*,*/conftest.py,examples/*"
 
