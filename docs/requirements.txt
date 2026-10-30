@@ -42,7 +42,7 @@ colorama==0.4.6
     # via sphinx-autobuild
 coverage==7.13.4
     # via pytest-cov
-cryptography==50.0.0
+cryptography==50.0.2
     # via moto
 decorator==5.2.1
     # via ipython
@@ -50,7 +50,7 @@ detect-secrets==1.5.0
     # via pytest-codeblock (pyproject.toml)
 distro==1.9.0
     # via openai
-django==6.0.8
+django==6.1.2
     # via pytest-codeblock (pyproject.toml)
 doc8==2.0.0
     # via pytest-codeblock (pyproject.toml)
@@ -295,14 +295,14 @@ typing-extensions==4.15.0
     #   typing-inspection
 typing-inspection==0.4.2
     # via pydantic
-urllib3==2.7.0
+urllib3==2.8.0
     # via
     #   botocore
     #   id
     #   requests
     #   responses
     #   twine
-uv==0.11.15
+uv==0.13.4
     # via pytest-codeblock (pyproject.toml)
 uvicorn==0.41.0
     # via sphinx-autobuild
@@ -312,7 +312,7 @@ wcwidth==0.6.0
     # via prompt-toolkit
 websockets==16.0
     # via sphinx-autobuild
-werkzeug==3.1.6
+werkzeug==3.1.9
     # via moto
 wheel==0.46.3
     # via pytest-codeblock (pyproject.toml)

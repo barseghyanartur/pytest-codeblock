@@ -23,7 +23,7 @@ __all__ = (
 DEFAULT_RST_CODEBLOCKS = ("py", "python", "python3")
 DEFAULT_MD_CODEBLOCKS = ("py", "python", "python3")
 DEFAULT_RST_EXTENSIONS = (".rst",)
-DEFAULT_MD_EXTENSIONS = (".md", ".markdown")
+DEFAULT_MD_EXTENSIONS = (".md", ".markdown", ".mdx")
 DEFAULT_TEST_NAMELESS_CODEBLOCKS = False
 
 

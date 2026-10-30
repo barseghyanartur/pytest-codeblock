@@ -28,6 +28,26 @@ __all__ = (
     "parse_markdown",
 )
 
+# Directives can be written as HTML comments (Markdown) or as JSX comments
+# (MDX, where HTML comments are a syntax error):
+#   <!-- pytestmark: xfail -->
+#   {/* pytestmark: xfail */}
+_COMMENT_STARTS = ("<!--", "{/*")
+
+
+def _directive_regex(directive: str, value: str) -> re.Pattern:
+    """Build a regex for a directive comment. Group 2 is the value."""
+    # ``(?(1)...)`` requires the closing token to match the opening one.
+    return re.compile(
+        rf"(?:(<!--)|\{{/\*)\s*{directive}:\s*({value})\s*(?(1)-->|\*/\}})"
+    )
+
+
+_PYTESTMARK_RE = _directive_regex("pytestmark", r"\w+")
+_PYTESTFIXTURE_RE = _directive_regex("pytestfixture", r"\w+")
+_CONTINUE_RE = _directive_regex("continue", r"\S+")
+_CODEBLOCK_NAME_RE = _directive_regex("codeblock-name", r"[^ >]+")
+
 
 def parse_markdown(text: str) -> list[CodeSnippet]:
     """
@@ -35,8 +55,11 @@ def parse_markdown(text: str) -> list[CodeSnippet]:
     objects.
     Supports:
       - <!-- pytestmark: <mark> --> comments immediately before a code fence
+      - <!-- pytestfixture: <fixture> --> comments for requesting fixtures
       - <!-- codeblock-name: <name> --> comments for naming
       - <!-- continue: <name> --> comments for grouping with a named snippet
+      - The same directives as JSX comments, for MDX files
+        (e.g. {/* pytestmark: <mark> */})
       - Fenced code blocks with ```python (and optional name=<name> in the
         info string)
     Captures each snippet's name, code, starting line, and any pytest marks.
@@ -60,33 +83,32 @@ def parse_markdown(text: str) -> list[CodeSnippet]:
 
         if not in_block:
             # Check for pytest mark comment
-            if stripped.startswith("<!--") and "pytestmark:" in stripped:
-                m = re.match(r"<!--\s*pytestmark:\s*(\w+)\s*-->", stripped)
+            is_comment = stripped.startswith(_COMMENT_STARTS)
+            if is_comment and "pytestmark:" in stripped:
+                m = _PYTESTMARK_RE.match(stripped)
                 if m:
-                    pending_marks.append(m.group(1))
+                    pending_marks.append(m.group(2))
                 continue
 
             # Check for pytest fixture comment
-            if stripped.startswith("<!--") and "pytestfixture:" in stripped:
-                m = re.match(r"<!--\s*pytestfixture:\s*(\w+)\s*-->", stripped)
+            if is_comment and "pytestfixture:" in stripped:
+                m = _PYTESTFIXTURE_RE.match(stripped)
                 if m:
-                    pending_fixtures.append(m.group(1))
+                    pending_fixtures.append(m.group(2))
                 continue
 
             # Check for continue comment
-            if stripped.startswith("<!--") and "continue:" in stripped:
-                m = re.match(r"<!--\s*continue:\s*(\S+)\s*-->", stripped)
+            if is_comment and "continue:" in stripped:
+                m = _CONTINUE_RE.match(stripped)
                 if m:
-                    pending_continue = m.group(1)
+                    pending_continue = m.group(2)
                 continue
 
             # Check for name comment
-            if stripped.startswith("<!--") and "codeblock-name:" in stripped:
-                m = re.match(
-                    r"<!--\s*codeblock-name:\s*([^ >]+)\s*-->", stripped
-                )
+            if is_comment and "codeblock-name:" in stripped:
+                m = _CODEBLOCK_NAME_RE.match(stripped)
                 if m:
-                    pending_name = m.group(1)
+                    pending_name = m.group(2)
                 continue
 
             # Start of fenced code block?

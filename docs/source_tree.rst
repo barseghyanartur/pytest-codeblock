@@ -23,6 +23,7 @@ the contents of each key file.
    │       │   ├── __init__.py
    │       │   ├── test_customisation.py
    │       │   ├── test_integration.py
+   │       │   ├── test_mdx_support.py
    │       │   ├── test_nameless_codeblocks.py
    │       │   ├── test_pytest_codeblock.py
    │       │   ├── test_pytestrun_marker.py
@@ -195,6 +196,13 @@ src/pytest_codeblock/tests/test_integration.py
 .. literalinclude:: ../src/pytest_codeblock/tests/test_integration.py
    :language: python
    :caption: src/pytest_codeblock/tests/test_integration.py
+
+src/pytest_codeblock/tests/test_mdx_support.py
+----------------------------------------------
+
+.. literalinclude:: ../src/pytest_codeblock/tests/test_mdx_support.py
+   :language: python
+   :caption: src/pytest_codeblock/tests/test_mdx_support.py
 
 src/pytest_codeblock/tests/test_nameless_codeblocks.py
 ------------------------------------------------------
