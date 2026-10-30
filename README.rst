@@ -5,6 +5,7 @@ pytest-codeblock
 .. External references
 .. _reStructuredText: https://docutils.sourceforge.io/rst.html
 .. _Markdown: https://daringfireball.net/projects/markdown/
+.. _MDX: https://mdxjs.com/docs/what-is-mdx/
 .. _pytest: https://docs.pytest.org
 .. _Django: https://www.djangoproject.com
 .. _pip: https://pypi.org/project/pip/
@@ -66,7 +67,8 @@ Features
 ========
 
 - **reStructuredText and Markdown support**: Automatically find and test code
-  blocks in `reStructuredText`_ (``.rst``) and `Markdown`_ (``.md``) files.
+  blocks in `reStructuredText`_ (``.rst``), `Markdown`_ (``.md``) and
+  `MDX`_ (``.mdx``) files.
   Async code snippets are supported as well.
 - **Grouping**: Split a single example across multiple code blocks;
   the plugin concatenates them into one test.
@@ -136,7 +138,8 @@ Note, that nameless code blocks have limitations when it comes to grouping.
 
 ----
 
-By default, all code `.rst` and `.md` files shall be picked automatically.
+By default, all code `.rst`, `.md` and `.mdx` files shall be picked
+automatically.
 
 However, if you need to add another file extension or use or another language
 identifier for python in codeblock, you could configure that.
@@ -154,6 +157,20 @@ See the following example of `pyproject.toml` configuration:
     md_user_extensions = [".md.txt"]
 
 See `customisation docs`_ for more.
+
+----
+
+In `.mdx` files, write directives as JSX comments, because `MDX`_ does not
+allow HTML comments:
+
+.. code-block:: markdown
+
+    {/* pytestmark: xfail */}
+    ```python name=test_mdx_example
+    assert False
+    ```
+
+See `customisation docs`_ for more on MDX.
 
 Usage
 =====

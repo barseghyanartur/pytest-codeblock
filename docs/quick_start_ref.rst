@@ -1,9 +1,9 @@
 Quick-start reference
 =====================
 
-pytest-codeblock collects Python code blocks from ``.rst`` and ``.md``
-files and runs them as pytest tests. No configuration is required for
-basic use — files are discovered automatically.
+pytest-codeblock collects Python code blocks from ``.rst``, ``.md`` and
+``.mdx`` files and runs them as pytest tests. No configuration is required
+for basic use — files are discovered automatically.
 
 --------------
 

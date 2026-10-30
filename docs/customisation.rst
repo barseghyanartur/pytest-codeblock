@@ -131,7 +131,7 @@ Markdown
 ~~~~~~~~
 
 By default, the plugin recognises the following file extensions for 
-Markdown files: `.md`, `.markdown`
+Markdown files: `.md`, `.markdown`, `.mdx`
 
 These defaults are configured via `md_extensions` setting in
 the `[tool.pytest-codeblock]` section of your `pyproject.toml`.
@@ -139,7 +139,7 @@ the `[tool.pytest-codeblock]` section of your `pyproject.toml`.
 .. code-block:: toml
 
     [tool.pytest-codeblock]
-    md_extensions = [".md", ".markdown"]
+    md_extensions = [".md", ".markdown", ".mdx"]
 
 .. note::
 
@@ -163,3 +163,55 @@ Now the following file will be recognised and processed:
     ```python name=test_custom_md_extension_example
     print("Custom .md.txt extension example executed successfully!")
     ```
+
+----
+
+MDX
+---
+
+`MDX <https://mdxjs.com>`__ files (``.mdx``) are Markdown with JSX. They are collected by
+default and parsed by the Markdown parser. No configuration is needed.
+
+The following file will be recognised and processed:
+
+.. code-block:: markdown
+
+    *Filename: example.mdx*
+
+    import { Callout } from './callout'
+
+    <Callout type="info">JSX is ignored by the plugin.</Callout>
+
+    ```python name=test_custom_mdx_extension_example
+    print("Custom .mdx extension example executed successfully!")
+    ```
+
+MDX does not allow HTML comments, so write directives as JSX comments
+instead:
+
+.. code-block:: markdown
+
+    {/* pytestmark: xfail */}
+    ```python name=test_mdx_xfail_example
+    assert False
+    ```
+
+The same applies to the ``pytestfixture``, ``continue`` and
+``codeblock-name`` directives. Both comment forms work in ``.md`` and
+``.mdx`` files.
+
+.. note::
+
+    The plugin reads ``.mdx`` files line by line and does not understand
+    JSX. A fenced code block inside a JSX expression, such as a template
+    literal or a component prop, is still collected and executed.
+
+To stop collecting ``.mdx`` files, leave the extension out of
+`md_extensions`:
+
+.. code-block:: toml
+
+    [tool.pytest-codeblock]
+    md_extensions = [".md", ".markdown"]
+
+See ``examples/mdx_example/`` in the repository for a complete example.

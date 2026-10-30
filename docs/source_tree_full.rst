@@ -31,6 +31,9 @@ the contents of each key file.
    │   │   ├── customisation.md
    │   │   ├── pytest_fixtures.md
    │   │   └── README.md
+   │   ├── mdx_example
+   │   │   ├── pyproject.toml
+   │   │   └── test.mdx
    │   ├── nameless_codeblocks_example
    │   │   ├── pyproject.toml
    │   │   ├── test.md
@@ -58,6 +61,7 @@ the contents of each key file.
    │       │   ├── __init__.py
    │       │   ├── test_customisation.py
    │       │   ├── test_integration.py
+   │       │   ├── test_mdx_support.py
    │       │   ├── test_nameless_codeblocks.py
    │       │   ├── test_pytest_codeblock.py
    │       │   ├── test_pytestrun_marker.py
@@ -209,6 +213,13 @@ examples/md_example/pytest_fixtures.md
 .. literalinclude:: ../examples/md_example/pytest_fixtures.md
    :language: markdown
    :caption: examples/md_example/pytest_fixtures.md
+
+examples/mdx_example/pyproject.toml
+-----------------------------------
+
+.. literalinclude:: ../examples/mdx_example/pyproject.toml
+   :language: toml
+   :caption: examples/mdx_example/pyproject.toml
 
 examples/nameless_codeblocks_example/pyproject.toml
 ---------------------------------------------------
@@ -412,6 +423,13 @@ src/pytest_codeblock/tests/test_integration.py
 .. literalinclude:: ../src/pytest_codeblock/tests/test_integration.py
    :language: python
    :caption: src/pytest_codeblock/tests/test_integration.py
+
+src/pytest_codeblock/tests/test_mdx_support.py
+----------------------------------------------
+
+.. literalinclude:: ../src/pytest_codeblock/tests/test_mdx_support.py
+   :language: python
+   :caption: src/pytest_codeblock/tests/test_mdx_support.py
 
 src/pytest_codeblock/tests/test_nameless_codeblocks.py
 ------------------------------------------------------

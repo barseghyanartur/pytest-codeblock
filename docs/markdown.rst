@@ -221,6 +221,28 @@ Multiple ``pytestfixture`` directives are supported. Add one on each line.
 Custom pytest-fixtures are supported as well. Just define them in
 your ``conftest.py`` file.
 
+----
+
+MDX
+~~~
+
+All directives (``pytestmark``, ``pytestfixture``, ``continue`` and
+``codeblock-name``) can also be written as JSX comments. Use this form
+in ``.mdx`` files, where HTML comments are not allowed.
+
+*Filename: README.mdx*
+
+.. code-block:: markdown
+
+    {/* pytestfixture: tmp_path */}
+    ```python name=test_mdx_example
+    file_path = tmp_path / "example.txt"
+    file_path.write_text("Hello, World!")
+    assert file_path.read_text() == "Hello, World!"
+    ```
+
+See :doc:`MDX customisation <customisation>` for more.
+
 Customisation/hooks
 -------------------
 Tests can be extended and fine-tuned using `pytest`_'s standard hook system.

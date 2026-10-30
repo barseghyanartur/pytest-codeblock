@@ -110,7 +110,7 @@ The plugin works in three phases:
 | `src/pytest_codeblock/__init__.py` | pytest entry points, marker registration |
 | `src/pytest_codeblock/collector.py` | `CodeSnippet` dataclass, `group_snippets()` |
 | `src/pytest_codeblock/rst.py` | reStructuredText file parsing |
-| `src/pytest_codeblock/md.py` | Markdown file parsing |
+| `src/pytest_codeblock/md.py` | Markdown and MDX file parsing |
 | `src/pytest_codeblock/pytestrun.py` | Test execution, marker/fixture handling |
 | `src/pytest_codeblock/config.py` | Configuration management |
 | `src/pytest_codeblock/constants.py` | Markers, constants |
@@ -149,6 +149,14 @@ and behavior through pyproject.toml.
 
 When `test_nameless_codeblocks = true`, code blocks without names cannot be
 grouped together because there's no key to associate them. This is by design.
+
+### MDX files are parsed line by line
+
+`.mdx` files are collected by default and use the Markdown parser.
+Directives can be written as HTML comments (`<!-- pytestmark: xfail -->`) or
+as JSX comments (`{/* pytestmark: xfail */}`); MDX only allows the latter.
+The parser does not understand JSX, so a code fence inside a JSX expression
+(a template literal or a component prop) is still collected.
 
 ### Async code blocks require explicit markers
 
@@ -205,6 +213,7 @@ When asked to add a feature or fix a bug, follow these steps in order:
    make test
    make test-customisation
    make test-nameless-codeblocks
+   make test-mdx
    ```
 
 ### Acceptable new features
@@ -234,6 +243,7 @@ src/pytest_codeblock/tests/
     test_pytest_codeblock.py    — core functionality tests
     test_nameless_codeblocks.py — nameless code block tests
     test_customisation.py       — configuration tests
+    test_mdx_support.py         — MDX tests
     test_pytestrun_marker.py    — pytest marker tests
     tests.rst                   — documentation tests (RST)
     tests.md                    — documentation tests (MD)
@@ -247,6 +257,7 @@ Run all tests:
 make test
 make test-customisation
 make test-nameless-codeblocks
+make test-mdx
 ```
 
 Run with coverage:
@@ -255,6 +266,7 @@ Run with coverage:
 make test-cov
 make test-customisation-cov
 make test-nameless-codeblocks-cov
+make test-mdx-cov
 ```
 
 Run specific test file:

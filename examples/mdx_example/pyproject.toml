@@ -1,0 +1,2 @@
+# `.mdx` files are collected by default, no configuration needed.
+[tool.pytest-codeblock]
