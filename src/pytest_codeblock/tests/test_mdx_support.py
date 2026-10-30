@@ -336,6 +336,12 @@ x = 1
 
     def test_jsx_directives(self, pytester_subprocess):
         """Test markers, fixtures and grouping in JSX comments."""
+        # Nameless blocks must be enabled, otherwise the unnamed
+        # continuation block is dropped before grouping.
+        pytester_subprocess.makepyprojecttoml("""
+[tool.pytest-codeblock]
+test_nameless_codeblocks = true
+""")
         pytester_subprocess.makefile(".mdx", doc="""
 {/* pytestmark: xfail */}
 ```python name=test_xfail_block
@@ -360,6 +366,6 @@ assert x == 1
 """)
 
         result = pytester_subprocess.runpytest("-v", "-p", "no:django")
-        result.assert_outcomes(passed=2, xfailed=1)
+        result.assert_outcomes(passed=3, xfailed=1)
         assert "test_fixture_block" in result.stdout.str()
         assert "test_grouped_block" in result.stdout.str()
